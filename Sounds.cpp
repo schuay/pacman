@@ -108,8 +108,6 @@ Sounds::Sounds() :
     sndPaths[10] = "sound/siren.wav";
     sndPaths[11] = "sound/intermission.wav";
     sndPaths[12] = "sound/booster.wav";
-
-    init();
 }
 
 Sounds::~Sounds()

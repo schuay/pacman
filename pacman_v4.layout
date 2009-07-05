@@ -1,55 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Release" />
-	<File name="App.h" open="1" top="0" tabpos="11">
+	<ActiveTarget name="Debug" />
+	<File name="App.cpp" open="1" top="1" tabpos="5">
+		<Cursor position="1794" topLine="57" />
+	</File>
+	<File name="App.h" open="1" top="0" tabpos="7">
+		<Cursor position="51" topLine="0" />
+	</File>
+	<File name="BHeap.h" open="0" top="0" tabpos="10">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="BHeap.h" open="1" top="0" tabpos="10">
+	<File name="BckgrObj.h" open="0" top="0" tabpos="9">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="BckgrObj.h" open="1" top="0" tabpos="9">
+	<File name="Error.cpp" open="0" top="0" tabpos="7">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="Error.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="0" topLine="0" />
-	</File>
-	<File name="Error.h" open="1" top="0" tabpos="8">
+	<File name="Error.h" open="0" top="0" tabpos="8">
 		<Cursor position="177" topLine="0" />
 	</File>
-	<File name="Game.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="46992" topLine="1605" />
+	<File name="Game.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="37979" topLine="1231" />
 	</File>
-	<File name="Game.h" open="1" top="0" tabpos="3">
+	<File name="Game.h" open="0" top="0" tabpos="3">
 		<Cursor position="378" topLine="0" />
 	</File>
-	<File name="Ghost.h" open="1" top="0" tabpos="12">
+	<File name="Ghost.h" open="0" top="0" tabpos="12">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="Log.cpp" open="1" top="0" tabpos="6">
+	<File name="Log.cpp" open="0" top="0" tabpos="6">
 		<Cursor position="948" topLine="12" />
 	</File>
-	<File name="Log.h" open="1" top="0" tabpos="13">
+	<File name="Log.h" open="0" top="0" tabpos="13">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="Main.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="2312" topLine="52" />
+	<File name="Main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="3062" topLine="72" />
 	</File>
-	<File name="Main.h" open="1" top="1" tabpos="5">
+	<File name="Main.h" open="1" top="0" tabpos="6">
 		<Cursor position="474" topLine="11" />
 	</File>
-	<File name="Object.h" open="1" top="0" tabpos="14">
+	<File name="Object.h" open="0" top="0" tabpos="14">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="Pacman.h" open="1" top="0" tabpos="15">
+	<File name="Pacman.h" open="0" top="0" tabpos="15">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="Settings.cpp" open="1" top="0" tabpos="4">
+	<File name="Settings.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="2761" topLine="0" />
 	</File>
-	<File name="Settings.h" open="1" top="0" tabpos="16">
+	<File name="Settings.h" open="0" top="0" tabpos="16">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="hScore.h" open="1" top="0" tabpos="17">
+	<File name="Sounds.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="713" topLine="13" />
+	</File>
+	<File name="Sounds.h" open="1" top="0" tabpos="4">
+		<Cursor position="212" topLine="0" />
+	</File>
+	<File name="hScore.h" open="0" top="0" tabpos="17">
 		<Cursor position="0" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

@@ -4,8 +4,8 @@
 //	GLOBAL VARS
 //////////////////////////////////////////////////////
 
-App		app;
 Log		logtxt;
+App		app;
 Game	game;
 Settings settings;
 
@@ -86,6 +86,9 @@ int main( int argc, char** argv ) {
 
     //init window
 	if ( !app.getQuit() ) app.InitWindow();
+
+	//init sound
+	if ( !app.getQuit() ) app.InitSound();
 
     //set editorpath
     if ( editfile!="" ) {

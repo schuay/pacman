@@ -67,10 +67,32 @@ void App::InitApp() {
     }
 }
 
+void App::InitSound() {
+
+    try {
+
+        snd = new Sounds();
+        snd->init();
+
+        logtxt.print("Sound initialized");
+    }
+	catch ( Error& err ) {
+		std::cerr << (err.getDesc() );
+		setQuit(true);
+		logtxt.print( err.getDesc() );
+	}
+    catch (...) {
+        std::cerr << "Unexpected exception";
+		setQuit(true);
+		logtxt.print( "Unexpected exception in App::InitSound()" );
+    }
+}
+
 App::App()
 	:	quit(false),
         screen(NULL),
-        buf(NULL)
+        buf(NULL),
+        snd(NULL)
 
 {
 }
@@ -92,6 +114,11 @@ App::~App(void)
 
         if ( TTF_WasInit() )
             TTF_Quit();
+
+        if ( snd ) {
+            delete snd;
+            snd = NULL;
+        }
     }
     catch ( Error& err ) {
 		std::cerr << (err.getDesc() );
