@@ -696,8 +696,7 @@ void Ghost::setState(int st) {
 	}
 }
 void Ghost::Update( int time) {
-	bool	dirclear=0,
-			cont=0;
+	bool	cont=0;
 	int		oldx,
 			oldy;
 

@@ -217,10 +217,8 @@ void Game::renderEditor() {
 }
 
 void Game::initEditor() {
-	int i, j;
+	int i;
 
-//    std::cout << "debug: " + editorpath;
-//	editorpath = "";
 	if ( map ) delete[] map;
 	if ( objmap ) delete[] objmap;
 
@@ -242,48 +240,6 @@ void Game::initEditor() {
 	}
 	//load existing map
 	else {
-		//getfilename
-//		OPENFILENAME ofn;
-//		bool ok = true;
-//		CHAR buf[256] = ".\\levels\\map.txt";
-//
-//		ZeroMemory( &ofn, sizeof(ofn) );
-//		ofn.lStructSize = sizeof(OPENFILENAME);
-//		ofn.hwndOwner = app.getWindowHandle();
-//		ofn.hInstance = NULL;
-//		ofn.lpstrFilter = "Map Files\0map.txt\0\0";
-//		ofn.lpstrCustomFilter = NULL;
-//		ofn.nMaxCustFilter = NULL;
-//		ofn.nFilterIndex = 1;
-//		ofn.lpstrFile = buf;
-//		ofn.nMaxFile = 256;
-//		ofn.lpstrFileTitle = NULL;
-//		ofn.nMaxFileTitle = NULL;
-//		ofn.lpstrInitialDir = NULL;
-//		ofn.lpstrTitle = NULL;
-//		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
-//		ofn.nFileOffset = 11;
-//		ofn.nFileExtension = 14;
-//		ofn.lpstrDefExt = "txt";
-//
-//
-//
-//		GetOpenFileName( &ofn );
-//
-//		editorpath = buf;
-//		i = (int)editorpath.find("levels\\");
-//		j = (int)editorpath.find("map.txt");
-//
-//		if ( i == -1 || j == -1) {
-//			editorpath = "";
-//			MessageBox( app.getWindowHandle(), "Maps must be named \"map.txt\" and stored in the \"\\levels\" directory", "Error opening map", MB_OK);
-//			return;
-//		}
-//		else {
-//			editorpath.erase(0, i);
-//			i = (int)editorpath.find("map.txt");
-//			editorpath.erase(i);
-//		}
 
 		//load settings
 
@@ -306,10 +262,6 @@ void Game::initEditor() {
 
 		//if loading is successful, set editorpath
 
-//		if ( !ok ) {
-//			MessageBox( app.getWindowHandle(), "Loading failed", "Loading failed", MB_OK);
-//			editorpath = "";
-//		}
 	}
 
 }
@@ -1605,7 +1557,6 @@ bool Game::loadFont() {
 Game::Game()
 :	state(STATE_STOPPED),
 	font(NULL),
-//	sprite(NULL),
 	counter(0),
 	map(NULL),
 	objmap(NULL),

@@ -57,7 +57,7 @@ void Pacman::nextIntersection(int &ix, int &iy) {
 }
 
 void Pacman::Update(int time) {
-	bool dirclear=0;
+	bool dirclear=false;
 	int oldx, oldy;
 
 	//screen wrappers
@@ -97,7 +97,7 @@ void Pacman::Update(int time) {
 		//if nextdir!=dir
 		if ( dx != nextdx || dy != nextdy ) {
 			//if nextdir is clear, apply dirchange
-			if ( dirclear = ! collision(x+nextdx, y+nextdy) ) {
+			if ( (dirclear = (! collision(x+nextdx, y+nextdy))) ) {
 				dx=nextdx;
 				dy=nextdy;
 			}

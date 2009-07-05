@@ -35,8 +35,7 @@ bool Settings::LoadSettings(std::string filename) {
 	std::string		buffer,
 					tmpstr;
 	char			c=';' ;
-	int				pos,
-					tmp;
+	int				pos;
 
 	if (!file) {
 		logtxt.print( "Could not open settings file" );
@@ -60,20 +59,6 @@ bool Settings::LoadSettings(std::string filename) {
 		if (! file.eof() ) {
  			if (buffer == "WIDTH") file >> width;
 			else if (buffer == "HEIGHT") file >> height;
-//			else if (buffer == "BBUFFERFORMAT") {
-//				file >> tmp;
-//				d3d_bbufformat = (D3DFORMAT) tmp;
-//			}
-//			else if (buffer == "DSTENCILFORMAT") {
-//				file >> tmp;
-//				d3d_dstencilformat = (D3DFORMAT) tmp;
-//			}
-//			else if (buffer == "MULTISAMPLING") {
-//				file >> tmp;
-//				d3d_multisampling = (D3DMULTISAMPLE_TYPE) tmp;
-//			}
-//			else if (buffer == "ANISOTROPY") file >> d3d_anisotropy;
-//			else if (buffer == "VERTEXPROCESSING") file >> d3d_vertexprocessing;
 			else if (buffer == "FIELDWIDTH") file >> fieldwidth;
 			else if (buffer == "FIELDHEIGHT") file >> fieldheight;
 			else if (buffer == "TILESIZE") file >> tilesize;
@@ -110,10 +95,6 @@ bool Settings::LoadSettings(std::string filename) {
 Settings::Settings() {
 	width = 640;
 	height = 480;
-//	d3d_anisotropy = 1;
-//	d3d_bbufformat = D3DFMT_R5G6B5;
-//	d3d_dstencilformat = D3DFMT_D24S8;
-//	d3d_multisampling = D3DMULTISAMPLE_NONE;
 
 	lvlpathcount = 0;
 	lvlpathcurrent = 0;
