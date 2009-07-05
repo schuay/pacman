@@ -2,3 +2,4 @@ obj/*
 bin/*
 log.txt
 *.o
+pacman_v4.*
