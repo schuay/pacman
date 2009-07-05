@@ -736,9 +736,10 @@ void Ghost::Update( int time) {
 	oldx=xpix;
 	oldy=ypix;
 
-	//if at tile beginning
-
-	if ( xpix % tilesize == 0 && ypix % tilesize == 0) {
+	// if at tile beginning
+    // and we haven't processed this location yet
+	if ( xpix % tilesize == 0 && ypix % tilesize == 0 &&
+         !(xpix == xpix_at_last_dirchange && ypix == ypix_at_last_dirchange) ) {
 
 		//init dirClear array
 		//to the right
@@ -800,6 +801,10 @@ void Ghost::Update( int time) {
 		if (cont == 1 && state == 0) pathCalcNormal();
 		else if (cont == 1 && ( state == 1 || state == 2) ) pathCalcVuln();
 		else if (cont == 1 && state == 3 ) pathCalcDead();
+
+		//store location
+		xpix_at_last_dirchange = xpix;
+		ypix_at_last_dirchange = ypix;
 	}
 
 	//MOVEMENT PART STARTS HERE
@@ -957,7 +962,9 @@ Ghost::Ghost(SDL_Surface *buf, int os, int ix, int iy, int ispdmod, int itilesiz
 	dirToTar(-1),
 	state(0),
 	gateopen(1),
-	baddie_iq(0)
+	baddie_iq(0),
+	xpix_at_last_dirchange(1),
+	ypix_at_last_dirchange(1)
 {
 	int i,j;
 

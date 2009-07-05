@@ -47,6 +47,9 @@ private:
 			xpix,	//current position in pixels
 			ypix,
 
+			xpix_at_last_dirchange, //location where the last direction change has taken place
+			ypix_at_last_dirchange,
+
 			spdmod,	// speed modifier	- default 100?
 
 			tilesize,
