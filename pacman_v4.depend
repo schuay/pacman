@@ -281,7 +281,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1246796665 source:/home/jakob/pacman/App.cpp
+1246799438 source:/home/jakob/pacman/App.cpp
 	"App.h"
 
 1246799438 /home/jakob/pacman/App.h
@@ -324,11 +324,11 @@
 	"Ghost.h"
 	"hScore.h"
 
-1246789364 /home/jakob/pacman/BckgrObj.h
+1246804389 /home/jakob/pacman/BckgrObj.h
 	"Main.h"
 	"Object.h"
 
-1246789364 /home/jakob/pacman/Object.h
+1246806352 /home/jakob/pacman/Object.h
 	"Main.h"
 
 1246789364 /home/jakob/pacman/Pacman.h
@@ -350,7 +350,7 @@
 1246789364 source:/home/jakob/pacman/BHeap.cpp
 	"BHeap.h"
 
-1246789364 source:/home/jakob/pacman/BckgrObj.cpp
+1246804272 source:/home/jakob/pacman/BckgrObj.cpp
 	"BckgrObj.h"
 
 1246789364 source:/home/jakob/pacman/Error.cpp
@@ -392,6 +392,6 @@
 1246798274 /home/jakob/pacman/Sounds.h
 	"Main.h"
 
-1246796487 source:/home/jakob/pacman/Sounds.cpp
+1246799339 source:/home/jakob/pacman/Sounds.cpp
 	"Sounds.h"
 

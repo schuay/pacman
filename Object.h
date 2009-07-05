@@ -25,12 +25,20 @@ public:
 	virtual bool LoadTextures(std::string path)=0;
 
 	virtual SDL_Surface* Rotate( SDL_Surface *src, double angle, double zoomx=1, double zoomy=1 ) {
-        return rotozoomSurfaceXY(src,angle,zoomx,zoomy,SMOOTHING_OFF);
+	    SDL_PixelFormat *fmt;
+
+	    SDL_Surface *tmpSurface = rotozoomSurfaceXY(src,angle,zoomx,zoomy,SMOOTHING_OFF);
+
+	    fmt=tmpSurface->format;
+	    SDL_SetColorKey(tmpSurface,SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(fmt,255,0,255));
+
+        //rotozoom breaks color keys so we need to recreate the surface with the correct format
+	    SDL_Surface *tmpFixedSurface = SDL_DisplayFormatAlpha(tmpSurface);
+        SDL_FreeSurface(tmpSurface);
+
+	    return tmpFixedSurface;
 	}
 protected:
-	//ID3DXSprite *sprite;
-	//LPDIRECT3DDEVICE9	dev;
-	//D3DXMATRIX rot, trans, trans2, scale, id;
 	SDL_Surface *buf;
 	const int offset;
 	bool paused;

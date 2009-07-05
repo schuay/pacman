@@ -16,10 +16,6 @@ void Pacman::Draw(int ix, int iy, int obj, int type) {
     pos.h=PACSIZE;
     pos.w=PACSIZE;
 
-//    sprite->Draw(pacEl[ 3], NULL, NULL,
-//			 & D3DXVECTOR3((float)ix, (float)iy, 0) ,
-//			 D3DCOLOR_RGBA(255, 255, 255, alpha));
-
     SDL_SetAlpha(pacEl[3],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
     SDL_BlitSurface(pacEl[3],NULL,buf,&pos);
 }
@@ -59,19 +55,7 @@ void Pacman::nextIntersection(int &ix, int &iy) {
 	ix=xtmp;
 	iy=ytmp;
 }
-//void Pacman::Rotate( int degree, int x, int y) {
-////	D3DXMatrixTranslation( &trans, (float)(-1)*x-offset, (float)(-1)*y-offset, 0);
-////	D3DXMatrixRotationZ( &rot, degree*D3DX_PI / 180.0f);
-////	D3DXMatrixTranslation( &trans2, (float)x+offset, (float)y+offset, 0);
-////	if ( degree == 180 ) {
-////		D3DXMatrixScaling( &scale, 1.0f, -1.0f, 1.0f);
-////		sprite->SetTransform( &( trans*scale*rot*(-trans2) ));
-////	}
-////	else sprite->SetTransform( &(trans*rot*(-trans2) ));
-//
-//	//SDL rotation must be handled here
-//
-//}
+
 void Pacman::Update(int time) {
 	bool dirclear=0;
 	int oldx, oldy;
