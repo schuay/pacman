@@ -30,11 +30,6 @@ void Sounds::stop(int i) {
 void Sounds::play(int i, bool looped, int freq, int volume) {
 	if ( !isinit ) return;
 	if (!on) return;
-//	if ( snd[i]->IsSoundPlaying() ) {
-//		snd[i]->Stop();
-//		snd[i]->Reset();
-//	}
-//	snd[i]->Play(0, (DWORD)looped, volume, freq);
 
 	if (Mix_Playing(i))
 	    Mix_HaltChannel(i);
