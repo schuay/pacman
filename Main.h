@@ -23,6 +23,8 @@
 #include <SDL.h>
 #include <SDL_rotozoom.h>
 #include <SDL_ttf.h>
+#include <SDL_audio.h>
+#include <SDL_mixer.h>
 
 #include <string>
 #include <fstream>

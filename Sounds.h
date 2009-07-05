@@ -1,7 +1,7 @@
 #pragma once
 
-#include "SDKsound.h"
-
+#include "Main.h"
+//#include "SDKsound.h"
 
 #define NUMOFSOUNDS 13
 
@@ -18,9 +18,8 @@ public:
 	void toggleSounds();
 	bool on;
 private:
-	CSoundManager mngr;
-	CSound	*snd[NUMOFSOUNDS];
+//	CSoundManager mngr;
+    Mix_Chunk *snd[NUMOFSOUNDS];
+    std::string sndPaths[NUMOFSOUNDS];
 	bool isinit;
 };
-
-#include "Main.h"

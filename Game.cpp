@@ -409,21 +409,18 @@ void Game::emptyMsgPump() {
         }
     }
 }
-/*
 void Game::toggleSound() {
 
-	if ( sounds.on) {
-		CheckMenuItem( app.getMenuHandle(), ID_CONFIGURATION_SOUND, MF_UNCHECKED);
-		sounds.toggleSounds();
+	if ( sounds->on) {
+		sounds->toggleSounds();
 	}
 	else {
-		CheckMenuItem( app.getMenuHandle(), ID_CONFIGURATION_SOUND, MF_CHECKED);
-		sounds.toggleSounds();
+		sounds->toggleSounds();
 
-		if (gamestarted && !ispaused ) sounds.play(10, 1);
-		if (gamestarted && vulnflag && !ispaused ) sounds.play(7, 1);
+		if (gamestarted && !ispaused ) sounds->play(10, 1);
+		if (gamestarted && vulnflag && !ispaused ) sounds->play(7, 1);
 	}
-}*/
+}
 void Game::clearHscore() {
 	hscore.clear();
 }
@@ -531,8 +528,8 @@ void Game::setState(int st) {
 	if ( st == STATE_GAME ) {
 
 
-//		sounds.stop();
-//		sounds.play(10,1);
+		sounds->stop();
+		sounds->play(10,1);
 
 		for (i=0;i<NUMOFOBJECTS;i++) if (objects[i]) objects[i]->setAlpha(255);
 		for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) objects[i]->setPaused( false);
@@ -542,7 +539,7 @@ void Game::setState(int st) {
 	}
 	else if ( st == STATE_ENTER_HSCORE ) {
 
-//		sounds.stop();
+		sounds->stop();
 
 		for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) objects[i]->setPaused( true);
 		for (i=0;i<NUMOFOBJECTS;i++) if (objects[i]) objects[i]->setAlpha(150);
@@ -558,8 +555,8 @@ void Game::setState(int st) {
 	else if ( st == STATE_VIEW_HSCORE ) {
 
 
-//		sounds.stop();
-//		sounds.play( 11, 0);
+		sounds->stop();
+		sounds->play( 11, 0);
 
 		for (i=0;i<NUMOFOBJECTS;i++) if (objects[i]) objects[i]->setAlpha(150);
 		for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) objects[i]->setPaused( true);
@@ -572,14 +569,14 @@ void Game::setState(int st) {
 //		ModifyMenu( app.getMenuHandle(), ID_GAME_NEWGAME, MF_BYCOMMAND | MF_ENABLED, ID_GAME_NEWGAME, "New Game");
 	}
 	else if ( st == STATE_STOPPED && state != STATE_STOPPED) {
-//		sounds.stop();
-//		sounds.play(0, 1);
+		sounds->stop();
+		sounds->play(0, 1);
         for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) objects[i]->setPaused( true);
 		for (i=0;i<NUMOFOBJECTS;i++) if (objects[i]) objects[i]->setAlpha(255);
 	}
 	else if ( st == STATE_EDITOR ) {
 
-//		sounds.stop();
+		sounds->stop();
 
 		for (i=0;i<NUMOFOBJECTS;i++) if (objects[i]) objects[i]->setAlpha(255);
 
@@ -704,14 +701,14 @@ void Game::logicGame() {
 			vulnflag= false;
 			deadghostcount= 0;
 
-//			sounds.stop(7);
+			sounds->stop(7);
 		}
 
 		// if less than 2 secs left in vuln mode, set warning mode
 
 		else if ( vulnflag && time > ghosttick -2000) for (i=0;i<4;i++) {
 			((Ghost*)objects[i+2])->setState(2);
-//			sounds.modify( 7, 44100 + (2000 - (ghosttick-time))*10 );
+//			sounds->modify( 7, 44100 + (2000 - (ghosttick-time))*10 );
 		}
 
 		// fruit stuff
@@ -746,8 +743,8 @@ void Game::logicGame() {
 
 					lives--;
 
-//					sounds.stop();
-//					sounds.play(8, 0);
+					sounds->stop();
+					sounds->play(8, 0);
 
                     SDL_Delay(1000);
 
@@ -765,7 +762,7 @@ void Game::logicGame() {
 				else if  ( ((Ghost*)objects[i+2])->getState() != 3 ) {
 					((Ghost*)objects[i+2])->setState(3);
 
-//					sounds.play(4,0);
+					sounds->play(4,0);
 					deadghostcount++;
 
 					floatingscore = 200;
@@ -786,15 +783,15 @@ void Game::logicGame() {
 			objmap[pacY * settings.fieldwidth + pacX ] = 0;
 			score += SMALL_DOTS_SCORE;
 
-//			sounds.play( 1 + soundcounter%2, 0, 44100, -500);
+			sounds->play( 1 + soundcounter%2, 0, 44100, -500);
 			soundcounter++;
 		}
 		else if ( objmap[pacY * settings.fieldwidth + pacX ] == 2 ) {
 			objmap[pacY * settings.fieldwidth + pacX ] = 0;
 			score += LARGE_DOTS_SCORE;
 
-//			sounds.play(3, 0);
-//			sounds.play(7, 1, 44100);
+			sounds->play(3, 0);
+			sounds->play(7, 1, 44100);
 
 			//set ghosts to vulnerable mode
 
@@ -810,7 +807,7 @@ void Game::logicGame() {
 			objmap[pacY * settings.fieldwidth + pacX ] = 0;
 			score += objscore;
 
-//			sounds.play(5, 0);
+			sounds->play(5, 0);
 
 			floatingscorebox.x = pacXpix;
 			floatingscorebox.w = 100;
@@ -833,7 +830,7 @@ void Game::logicGame() {
 				(score >=1000000 && oldscore < 1000000) ) {
 			lives++;
 
-//			sounds.play(6, 0);
+			sounds->play(6, 0);
 		}
 
 		if ( !specialhasbeenspawned && ((BckgrObj*)objects[0])->getObjCount() == specialspawntime) {
@@ -848,7 +845,7 @@ void Game::logicGame() {
 			render();
 			nextLvl();
 		}
-//		else ( sounds.modify( 10, 44100 - ((BckgrObj*)objects[0])->getObjCount() * 75) );
+//		else ( sounds->modify( 10, 44100 - ((BckgrObj*)objects[0])->getObjCount() * 75) );
 	}
 
 }
@@ -1033,7 +1030,7 @@ void Game::renderNormal() {
 void Game::boost() {
 	if ( boostavailable ) {
 
-//		sounds.play( 12, 0 );
+		sounds->play( 12, 0 );
 
 		boosttick = SDL_GetTicks() + BOOSTTIME;
 		isboosted = true;
@@ -1048,7 +1045,7 @@ bool Game::pause() {
 
 	if ( !ispaused ) {
 		ispaused = true;
-//		sounds.stop();
+		sounds->stop();
 		for (i=0;i<NUMOFOBJECTS;i++) objects[i]->setPaused( true);
 
 		pausetick = SDL_GetTicks();
@@ -1059,8 +1056,8 @@ bool Game::pause() {
 	}
 	else {
 		ispaused = false;
-//		sounds.play(10, 1);
-//		if (vulnflag) sounds.play(7, 1);
+		sounds->play(10, 1);
+		if (vulnflag) sounds->play(7, 1);
 		for (i=0;i<NUMOFOBJECTS;i++) objects[i]->setPaused( false);
 
 		int delta( SDL_GetTicks() - pausetick );
@@ -1081,8 +1078,8 @@ void Game::nextLvl() {
 	try {
 		level++;
 
-//		sounds.stop();
-//		sounds.play(9);
+		sounds->stop();
+		sounds->play(9);
 
 		objscore*=2;
 		settings.vuln_duration -= settings.vuln_duration/10;
@@ -1147,7 +1144,7 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
 
 	try {
 		isinit=false;
-//		sounds.stop();
+		sounds->stop();
 
         //try to set level/skins path
         settings.setPath(MODE_LEVELS,level);
@@ -1257,11 +1254,11 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
 
 		//loading sounds
 
-//		if ( ! sounds.init()) return;
-//
-//		logtxt.print("Sounds loaded");
-//
-//		sounds.play(9, 0);
+//		if ( ! sounds->init()) return;
+
+		logtxt.print("Sounds loaded");
+
+		sounds->play(9, 0);
 
 		setState( STATE_STOPPED);
 
@@ -1365,11 +1362,11 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
 
 void Game::resetLvl() {	// vars and positions when pacman dies during level
 
-//	sounds.stop();
+	sounds->stop();
 
 	SDL_Delay(1000);
 
-//	sounds.play(9);
+	sounds->play(9);
 
 
 	// setting vars
@@ -1654,22 +1651,13 @@ Game::Game()
 
     for (i=0;i<10;i++)
         num[i]='0'+i;
-//	num[0]="0";
-//	num[1]="1";
-//	num[2]="2";
-//	num[3]="3";
-//	num[4]="4";
-//	num[5]="5";
-//	num[6]="6";
-//	num[7]="7";
-//	num[8]="8";
-//	num[9]="9";
 
 	name = "AAA";
 	namecol[0] = 255;
 	namecol[1] = 150;
 	namecol[2] = 150;
 
+	sounds = new Sounds();
 }
 
 Game::~Game()
@@ -1680,6 +1668,7 @@ Game::~Game()
 
 	if ( font ) TTF_CloseFont(font);
 //	if ( sprite ) sprite->Release();
+    if ( sounds ) delete sounds;
 
 	for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) delete objects[i];
 

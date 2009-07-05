@@ -8,84 +8,80 @@ void Sounds::toggleSounds() {
 	if ( on ) {
 		on = false;
 		stop();
-
-		
 	}
 	else {
 		on = true;
-		CheckMenuItem( app.getMenuHandle(), ID_CONFIGURATION_SOUND, MF_CHECKED);
 	}
 }
 void Sounds::stop() {
 	int i;
-
-	if ( !isinit ) return;
-	for (i=0;i<NUMOFSOUNDS;i++) {
-		if ( snd[i]->IsSoundPlaying() ) {
-			snd[i]->Stop();
-			snd[i]->Reset();
-		}
-	}
+	for (i=0;i<NUMOFSOUNDS;i++)
+		stop(i);
 }
 
 void Sounds::stop(int i) {
 	if ( !isinit ) return;
-	if ( snd[i]->IsSoundPlaying() ) {
-		snd[i]->Stop();
-		snd[i]->Reset();
-	}
+	if (Mix_Playing(i))
+	    Mix_HaltChannel(i);
 }
-void Sounds::modify( int sound, long freq, long volume, long pan) {
-	snd[sound]->Modify(freq, volume, pan);
-}
+//void Sounds::modify( int sound, long freq, long volume, long pan) {
+//	snd[sound]->Modify(freq, volume, pan);
+//}
 void Sounds::play(int i, bool looped, int freq, int volume) {
 	if ( !isinit ) return;
 	if (!on) return;
-	if ( snd[i]->IsSoundPlaying() ) {
-		snd[i]->Stop();
-		snd[i]->Reset();
-	}
-	snd[i]->Play(0, (DWORD)looped, volume, freq);
+//	if ( snd[i]->IsSoundPlaying() ) {
+//		snd[i]->Stop();
+//		snd[i]->Reset();
+//	}
+//	snd[i]->Play(0, (DWORD)looped, volume, freq);
+
+	if (Mix_Playing(i))
+	    Mix_HaltChannel(i);
+
+    int loop = 0;
+    if ( looped )
+        loop = -1;
+
+    Mix_Volume(i,volume);
+    Mix_PlayChannel(i,snd[i],looped);
 }
 bool Sounds::init() {
-	
-	if ( isinit) return true;
-	isinit = true;
+
+	if ( isinit)
+        return true;
 
 	try {
-		if ( mngr.Initialize( app.getWindowHandle(), DSSCL_PRIORITY) < 0 )
-			throw Error("Error initializing SoundManager");
-		if ( mngr.SetPrimaryBufferFormat( 2, 44100, 16) < 0 ) 
-			throw Error("Error setting primary buffer format");
-		logtxt.print("SoundManager initialized successfully");
+        //initialize SDL mixer
+	    int audio_rate = 44100;
+	    Uint16 audio_format = AUDIO_S16SYS;
+	    int audio_channels = 2;
+	    int audio_buffers = 512;
 
-		if ( mngr.Create( &snd[0], "sound\\intro.wav") < 0 || //
-			mngr.Create( &snd[1], "sound\\munch_a.wav", (DWORD)DSBCAPS_CTRLVOLUME) < 0 ||
-			mngr.Create( &snd[2], "sound\\munch_b.wav", (DWORD)DSBCAPS_CTRLVOLUME) < 0 ||
-			mngr.Create( &snd[3], "sound\\large_pellet.wav") < 0 ||
-			mngr.Create( &snd[4], "sound\\ghost_eat.wav") < 0 ||
-			mngr.Create( &snd[5], "sound\\fruit.wav") < 0 ||
-			mngr.Create( &snd[6], "sound\\extra_man.wav") < 0 ||
-			mngr.Create( &snd[7], "sound\\vuln.wav", (DWORD)DSBCAPS_CTRLFREQUENCY) < 0 ||
-			mngr.Create( &snd[8], "sound\\death.wav") < 0 || 
-			mngr.Create( &snd[9], "sound\\newgame.wav") < 0 ||
-			mngr.Create( &snd[10], "sound\\siren.wav", (DWORD)DSBCAPS_CTRLFREQUENCY) < 0 || //
-			mngr.Create( &snd[11], "sound\\intermission.wav") < 0 ||
-			mngr.Create( &snd[12], "sound\\booster.wav") < 0 )
-			throw Error("Error loading sounds");
+	    if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0) {
+            throw Error("Error while initializing SDL");
+	    }
+
+	    Mix_AllocateChannels(NUMOFSOUNDS);
+
+        //load wav files
+	    int i;
+	    for (i=0;i<NUMOFSOUNDS;i++) {
+	        snd[i] = Mix_LoadWAV(sndPaths[i].c_str());
+	        if ( snd[i] == NULL )
+                throw Error(Mix_GetError());
+	    }
+
+        isinit = true;
 		logtxt.print("Sounds loaded successfully");
 	}
 	catch ( Error& err ) {
-		MessageBox(NULL, (err.getDesc() ).c_str(), "Sounds::init()", MB_OK | MB_ICONERROR);
-		app.setQuit(true);
+		std::cerr << (err.getDesc() );
 		logtxt.print( err.getDesc() );
-		return false;
 	}
 	catch ( ... ) {
-		MessageBox(NULL, "Unexpected exception", "Sounds::init", MB_OK | MB_ICONERROR);
-		app.setQuit(true);
-		logtxt.print( "Unexpected error" );
-		return false;
+        std::cerr << "Unexpected exception";
+		logtxt.print( "Unexpected exception in App::App()" );
 	}
 	return true;
 }
@@ -95,13 +91,34 @@ Sounds::Sounds() :
 		isinit(false)
 {
 	int i;
+	for (i=0;i<NUMOFSOUNDS;i++)
+        snd[i]=NULL;
 
-	for (i=0;i<NUMOFSOUNDS;i++) snd[i]=NULL;
+    //set sound paths
+    sndPaths[0] = "sound/intro.wav";
+    sndPaths[1] = "sound/munch_a.wav";
+    sndPaths[2] = "sound/munch_b.wav";
+    sndPaths[3] = "sound/large_pellet.wav";
+    sndPaths[4] = "sound/ghost_eat.wav";
+    sndPaths[5] = "sound/fruit.wav";
+    sndPaths[6] = "sound/extra_man.wav";
+    sndPaths[7] = "sound/vuln.wav";
+    sndPaths[8] = "sound/death.wav";
+    sndPaths[9] = "sound/newgame.wav";
+    sndPaths[10] = "sound/siren.wav";
+    sndPaths[11] = "sound/intermission.wav";
+    sndPaths[12] = "sound/booster.wav";
+
+    init();
 }
 
 Sounds::~Sounds()
 {
 	int i;
+	for (i=0;i<NUMOFSOUNDS;i++) {
+	    if (snd[i]) Mix_FreeChunk(snd[i]);
+	    snd[i]=NULL;
 
-	for (i=0;i<NUMOFSOUNDS;i++) if (snd[i]) delete snd[i];
+    Mix_CloseAudio();
+	}
 }

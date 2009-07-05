@@ -56,12 +56,19 @@
 		<Unit filename="Pacman.h" />
 		<Unit filename="Settings.cpp" />
 		<Unit filename="Settings.h" />
+		<Unit filename="Sounds.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="Sounds.h">
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="cb.bmp" />
 		<Unit filename="hScore.cpp" />
 		<Unit filename="hScore.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

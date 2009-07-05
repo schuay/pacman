@@ -1,5 +1,5 @@
 #pragma once
-//#include "Sounds.h"
+#include "Sounds.h"
 #include "Main.h"
 #include "BckgrObj.h"
 #include "Object.h"
@@ -120,7 +120,7 @@ private:
 	std::string num[10],
 				name;
 	hScore	hscore;
-/*	Sounds	sounds;*/
+	Sounds	*sounds;
 
 	//////////////////////////////////
 	// EDITOR OBJECTS
