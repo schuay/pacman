@@ -44,7 +44,7 @@ void Sounds::play(int i, bool looped, int freq, int volume) {
         loop = -1;
 
     Mix_Volume(i,volume);
-    Mix_PlayChannel(i,snd[i],looped);
+    Mix_PlayChannel(i,snd[i],loop);
 }
 bool Sounds::init() {
 
