@@ -61,6 +61,8 @@ public:
 	void editorSave();
 	void setEditorPath(std::string path) {editorpath=path;}
 
+	void PrepareShutdown();
+
 private:
 	int		state,
 			counter;

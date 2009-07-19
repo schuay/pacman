@@ -100,21 +100,6 @@ App::App()
 App::~App(void)
 {
     try {
-
-        if (screen) {
-            SDL_FreeSurface(screen);
-            screen = NULL;
-        }
-        if (buf) {
-            SDL_FreeSurface(buf);
-            buf = NULL;
-        }
-
-        SDL_Quit();
-
-        if ( TTF_WasInit() )
-            TTF_Quit();
-
         if ( snd ) {
             delete snd;
             snd = NULL;
@@ -130,4 +115,20 @@ App::~App(void)
 		setQuit(true);
 		logtxt.print( "Unexpected exception in App::~App()" );
     }
+}
+void App::PrepareShutdown() {
+	if (screen) {
+            SDL_FreeSurface(screen);
+            screen = NULL;
+    }
+    if (buf) {
+        SDL_FreeSurface(buf);
+        buf = NULL;
+    }
+
+    if ( TTF_WasInit() )
+        TTF_Quit();
+
+    SDL_Quit();
+
 }

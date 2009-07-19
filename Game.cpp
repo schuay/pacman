@@ -1554,6 +1554,12 @@ bool Game::loadFont() {
 	return true;
 }
 
+void Game::PrepareShutdown() {
+	int i;
+
+	if ( font ) TTF_CloseFont(font);
+	for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) delete objects[i];
+}
 Game::Game()
 :	state(STATE_STOPPED),
 	font(NULL),
@@ -1607,15 +1613,6 @@ Game::Game()
 
 Game::~Game()
 {
-	int i;
-
-//	timeEndPeriod(1);
-
-	if ( font ) TTF_CloseFont(font);
-//	if ( sprite ) sprite->Release();
-
-	for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) delete objects[i];
-
 	if ( map ) delete[] map;
 	if ( objmap ) delete[] objmap;
 }
