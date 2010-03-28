@@ -7,24 +7,15 @@
 
 #pragma once
 
-//#define DIRECTINPUT_VERSION 0x0800
-
 //////////////////////////////////////////////////////
 //	INCLUDES
 //////////////////////////////////////////////////////
 
-//#include <windows.h>
-//#include <d3d9.h>
-//#include <d3dx9.h>
-//#include <dinput.h>
-//#include <dsound.h>
-//#include <dxerr.h>
-
-#include <SDL.h>
-#include <SDL_rotozoom.h>
-#include <SDL_ttf.h>
-#include <SDL_audio.h>
-#include <SDL_mixer.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_rotozoom.h>
+#include <SDL/SDL_ttf.h>
+#include <SDL/SDL_audio.h>
+#include <SDL/SDL_mixer.h>
 
 #include <string>
 #include <fstream>
@@ -35,7 +26,6 @@
 
 #include "Settings.h"
 #include "Error.h"
-//#include "resource.h"
 #include "App.h"
 #include "Log.h"
 #include "Game.h"
@@ -83,11 +73,3 @@
 #define BOOSTTIME 3000
 
 #define MAXENTRIES 8
-
-//////////////////////////////////////////////////////
-//	DECLARATIONS
-//////////////////////////////////////////////////////
-
-//LRESULT CALLBACK WindowProc(HWND hWindow, UINT uMessage, WPARAM wParam, LPARAM lParam);
-//class Object;
-

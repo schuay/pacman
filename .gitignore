@@ -2,4 +2,8 @@ obj/*
 bin/*
 log.txt
 *.o
-pacman_v4.*
+pacman_v4
+pacman
+*.pro
+*.pro.user
+Makefile
