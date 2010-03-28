@@ -17,33 +17,54 @@ build() {
 
   #git checkout
   cd $srcdir
-  git clone git://github.com/schuay/pacman.git
+  git clone git://github.com/schuay/pacman.git || return 1
   cd $srcdir/pacman/src
+
 
   #build
   make || return 1
 
+
   #install
-  install -D -m666 pacman_sdl.desktop $pkgdir/usr/share/applications/pacman_sdl.desktop
-  install -D -m666 ../icon.png "$pkgdir/opt/pacman_v4/icon.png"
-  install -D -m777 pacman_v4 "$pkgdir/opt/pacman_v4/pacman_v4"
-  install -D -m644 ../arial.ttf "$pkgdir/opt/pacman_v4/"
-  install -D -m666 ../log.txt "$pkgdir/opt/pacman_v4/"
-  install -D -m666 ../pacman.cfg "$pkgdir/opt/pacman_v4/"
-  install -D -m666 ../pacman.conf "$pkgdir/opt/pacman_v4/"
-  install -D -m666 ../settings.conf "$pkgdir/opt/pacman_v4/"
-  cp -rp ../levels "$pkgdir/opt/pacman_v4/"
-  cp -rp ../skins "$pkgdir/opt/pacman_v4/"
-  cp -rp ../sound "$pkgdir/opt/pacman_v4/"
-  touch $pkgdir/opt/pacman_v4/log.txt
-  chmod 666 $pkgdir/opt/pacman_v4/log.txt
+
+  dst="$pkgdir/opt/pacman_v4/"
+
+  mkdir -p $pkgdir/{usr/share/applications/,opt/pacman_v4/}
+
+  #.desktop file
+  install -m666 pacman_sdl.desktop \
+	$pkgdir/usr/share/applications/pacman_sdl.desktop
+
+  #binary
+  install -m777 pacman_v4 \
+	${dst}
+
+  install -m666 		\
+	../icon.png 		\
+	../arial.ttf 		\
+	../pacman.cfg 		\
+	../pacman.conf 		\
+	../settings.conf 	\
+	${dst}
+
+  cp -rp 		\
+	../levels 	\
+	../skins 	\
+	../sound 	\
+	${dst}
+
+  touch ${dst}log.txt
+  chmod 666 ${dst}log.txt
 
   #fix hscore list permissions
-  for FILE in $(find $pkgdir/opt/pacman_v4/ -name hscore) ; do chmod 666 $FILE; done
+  for FILE in $(find ${dst} -name hscore) ; do 
+	chmod 666 $FILE
+  done
 
   #generate start script
   echo '#!/bin/bash' > pacman_start_script
-  echo 'cd /opt/pacman_v4/' >> pacman_start_script
+  echo "cd ${dst}" >> pacman_start_script
   echo './pacman_v4' >> pacman_start_script
+
   install -D -m777 pacman_start_script "$pkgdir/usr/bin/pacman_sdl"
 }
