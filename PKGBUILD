@@ -3,7 +3,7 @@
 pkgname=pacman_sdl
 pkgver=0.1
 pkgdesc="Pacman clone using SDL. Guide Pacman through a maze and collect pac-dots while avoiding ghosts."
-pkgrel=2
+pkgrel=3
 arch=('i686' 'x86_64')
 url="http://github.com/schuay/pacman/"
 license=('GPL')
@@ -63,7 +63,7 @@ build() {
 
   #generate start script
   echo '#!/bin/bash' > pacman_start_script
-  echo "cd ${dst}" >> pacman_start_script
+  echo "cd /opt/pacman_v4/" >> pacman_start_script
   echo './pacman_v4' >> pacman_start_script
 
   install -D -m777 pacman_start_script "$pkgdir/usr/bin/pacman_sdl"
