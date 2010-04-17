@@ -197,7 +197,7 @@ bool BckgrObj::LoadTextures(std::string path) {
 
     try {
         for (i=0;i<NUMOFMAPTEX;i++) {
-            mapEl[i] = SDL_LoadBMP((path + "m" + num[i] + ".bmp").c_str());
+            mapEl[i] = IMG_Load((path + "m" + num[i] + ".png").c_str());
             if ( mapEl[i] == NULL )
                 throw Error(num[i] + "Failed to load map texture");
 
@@ -211,7 +211,7 @@ bool BckgrObj::LoadTextures(std::string path) {
             }
         }
         for (i=1;i<5;i++) {
-            objEl[i] = SDL_LoadBMP((path + "o" + num[i] + ".bmp").c_str());
+            objEl[i] = IMG_Load((path + "o" + num[i] + ".png").c_str());
             if ( objEl[i] == NULL )
                 throw Error(num[i] + "Failed to load object texture");
 

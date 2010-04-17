@@ -218,7 +218,7 @@ bool Pacman::LoadTextures(std::string path) {
 
     try {
         for (i=0;i<NUMPACANIM;i++) {
-            pacEl[i]=SDL_LoadBMP((path + "pac" + num[i] + ".bmp").c_str());
+            pacEl[i]=IMG_Load((path + "pac" + num[i] + ".png").c_str());
 
             if ( !pacEl[i] )
                 throw Error("Failed to load pacman texture: " + num[i]);

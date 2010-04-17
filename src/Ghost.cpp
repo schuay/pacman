@@ -908,16 +908,16 @@ bool Ghost::LoadTextures(std::string path) {
     std::string files[5];
     SDL_PixelFormat *fmt;
 
-    files[0]=path + "baddie" + filename + ".bmp";
-    files[1]=path + "baddie_eyes.bmp";
-    files[2]=path + "baddie" + filename + "vuln.bmp";
-    files[3]=path + "baddie" + filename + "warn.bmp";
-    files[4]=path + "baddie_dead.bmp";
+    files[0]=path + "baddie" + filename + ".png";
+    files[1]=path + "baddie_eyes.png";
+    files[2]=path + "baddie" + filename + "vuln.png";
+    files[3]=path + "baddie" + filename + "warn.png";
+    files[4]=path + "baddie_dead.png";
 
     try {
 
         for (int i = 0; i<5; i++) {
-            ghostEl[i]=SDL_LoadBMP(files[i].c_str());
+            ghostEl[i]=IMG_Load(files[i].c_str());
             if ( !ghostEl[i] )
                 throw Error("Failed to load ghost texture: " + files[i]);
 

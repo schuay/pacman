@@ -3,11 +3,11 @@
 pkgname=pacman_sdl
 pkgver=0.1
 pkgdesc="Pacman clone using SDL. Guide Pacman through a maze and collect pac-dots while avoiding ghosts."
-pkgrel=3
+pkgrel=4
 arch=('i686' 'x86_64')
 url="http://github.com/schuay/pacman/"
 license=('GPL')
-depends=('sdl' 'sdl_ttf' 'sdl_gfx' 'sdl_mixer')
+depends=('sdl' 'sdl_ttf' 'sdl_gfx' 'sdl_mixer' 'sdl_image')
 makedepends=('git')
 
 build() {
