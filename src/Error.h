@@ -4,10 +4,11 @@
 class Error
 {
 public:
-	Error(std::string str);
-	~Error();
+    Error(std::string str);
+    ~Error();
 
-	std::string getDesc() { return desc; }
+    std::string getDesc() { return desc; }
 private:
-	std::string			desc;
+    std::string
+            desc;
 };

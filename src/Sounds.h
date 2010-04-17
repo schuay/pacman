@@ -17,7 +17,12 @@ public:
     void toggleSounds();
     bool on;
 private:
-    Mix_Chunk *snd[NUMOFSOUNDS];
-    std::string sndPaths[NUMOFSOUNDS];
-    bool isinit;
+    Mix_Chunk
+            *snd[NUMOFSOUNDS];
+
+    std::string
+            sndPaths[NUMOFSOUNDS];
+
+    bool
+            isinit;
 };

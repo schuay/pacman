@@ -20,9 +20,9 @@ void App::InitWindow() {
             SDL_FreeSurface(screen);
 
         screen = SDL_SetVideoMode( settings.width,
-            settings.height+EXTRA_Y_SPACE,
-            bpp,         //bits per pixel; todo-make this dynamic
-            SDL_NOFRAME | SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_ANYFORMAT );
+                                   settings.height+EXTRA_Y_SPACE,
+                                   bpp,         //bits per pixel; todo-make this dynamic
+                                   SDL_NOFRAME | SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_ANYFORMAT );
 
         if (screen == NULL)
             throw Error("Error while setting video mode");
@@ -30,14 +30,14 @@ void App::InitWindow() {
         logtxt.print("Video mode set successfully");
     }
     catch ( Error& err ) {
-		std::cerr << (err.getDesc() );
-		setQuit(true);
-		logtxt.print( err.getDesc() );
-	}
+        std::cerr << (err.getDesc() );
+        setQuit(true);
+        logtxt.print( err.getDesc() );
+    }
     catch (...) {
         std::cerr << "Unexpected exception";
-		setQuit(true);
-		logtxt.print( "Unexpected exception in App::App()" );
+        setQuit(true);
+        logtxt.print( "Unexpected exception in App::App()" );
     }
 }
 
@@ -55,15 +55,15 @@ void App::InitApp() {
 
         logtxt.print("SDL_ttf initialized");
     }
-	catch ( Error& err ) {
-		std::cerr << (err.getDesc() );
-		setQuit(true);
-		logtxt.print( err.getDesc() );
-	}
+    catch ( Error& err ) {
+        std::cerr << (err.getDesc() );
+        setQuit(true);
+        logtxt.print( err.getDesc() );
+    }
     catch (...) {
         std::cerr << "Unexpected exception";
-		setQuit(true);
-		logtxt.print( "Unexpected exception in App::App()" );
+        setQuit(true);
+        logtxt.print( "Unexpected exception in App::App()" );
     }
 }
 
@@ -76,23 +76,23 @@ void App::InitSound() {
 
         logtxt.print("Sound initialized");
     }
-	catch ( Error& err ) {
-		std::cerr << (err.getDesc() );
-		setQuit(true);
-		logtxt.print( err.getDesc() );
-	}
+    catch ( Error& err ) {
+        std::cerr << (err.getDesc() );
+        setQuit(true);
+        logtxt.print( err.getDesc() );
+    }
     catch (...) {
         std::cerr << "Unexpected exception";
-		setQuit(true);
-		logtxt.print( "Unexpected exception in App::InitSound()" );
+        setQuit(true);
+        logtxt.print( "Unexpected exception in App::InitSound()" );
     }
 }
 
 App::App()
-	:	quit(false),
-        screen(NULL),
-        buf(NULL),
-        snd(NULL)
+:   quit(false),
+    screen(NULL),
+    buf(NULL),
+    snd(NULL)
 
 {
 }
@@ -106,20 +106,20 @@ App::~App(void)
         }
     }
     catch ( Error& err ) {
-		std::cerr << (err.getDesc() );
-		setQuit(true);
-		logtxt.print( err.getDesc() );
-	}
+        std::cerr << (err.getDesc() );
+        setQuit(true);
+        logtxt.print( err.getDesc() );
+    }
     catch (...) {
         std::cerr << "Unexpected exception";
-		setQuit(true);
-		logtxt.print( "Unexpected exception in App::~App()" );
+        setQuit(true);
+        logtxt.print( "Unexpected exception in App::~App()" );
     }
 }
 void App::PrepareShutdown() {
-	if (screen) {
-            SDL_FreeSurface(screen);
-            screen = NULL;
+    if (screen) {
+        SDL_FreeSurface(screen);
+        screen = NULL;
     }
     if (buf) {
         SDL_FreeSurface(buf);

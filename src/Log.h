@@ -4,12 +4,13 @@
 class Log
 {
 public:
-	Log();
-	~Log();
+    Log();
+    ~Log();
 
-	bool setFilename(std::string fn);
+    bool setFilename(std::string fn);
 
-	bool print(std::string txt);
+    bool print(std::string txt);
 private:
-	std::string		filename;
+    std::string
+            filename;
 };

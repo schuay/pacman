@@ -8,32 +8,36 @@ class BckgrObj :
 	public Object
 {
 public:
-	BckgrObj(SDL_Surface *buffer, int os);
-	~BckgrObj();
+    BckgrObj(SDL_Surface *buffer, int os);
+    ~BckgrObj();
 
-	void Draw();
-	void Draw(int ix, int iy, int obj=3, int type=1);
-	void Draw(int ix, int iy, int obj, int type, int alp);
+    void Draw();
+    void Draw(int ix, int iy, int obj=3, int type=1);
+    void Draw(int ix, int iy, int obj, int type, int alp);
 
-        virtual void reset( int ix, int iy) { ix = iy; };   /* avoid compiler warnings */
-        virtual void Update(int time) { time = 0; };        /* avoid compiler warnings */
+    virtual void reset( int ix, int iy) { ix = iy; };   /* avoid compiler warnings */
+    virtual void Update(int time) { time = 0; };        /* avoid compiler warnings */
 
-	bool LoadTextures(std::string path);
+    bool LoadTextures(std::string path);
 
-	void setSpecialSpawned(bool b) {specialspawned = b;	}
-	void setSpecialEaten(bool b) {specialeaten = b;	}
+    void setSpecialSpawned(bool b) {specialspawned = b;	}
+    void setSpecialEaten(bool b) {specialeaten = b;	}
 
-	int getObjCount() {	return objcounter;	}
+    int getObjCount() {	return objcounter;	}
 
-	void setFruitAlpha(int a);
+    void setFruitAlpha(int a);
 
 private:
-	SDL_Surface		*mapEl[NUMOFMAPTEX],
-                    *objEl[NUMOFMAPTEX],
-                    *mapElRot[NUMOFMAPTEX][3];
+    SDL_Surface
+            *mapEl[NUMOFMAPTEX],
+            *objEl[NUMOFMAPTEX],
+            *mapElRot[NUMOFMAPTEX][3];
 
-	int objcounter,
-		fruitalpha;
-	bool	specialspawned,
-			specialeaten;
+    int
+            objcounter,
+            fruitalpha;
+
+    bool
+            specialspawned,
+            specialeaten;
 };

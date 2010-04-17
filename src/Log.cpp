@@ -4,58 +4,58 @@ extern App app;
 
 bool Log::print(std::string txt) {
 
-	try {
-		std::ofstream file(filename.c_str(), std::ios::app);
+    try {
+        std::ofstream file(filename.c_str(), std::ios::app);
 
-		if ( !file)
-			throw Error("Unable to open logfile");
+        if ( !file)
+            throw Error("Unable to open logfile");
 
-		file << txt << std::endl;
+        file << txt << std::endl;
 
-		file.close();
-	}
+        file.close();
+    }
 
-	catch ( Error& err ) {
-		std::cerr << err.getDesc();
-		app.setQuit(true);
-		return false;
-	}
-	catch ( ... ) {
-		std::cerr << "Unexpected exception";
-		app.setQuit(true);
-		return false;
-	}
+    catch ( Error& err ) {
+        std::cerr << err.getDesc();
+        app.setQuit(true);
+        return false;
+    }
+    catch ( ... ) {
+        std::cerr << "Unexpected exception";
+        app.setQuit(true);
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 bool Log::setFilename(std::string fn) {
 
-	filename = fn;
+    filename = fn;
 
-	try {
-		std::ofstream file(filename.c_str());
+    try {
+        std::ofstream file(filename.c_str());
 
-		if ( !file)
-			throw Error("Unable to open logfile");
+        if ( !file)
+            throw Error("Unable to open logfile");
 
-		file << WNDTITLE << std::endl;
+        file << WNDTITLE << std::endl;
 
-		file.close();
+        file.close();
 
-	}
-	catch ( Error& err ) {
-		std::cerr << err.getDesc();
-		app.setQuit(true);
-		return false;
-	}
-	catch ( ... ) {
-		std::cerr << "Unexpected exception";
-		app.setQuit(true);
-		return false;
-	}
+    }
+    catch ( Error& err ) {
+        std::cerr << err.getDesc();
+        app.setQuit(true);
+        return false;
+    }
+    catch ( ... ) {
+        std::cerr << "Unexpected exception";
+        app.setQuit(true);
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 Log::Log()

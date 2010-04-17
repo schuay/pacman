@@ -10,24 +10,27 @@
 class hScore
 {
 private:
-	std::string			name[MAXENTRIES];
-	unsigned long		score[MAXENTRIES];
-	char				filename[20];
+    std::string
+            name[MAXENTRIES];
+    unsigned long
+            score[MAXENTRIES];
+    char
+            filename[20];
 public:
-	hScore();
-	~hScore();
-	
-	void add(std::string, unsigned int);
-	
-	std::string getName(int);
+    hScore();
+    ~hScore();
 
-	int getScore(int);
+    void add(std::string, unsigned int);
 
-	int save();
-	int load();
-	void clear();
+    std::string getName(int);
 
-	bool onlist(unsigned int) const;
+    int getScore(int);
 
-	void setfilename(std::string fn);
+    int save();
+    int load();
+    void clear();
+
+    bool onlist(unsigned int) const;
+
+    void setfilename(std::string fn);
 };
