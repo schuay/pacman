@@ -7,25 +7,17 @@ pkgrel=1
 arch=('i686' 'x86_64')
 url="http://github.com/schuay/pacman/"
 license=('GPL')
+source=("http://github.com/schuay/pacman/tarball/pacman-$pkgver")
+md5sums=('dfbc98d324bebd62670a6681271e63c6')
 depends=('sdl_ttf' 'sdl_gfx' 'sdl_mixer' 'sdl_image')
-makedepends=('git')
 
 build() {
 
-  #clean source directory
-  rm -rf $srcdir/*
-
-  #git checkout
-  cd $srcdir
-  git clone git://github.com/schuay/pacman.git || return 1
-  cd $srcdir/pacman/
-  git checkout -b installer pacman-$pkgver || return 1
-  cd $srcdir/pacman/src
-
+  # github names downloads after tag commit
+  cd $srcdir/schuay-pacman-860f093/src/
 
   #build
   make || return 1
-
 
   #install
 
