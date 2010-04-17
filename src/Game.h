@@ -15,122 +15,139 @@ class Sounds;
 class Game
 {
 public:
-	Game();
-	~Game();
+    Game();
+    ~Game();
 
-	bool loadFont();
-	bool loadSprites();
-	bool loadMap(std::string file, int* memmap);
+    bool loadFont();
+    bool loadSprites();
+    bool loadMap(std::string file, int* memmap);
 
-	void getMaps( int **m, int **o);
-	void render();
-	void renderNormal();
-	void renderEnterHscore();
-	void renderViewHscore();
+    void getMaps( int **m, int **o);
+    void render();
+    void renderNormal();
+    void renderEnterHscore();
+    void renderViewHscore();
 
-	std::string getFPS();
+    std::string getFPS();
 
-	void processInput(int k, int ix = -1, int iy = -1);
-	void processLogic();
-	void logicGame();
-	void logicEnterHscore();
+    void processInput(int k, int ix = -1, int iy = -1);
+    void processLogic();
+    void logicGame();
+    void logicEnterHscore();
 
-	void resetLvl();
-	void nextLvl();
-	void gameInit(std::string level="", std::string skin="", bool editor=false);
+    void resetLvl();
+    void nextLvl();
+    void gameInit(std::string level="", std::string skin="", bool editor=false);
 
-	bool pause();
-	void boost();
+    bool pause();
+    void boost();
 
-	int  getState() { return state; }
-	void setState( int st);
+    int  getState() { return state; }
+    void setState( int st);
 
-	void toggleFps() { showfps = !showfps; }
+    void toggleFps() { showfps = !showfps; }
 
-	void clearHscore();
+    void clearHscore();
 
- 	bool isinit;
+    bool isinit;
 
-	void toggleSound();
-	void emptyMsgPump();
-	void changeSkin();
+    void toggleSound();
+    void emptyMsgPump();
+    void changeSkin();
 
-	void initEditor();
-	void renderEditor();
-	void logicEditor();
-	void editorSave();
-	void setEditorPath(std::string path) {editorpath=path;}
+    void initEditor();
+    void renderEditor();
+    void logicEditor();
+    void editorSave();
+    void setEditorPath(std::string path) {editorpath=path;}
 
-	void PrepareShutdown();
+    void PrepareShutdown();
 
 private:
-	int		state,
-			counter;
+    int
+            state,
+            counter;
 
-	std::string	fps;
+    std::string
+            fps;
 
-	SDL_Rect	fpsbox,
-                scorebox,
-                floatingscorebox;
+    SDL_Rect
+            fpsbox,
+            scorebox,
+            floatingscorebox;
 
-	unsigned int	ticks;
+    unsigned int
+            ticks;
 
-	TTF_Font	*font;
-/*
-	ID3DXSprite	*sprite; //still need to add onlostdevice and onresetdevice
-*/
-	Object		*objects[NUMOFOBJECTS];
+    TTF_Font
+            *font;
 
-	///////////////////////
-	// GAME OBJECTS
-	//////////////////////
+    Object
+            *objects[NUMOFOBJECTS];
 
-	int		*map,
-			*objmap,
-			key,
-			score,
-			deadghostcount,	//used to multiplay score for eating ghosts
-			lives,
-			objscore,
-			floatingX,
-			floatingY,
-			floatingscore,
-			floatingscorecounter,
-			specialspawntime,
-			level,
-			namecol[3],
-			hscoreselection;
-	unsigned int soundcounter,
+    ///////////////////////
+    // GAME OBJECTS
+    //////////////////////
+
+    int
+            *map,
+            *objmap,
+            key,
+            score,
+            deadghostcount,	//used to multiplay score for eating ghosts
+            lives,
+            objscore,
+            floatingX,
+            floatingY,
+            floatingscore,
+            floatingscorecounter,
+            specialspawntime,
+            level,
+            namecol[3],
+            hscoreselection;
+
+    unsigned int
+            soundcounter,
             time,
-			oldtime,
-			ghosttick,
-			fruittick,
-			pausetick,
-			boosttick;
-	bool	inputwaiting,
-			gamestarted,
-			vulnflag,
-			specialspawned,
-			specialeaten,
-			specialhasbeenspawned,
-			ispaused,
-			isboosted,
-			boostavailable,
-			levelcleared,
-			showfps,
-			renderisbusy;
-	std::string num[10],
-				name;
-	hScore	hscore;
-	Sounds	*sounds;
+            oldtime,
+            ghosttick,
+            fruittick,
+            pausetick,
+            boosttick;
 
-	//////////////////////////////////
-	// EDITOR OBJECTS
-	//////////////////////////////////
+    bool
+            inputwaiting,
+            gamestarted,
+            vulnflag,
+            specialspawned,
+            specialeaten,
+            specialhasbeenspawned,
+            ispaused,
+            isboosted,
+            boostavailable,
+            levelcleared,
+            showfps,
+            renderisbusy;
+    std::string
+            num[10],
+            name;
 
-	int activetool,
-		mouseX,
-		mouseY;
-	std::string editorpath;
+    hScore
+            hscore;
+
+    Sounds
+            *sounds;
+
+    //////////////////////////////////
+    // EDITOR OBJECTS
+    //////////////////////////////////
+
+    int
+            activetool,
+            mouseX,
+            mouseY;
+
+    std::string
+            editorpath;
 
 };

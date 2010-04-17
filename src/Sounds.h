@@ -10,7 +10,7 @@ public:
     Sounds();
     ~Sounds();
     bool init();
-    void play(int i, bool looped=0, int freq=-1, int volume=128);
+    void play(int i, bool looped=0, int volume=128);
 //    void modify( int sound, long freq, long volume=0, long pan=0 );
     void stop(int i);
     void stop();

@@ -18,10 +18,7 @@ public:
 	void setNextDir(int next);
 	bool collision(int xtmp, int ytmp);
 
-	void setSpeedMult( int s);
-
-//  Pacman::Rotate now replaced by Object::Rotate
-//	void Rotate(int degree, int x, int y);
+        void setSpeedMult( int s);
 
 	void Update( int time );
 	void nextIntersection(int &ix, int &iy);
@@ -29,30 +26,37 @@ public:
 
 	int getXpix();
 	int getYpix();
+
 private:
-	int		x,	//current position in tiles (all positions refer to upper left corner)
-			y,
+        int
+                x,	//current position in tiles (all positions refer to upper left corner)
+                y,
 
-			dx,	//current direction in x and y
-			dy,
+                dx,	//current direction in x and y
+                dy,
 
-			nextdx,	//queued direction
-			nextdy,
+                nextdx,	//queued direction
+                nextdy,
 
-			xpix,	//current position in pixels
-			ypix,
+                xpix,	//current position in pixels
+                ypix,
 
-			spdmod,	// speed modifier	- default 100?
-			spdmult,
+                spdmod,	// speed modifier	- default 100?
+                spdmult,
 
-			tilesize,
-			height,
-			width,
+                tilesize,
+                height,
+                width,
 
-			*map;
-	unsigned int animcounter;
+                *map;
+
+        unsigned int
+                animcounter;
+
 	float	xfloat,	//current position as floating point based on pixel pos - allows for infinite speed
-			yfloat;	// variations because xfloat can be reduced to xpix
-	SDL_Surface	*pacEl[NUMPACANIM],
+                yfloat;	// variations because xfloat can be reduced to xpix
+
+        SDL_Surface
+                *pacEl[NUMPACANIM],
                 *pacElRot[NUMPACANIM][3];
 };
