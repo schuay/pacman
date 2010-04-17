@@ -4,35 +4,33 @@ extern App app;
 extern Log logtxt;
 
 void Sounds::toggleSounds() {
-
-	if ( on ) {
-		on = false;
-		stop();
-	}
-	else {
-		on = true;
-	}
+    if ( on ) {
+        on = false;
+        stop();
+    }
+    else
+        on = true;
 }
 void Sounds::stop() {
-	int i;
-	for (i=0;i<NUMOFSOUNDS;i++)
-		stop(i);
+    int i;
+    for (i=0;i<NUMOFSOUNDS;i++)
+        stop(i);
 }
 
 void Sounds::stop(int i) {
-	if ( !isinit ) return;
-	if (Mix_Playing(i))
-	    Mix_HaltChannel(i);
+    if ( !isinit ) return;
+    if (Mix_Playing(i))
+        Mix_HaltChannel(i);
 }
 //void Sounds::modify( int sound, long freq, long volume, long pan) {
 //	snd[sound]->Modify(freq, volume, pan);
 //}
 void Sounds::play(int i, bool looped, int freq, int volume) {
-	if ( !isinit ) return;
-	if (!on) return;
+    if ( !isinit ) return;
+    if (!on) return;
 
-	if (Mix_Playing(i))
-	    Mix_HaltChannel(i);
+    if (Mix_Playing(i))
+        Mix_HaltChannel(i);
 
     int loop = 0;
     if ( looped )
@@ -43,51 +41,49 @@ void Sounds::play(int i, bool looped, int freq, int volume) {
 }
 bool Sounds::init() {
 
-	if ( isinit)
+    if ( isinit)
         return true;
 
-	try {
+    try {
         //initialize SDL mixer
-	    int audio_rate = 44100;
-	    Uint16 audio_format = AUDIO_S16SYS;
-	    int audio_channels = 2;
-	    int audio_buffers = 512;
+        int audio_rate = 44100;
+        Uint16 audio_format = AUDIO_S16SYS;
+        int audio_channels = 2;
+        int audio_buffers = 512;
 
-	    if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0) {
+        if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0)
             throw Error("Error while initializing SDL");
-	    }
 
-	    Mix_AllocateChannels(NUMOFSOUNDS);
+        Mix_AllocateChannels(NUMOFSOUNDS);
 
         //load wav files
-	    int i;
-	    for (i=0;i<NUMOFSOUNDS;i++) {
-	        snd[i] = Mix_LoadWAV(sndPaths[i].c_str());
-	        if ( snd[i] == NULL )
+        int i;
+        for (i=0;i<NUMOFSOUNDS;i++) {
+            snd[i] = Mix_LoadWAV(sndPaths[i].c_str());
+            if ( snd[i] == NULL )
                 throw Error(Mix_GetError());
-	    }
+        }
 
         isinit = true;
-		logtxt.print("Sounds loaded successfully");
-	}
-	catch ( Error& err ) {
-		std::cerr << (err.getDesc() );
-		logtxt.print( err.getDesc() );
-	}
-	catch ( ... ) {
+        logtxt.print("Sounds loaded successfully");
+    }
+    catch ( Error& err ) {
+            std::cerr << (err.getDesc() );
+            logtxt.print( err.getDesc() );
+    }
+    catch ( ... ) {
         std::cerr << "Unexpected exception";
-		logtxt.print( "Unexpected exception in App::App()" );
-	}
-	return true;
+        logtxt.print( "Unexpected exception in App::App()" );
+    }
+    return true;
 }
 
 Sounds::Sounds() :
-	on(true),
-		isinit(false)
+        on(true), isinit(false)
 {
-	int i;
-	for (i=0;i<NUMOFSOUNDS;i++)
-        snd[i]=NULL;
+    int i;
+    for (i=0;i<NUMOFSOUNDS;i++)
+    snd[i]=NULL;
 
     //set sound paths
     sndPaths[0] = "sound/intro.wav";
@@ -107,11 +103,11 @@ Sounds::Sounds() :
 
 Sounds::~Sounds()
 {
-	int i;
-	for (i=0;i<NUMOFSOUNDS;i++) {
-	    if (snd[i]) Mix_FreeChunk(snd[i]);
-	    snd[i]=NULL;
+    int i;
+    for (i=0;i<NUMOFSOUNDS;i++) {
+        if (snd[i]) Mix_FreeChunk(snd[i]);
+        snd[i]=NULL;
+    }
 
     Mix_CloseAudio();
-	}
 }
