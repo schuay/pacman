@@ -1,13 +1,13 @@
 # Maintainer: Jakob Gruber (jakob dot gruber at kabelnet dot at)
  
 pkgname=pacman_sdl
-pkgver=0.1
+pkgver=0.1.0
 pkgdesc="Pacman clone using SDL. Guide Pacman through a maze and collect pac-dots while avoiding ghosts."
-pkgrel=4
+pkgrel=1
 arch=('i686' 'x86_64')
 url="http://github.com/schuay/pacman/"
 license=('GPL')
-depends=('sdl' 'sdl_ttf' 'sdl_gfx' 'sdl_mixer' 'sdl_image')
+depends=('sdl_ttf' 'sdl_gfx' 'sdl_mixer' 'sdl_image')
 makedepends=('git')
 
 build() {
@@ -18,6 +18,8 @@ build() {
   #git checkout
   cd $srcdir
   git clone git://github.com/schuay/pacman.git || return 1
+  cd $srcdir/pacman/
+  git checkout -b installer pacman-$pkgver || return 1
   cd $srcdir/pacman/src
 
 
