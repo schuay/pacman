@@ -34,19 +34,24 @@ public:
     virtual void Draw(int ix, int iy, int obj=3, int type=1)=0;
     virtual bool LoadTextures(std::string path)=0;
 
-    virtual SDL_Surface* Rotate( SDL_Surface *src, double angle, double zoomx=1, double zoomy=1 ) {
+    virtual SDL_Surface* Rotate( SDL_Surface *src, int angle, double zoomx=1, double zoomy=1 ) {
         SDL_PixelFormat *fmt;
 
-        SDL_Surface *tmpSurface = rotozoomSurfaceXY(src,angle,zoomx,zoomy,SMOOTHING_OFF);
+        if (!(angle < 360 && angle >= 0 && angle % 90 == 0))
+            return src;
 
-        fmt=tmpSurface->format;
-        SDL_SetColorKey(tmpSurface,SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(fmt,255,0,255));
+        int turns = (360 - angle) / 90;
 
-        //rotozoom breaks color keys so we need to recreate the surface with the correct format
-        SDL_Surface *tmpFixedSurface = SDL_DisplayFormatAlpha(tmpSurface);
-        SDL_FreeSurface(tmpSurface);
+        SDL_Surface *zoomedSurface = zoomSurface(src, zoomx, zoomy, SMOOTHING_OFF);
 
-        return tmpFixedSurface;
+        /* for some reason, if we don't exit here without rotation we get an invisible surface.. */
+        if (turns % 4 == 0)
+            return zoomedSurface;
+
+        SDL_Surface *rotatedSurface = rotateSurface90Degrees(zoomedSurface, turns);
+        SDL_FreeSurface(zoomedSurface);
+
+        return rotatedSurface;
     }
 protected:
     SDL_Surface *buf;
