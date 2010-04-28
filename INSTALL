@@ -1,0 +1,29 @@
+PACMAN_SDL
+
+
+Installation from AUR (Archlinux)
+-------------------
+
+Package Name: pacman_sdl
+URL: http://aur.archlinux.org/packages.php?ID=28014
+
+
+Manual Installation
+-------------------
+
+CAUTION: manual installation is NOT point and click!
+Check above for archlinux installation packages.
+
+
+pacman_sdl has the following dependencies:
+
+At compile time:
+sdl_gfx, sdl_image, sdl_ttf, sdl_mixer, boost
+
+At run time:
+sdl_gfx, sdl_image, sdl_ttf, sdl_mixer
+
+
+TODO....
+
+Enjoy!
