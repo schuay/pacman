@@ -26,8 +26,8 @@ void Pacman::Draw(int ix, int iy, int obj, int type) {
     pos.h=PACSIZE;
     pos.w=PACSIZE;
 
-    SDL_SetAlpha(pacEl[3],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-    SDL_BlitSurface(pacEl[3],NULL,buf,&pos);
+    SDL_SetAlpha(pacEl[3].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+    SDL_BlitSurface(pacEl[3].get(),NULL,buf.get(),&pos);
 }
 void Pacman::reset(int ix, int iy) {
     animcounter=0;
@@ -180,24 +180,24 @@ void Pacman::Draw() {
     pos.h=PACSIZE;
 
     if (dx == 1 && dy == 0) {	//right
-        SDL_SetAlpha(pacEl[i],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(pacEl[i],NULL,buf,&pos);
+        SDL_SetAlpha(pacEl[i].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+        SDL_BlitSurface(pacEl[i].get(),NULL,buf.get(),&pos);
     }
     else if (dx == -1 && dy == 0) {	//left
-        SDL_SetAlpha(pacElRot[i][1],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(pacElRot[i][1],NULL,buf,&pos);
+        SDL_SetAlpha(pacElRot[i][1].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+        SDL_BlitSurface(pacElRot[i][1].get(),NULL,buf.get(),&pos);
     }
     else if (dx == 0 && dy == -1) {	//up
-        SDL_SetAlpha(pacElRot[i][2],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(pacElRot[i][2],NULL,buf,&pos);
+        SDL_SetAlpha(pacElRot[i][2].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+        SDL_BlitSurface(pacElRot[i][2].get(),NULL,buf.get(),&pos);
     }
     else if (dx == 0 && dy == 1) {	//down
-        SDL_SetAlpha(pacElRot[i][0],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(pacElRot[i][0],NULL,buf,&pos);
+        SDL_SetAlpha(pacElRot[i][0].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+        SDL_BlitSurface(pacElRot[i][0].get(),NULL,buf.get(),&pos);
     }
     else if (dx == 0 && dy == 0) {	//init position
-        SDL_SetAlpha(pacEl[i],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(pacEl[i],NULL,buf,&pos);
+        SDL_SetAlpha(pacEl[i].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+        SDL_BlitSurface(pacEl[i].get(),NULL,buf.get(),&pos);
     }
 
     if ( !paused) {
@@ -218,13 +218,13 @@ bool Pacman::LoadTextures(std::string path) {
 
     try {
         for (i=0;i<NUMPACANIM;i++) {
-            pacEl[i]=IMG_Load((path + "pac" + num[i] + ".png").c_str());
+            pacEl[i].reset(IMG_Load((path + "pac" + num[i] + ".png").c_str()), SDL_FreeSurface);
 
             if ( !pacEl[i] )
                 throw Error("Failed to load pacman texture: " + num[i]);
 
-            fmt=pacEl[i]->format;
-            SDL_SetColorKey(pacEl[i],SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(fmt,255,0,255));
+            fmt = pacEl[i]->format;
+            SDL_SetColorKey(pacEl[i].get(),SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(fmt,255,0,255));
 
             //cache rotated sprites
             for (j=0;j<3;j++) {
@@ -290,7 +290,7 @@ void Pacman::setNextDir(int next) {
         }
     }
 }
-Pacman::Pacman(SDL_Surface *buf, int os, int ix, int iy, int ispdmod,
+Pacman::Pacman(shared_ptr<SDL_Surface> buf, int os, int ix, int iy, int ispdmod,
 			   int itilesize, int iheight, int iwidth, int *imap)
 :   Object( buf, os),
     x(ix),
@@ -307,28 +307,10 @@ Pacman::Pacman(SDL_Surface *buf, int os, int ix, int iy, int ispdmod,
     map(imap),
     animcounter(0)
 {
-    int i,j;
-
-    for (i=0;i<NUMPACANIM;i++) {
-        pacEl[i]=NULL;
-        for (j=0;j<3;j++)
-        pacElRot[i][j]=NULL;
-    }
 
     xpix=x*tilesize;
     ypix=y*tilesize;
 
     xfloat=(float)xpix;
     yfloat=(float)ypix;
-}
-
-Pacman::~Pacman()
-{
-    int i,j;
-
-    for (i=0;i<NUMPACANIM;i++) {
-        if (pacEl[i]) SDL_FreeSurface(pacEl[i]);
-        for (j=0;j<3;j++)
-        if (pacElRot[i][j]) SDL_FreeSurface(pacElRot[i][j]);
-    }
 }

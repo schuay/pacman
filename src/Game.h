@@ -9,6 +9,9 @@
 
 
 #pragma once
+
+#include <boost/shared_ptr.hpp>
+
 #include "Sounds.h"
 #include "Main.h"
 #include "BckgrObj.h"
@@ -16,6 +19,8 @@
 #include "Pacman.h"
 #include "Ghost.h"
 #include "hScore.h"
+
+using boost::shared_ptr;
 
 #define NUMOFOBJECTS 6
 

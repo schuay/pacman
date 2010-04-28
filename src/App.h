@@ -10,6 +10,9 @@
 
 #pragma once
 #include "Main.h"
+#include <boost/shared_ptr.hpp>
+
+using boost::shared_ptr;
 
 class Sounds;
 
@@ -30,8 +33,8 @@ public:
 
     inline bool getQuit() const { return quit; }
     void setQuit( bool q ) { quit = q; }
-    SDL_Surface* getScreen() const { return screen; }
-    SDL_Surface* getBuf() const { return buf; }
+    shared_ptr<SDL_Surface> getScreen() const { return screen; }
+    shared_ptr<SDL_Surface> getBuf() const { return buf; }
     Sounds* getSnd() { return snd; }
 
 private:
@@ -43,9 +46,9 @@ private:
     bool
             quit;       //if true then quit application
 
-    SDL_Surface
-            *screen,    //screen surface
-            *buf;       //buffer surface
+    shared_ptr<SDL_Surface>
+            screen,    //screen surface
+            buf;       //buffer surface
 
     Sounds
             *snd;

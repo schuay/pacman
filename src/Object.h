@@ -9,12 +9,17 @@
 
 
 #pragma once
+
+#include <boost/shared_ptr.hpp>
+
 #include "Main.h"
+
+using boost::shared_ptr;
 
 class Object
 {
 public:
-    Object(SDL_Surface *buffer, int os )
+    Object(shared_ptr<SDL_Surface> buffer, int os )
     :	buf(buffer),
             offset(os),
             paused(true),
@@ -34,7 +39,7 @@ public:
     virtual void Draw(int ix, int iy, int obj=3, int type=1)=0;
     virtual bool LoadTextures(std::string path)=0;
 
-    virtual SDL_Surface* Rotate( SDL_Surface *src, int angle, double zoomx=1, double zoomy=1 ) {
+    virtual shared_ptr<SDL_Surface> Rotate( shared_ptr<SDL_Surface> src, int angle, double zoomx=1, double zoomy=1 ) {
         SDL_PixelFormat *fmt;
 
         if (!(angle < 360 && angle >= 0 && angle % 90 == 0))
@@ -42,19 +47,22 @@ public:
 
         int turns = (360 - angle) / 90;
 
-        SDL_Surface *zoomedSurface = zoomSurface(src, zoomx, zoomy, SMOOTHING_OFF);
+        shared_ptr<SDL_Surface> zoomedSurface(
+                zoomSurface(src.get(), zoomx, zoomy, SMOOTHING_OFF),
+                SDL_FreeSurface);
 
         /* for some reason, if we don't exit here without rotation we get an invisible surface.. */
         if (turns % 4 == 0)
             return zoomedSurface;
 
-        SDL_Surface *rotatedSurface = rotateSurface90Degrees(zoomedSurface, turns);
-        SDL_FreeSurface(zoomedSurface);
+        shared_ptr<SDL_Surface> rotatedSurface(
+                rotateSurface90Degrees(zoomedSurface.get(), turns),
+                SDL_FreeSurface);
 
         return rotatedSurface;
     }
 protected:
-    SDL_Surface *buf;
+    shared_ptr<SDL_Surface> buf;
     const int offset;
     bool paused;
     int alpha;

@@ -10,15 +10,19 @@
 
 #pragma once
 
+#include <boost/shared_ptr.hpp>
+
 #include "Main.h"
 #include "Object.h"
 #include "BHeap.h"
+
+using boost::shared_ptr;
 
 class Ghost :
 	public Object
 {
 public:
-    Ghost(SDL_Surface *buf, int os, int ix, int iy, int ispdmod, int itilesize,
+    Ghost(shared_ptr<SDL_Surface> buf, int os, int ix, int iy, int ispdmod, int itilesize,
             int iheight, int iwidth, int *imap, std::string fn);
     ~Ghost();
 
@@ -88,11 +92,12 @@ private:
             baddie_start_point_x,
             baddie_start_point_y;
 
-    float	xfloat,	//current position as floating point based on pixel pos - allows for infinite speed
+    float
+            xfloat,	//current position as floating point based on pixel pos - allows for infinite speed
             yfloat;	// variations because the xfloat can be reduced to xpix
 
-    SDL_Surface
-            *ghostEl[5];
+    shared_ptr<SDL_Surface>
+            ghostEl[5];
 
     BHeap
             heap;

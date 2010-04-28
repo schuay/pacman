@@ -335,8 +335,9 @@ void Game::clearHscore() {
 }
 
 void Game::renderViewHscore() {
-    SDL_Surface *buf = app.getScreen(),
-    *txt;
+    shared_ptr<SDL_Surface>
+            buf = app.getScreen(),
+            txt;
     SDL_Color col;
     std::ostringstream ostr, scstr;
     SDL_Rect rect;
@@ -364,20 +365,18 @@ void Game::renderViewHscore() {
 
         ostr << "level: " << level << " score: " << score;
 
-        txt=TTF_RenderText_Solid(font,ostr.str().c_str(),col);
-        if (!txt)
-            throw Error("DrawText failed");
-        SDL_BlitSurface(txt,NULL,buf,&scorebox);
-        SDL_FreeSurface(txt);
+        txt.reset(TTF_RenderText_Solid(font,ostr.str().c_str(),col), SDL_FreeSurface);
+        if (!txt) throw Error("DrawText failed");
+
+        SDL_BlitSurface(txt.get(),NULL,buf.get(),&scorebox);
 
         // DRAW HIGHSCORES
 
 
-        txt=TTF_RenderText_Solid(font,"HIGHSCORES:",col);
-        if (!txt)
-            throw Error("DrawText failed");
-        SDL_BlitSurface(txt,NULL,buf,&rect);
-        SDL_FreeSurface(txt);
+        txt.reset(TTF_RenderText_Solid(font,"HIGHSCORES:",col), SDL_FreeSurface);
+        if (!txt) throw Error("DrawText failed");
+
+        SDL_BlitSurface(txt.get(),NULL,buf.get(),&rect);
 
         for (i=0;i<MAXENTRIES;i++) {
 
@@ -391,11 +390,10 @@ void Game::renderViewHscore() {
             rect.h = 50;
 
             if ( nm != "" ) {
-                txt=TTF_RenderText_Solid(font,nm.c_str(),col);
-                if (!txt)
-                    throw Error("DrawText failed");
-                SDL_BlitSurface(txt,NULL,buf,&rect);
-                SDL_FreeSurface(txt);
+                txt.reset(TTF_RenderText_Solid(font,nm.c_str(),col), SDL_FreeSurface);
+                if (!txt) throw Error("DrawText failed");
+
+                SDL_BlitSurface(txt.get(),NULL,buf.get(),&rect);
             }
 
             rect.x = settings.fieldwidth * settings.tilesize / 4 + 200;
@@ -404,11 +402,10 @@ void Game::renderViewHscore() {
             scstr.str("");
             if ( sc ) {
                 scstr << sc;
-                txt=TTF_RenderText_Solid(font,scstr.str().c_str(),col);
-                if (!txt)
-                    throw Error("DrawText failed");
-                SDL_BlitSurface(txt,NULL,buf,&rect);
-                SDL_FreeSurface(txt);
+                txt.reset(TTF_RenderText_Solid(font,scstr.str().c_str(),col), SDL_FreeSurface);
+                if (!txt) throw Error("DrawText failed");
+
+                SDL_BlitSurface(txt.get(),NULL,buf.get(),&rect);
             }
         }
 
@@ -725,8 +722,9 @@ void Game::logicGame() {
     }
 }
 void Game::renderEnterHscore() {
-    SDL_Surface* buf = app.getScreen(),
-    *txt;
+    shared_ptr<SDL_Surface>
+            buf = app.getScreen(),
+            txt;
     std::ostringstream ostr;
     SDL_Rect rect;
     SDL_Color col;
@@ -754,29 +752,26 @@ void Game::renderEnterHscore() {
 
         ostr << "level: " << level << " score: " << score;
 
-        txt=TTF_RenderText_Solid(font,ostr.str().c_str(),col);
-        if (!txt)
-            throw Error("DrawText failed");
-        SDL_BlitSurface(txt,NULL,buf,&scorebox);
-        SDL_FreeSurface(txt);
+        txt.reset(TTF_RenderText_Solid(font,ostr.str().c_str(),col), SDL_FreeSurface);
+        if (!txt) throw Error("DrawText failed");
+
+        SDL_BlitSurface(txt.get(),NULL,buf.get(),&scorebox);
 
         // DRAW HIGHSCORE ENTRY
 
 
-        txt=TTF_RenderText_Solid(font,"NEW HIGHSCORE!",col);
-        if (!txt)
-            throw Error("DrawText failed");
-        SDL_BlitSurface(txt,NULL,buf,&rect);
-        SDL_FreeSurface(txt);
+        txt.reset(TTF_RenderText_Solid(font,"NEW HIGHSCORE!",col), SDL_FreeSurface);
+        if (!txt) throw Error("DrawText failed");
+
+        SDL_BlitSurface(txt.get(),NULL,buf.get(),&rect);
 
         rect.y += 50;
 
 
-        txt=TTF_RenderText_Solid(font,"Enter name:",col);
-        if (!txt)
-            throw Error("DrawText failed");
-        SDL_BlitSurface(txt,NULL,buf,&rect);
-        SDL_FreeSurface(txt);
+        txt.reset(TTF_RenderText_Solid(font,"Enter name:",col), SDL_FreeSurface);
+        if (!txt) throw Error("DrawText failed");
+
+        SDL_BlitSurface(txt.get(),NULL,buf.get(),&rect);
 
         rect.y += 70;
         rect.h = 50;
@@ -787,11 +782,11 @@ void Game::renderEnterHscore() {
             tmp=name[i];
             col.r=col.g=col.b=namecol[i];
 
-            txt=TTF_RenderText_Solid(font,tmp.c_str(),col);
-            if (!txt)
-                throw Error("DrawText failed");
-            SDL_BlitSurface(txt,NULL,buf,&rect);
-            SDL_FreeSurface(txt);
+            txt.reset(TTF_RenderText_Solid(font,tmp.c_str(),col), SDL_FreeSurface);
+            if (!txt) throw Error("DrawText failed");
+
+            SDL_BlitSurface(txt.get(),NULL,buf.get(),&rect);
+
             rect.x=rect.x+40;
         }
     }
@@ -810,7 +805,7 @@ void Game::renderNormal() {
     int i;
     std::ostringstream ostr;
     SDL_Color col;
-    SDL_Surface *txt;
+    shared_ptr<SDL_Surface> txt;
 
     col.r = col.g = col.b = 255;
 
@@ -829,11 +824,10 @@ void Game::renderNormal() {
 
         ostr << "level: " << level << " score: " << score;
 
-        txt=TTF_RenderText_Solid(font,ostr.str().c_str(),col);
-        if (!txt)
-            throw Error("DrawText failed");
-        SDL_BlitSurface(txt,NULL,app.getScreen(),&scorebox);
-        SDL_FreeSurface(txt);
+        txt.reset(TTF_RenderText_Solid(font,ostr.str().c_str(),col), SDL_FreeSurface);
+        if (!txt) throw Error("DrawText failed");
+
+        SDL_BlitSurface(txt.get(),NULL,app.getScreen().get(),&scorebox);
 
         //DRAW SCORE POPUP
         if (floatingscorecounter != 0) {
@@ -844,12 +838,11 @@ void Game::renderNormal() {
 
             floatingscorebox.y--;
 
-            txt=TTF_RenderText_Solid(font,scoretext.str().c_str(),col);
-            if (!txt)
-                throw Error("DrawText failed");
-            SDL_SetAlpha(txt,SDL_SRCALPHA,	55+floatingscorecounter*2);
-            SDL_BlitSurface(txt,NULL,app.getScreen(),&floatingscorebox);
-            SDL_FreeSurface(txt);
+            txt.reset(TTF_RenderText_Solid(font,scoretext.str().c_str(),col), SDL_FreeSurface);
+            if (!txt) throw Error("DrawText failed");
+
+            SDL_SetAlpha(txt.get(), SDL_SRCALPHA, 55+floatingscorecounter*2);
+            SDL_BlitSurface(txt.get(),NULL,app.getScreen().get(),&floatingscorebox);
         }
 
         // PAUSE
@@ -861,11 +854,10 @@ void Game::renderNormal() {
             pauserect.x = settings.fieldheight*settings.tilesize / 2 - 10;
             pauserect.h = 50;
 
-            txt=TTF_RenderText_Solid(font,"PAUSED",col);
-            if (!txt)
-                throw Error("DrawText failed");
-            SDL_BlitSurface(txt,NULL,app.getScreen(),&pauserect);
-            SDL_FreeSurface(txt);
+            txt.reset(TTF_RenderText_Solid(font,"PAUSED",col), SDL_FreeSurface);
+            if (!txt) throw Error("DrawText failed");
+
+            SDL_BlitSurface(txt.get(),NULL,app.getScreen().get(),&pauserect);
         }
 
         // LEVEL CLEARED
@@ -877,11 +869,10 @@ void Game::renderNormal() {
             pauserect.y = settings.fieldheight*settings.tilesize / 2 - 10;
             pauserect.h = 50;
 
-            txt=TTF_RenderText_Solid(font,"LEVEL CLEARED!",col);
-            if (!txt)
-                throw Error("DrawText failed");
-            SDL_BlitSurface(txt,NULL,app.getScreen(),&pauserect);
-            SDL_FreeSurface(txt);
+            txt.reset(TTF_RenderText_Solid(font,"LEVEL CLEARED!",col), SDL_FreeSurface);
+            if (!txt) throw Error("DrawText failed");
+
+            SDL_BlitSurface(txt.get(),NULL,app.getScreen().get(),&pauserect);
         }
     }
 
@@ -1335,9 +1326,9 @@ std::string Game::getFPS() {
 }
 
 void Game::render() {
-    SDL_Surface
-            *buf = app.getScreen(),
-            *txt;
+    shared_ptr<SDL_Surface>
+            buf = app.getScreen(),
+            txt;
     SDL_Color
             col;
 
@@ -1363,14 +1354,13 @@ void Game::render() {
 
 
             if ( showfps ) {
-                txt=TTF_RenderText_Solid(font,fps.c_str(),col);
-                if (!txt)
-                    throw Error("DrawText failed");
-                SDL_BlitSurface(txt,NULL,buf,&fpsbox);
-                SDL_FreeSurface(txt);
+                txt.reset(TTF_RenderText_Solid(font,fps.c_str(),col), SDL_FreeSurface);
+                if (!txt) throw Error("DrawText failed");
+
+                SDL_BlitSurface(txt.get(),NULL,buf.get(),&fpsbox);
             }
 
-            SDL_Flip(buf);
+            SDL_Flip(buf.get());
 
             renderisbusy = false;
             counter++;

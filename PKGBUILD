@@ -10,6 +10,7 @@ license=('GPL')
 source=("http://github.com/schuay/pacman/tarball/pacman-$pkgver")
 md5sums=('dfbc98d324bebd62670a6681271e63c6')
 depends=('sdl_ttf' 'sdl_gfx' 'sdl_mixer' 'sdl_image')
+makedepends=('boost')
 
 build() {
 

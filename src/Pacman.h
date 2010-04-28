@@ -9,8 +9,13 @@
 
 
 #pragma once
+
+#include <boost/shared_ptr.hpp>
+
 #include "Main.h"
 #include "Object.h"
+
+using boost::shared_ptr;
 
 #define NUMPACANIM 8
 
@@ -18,8 +23,7 @@ class Pacman :
 	public Object
 {
 public:
-    Pacman(SDL_Surface *buf, int os, int ix, int iy, int ispdmod, int itilesize, int iheight, int iwidth, int *imap);
-    ~Pacman();
+    Pacman(shared_ptr <SDL_Surface> buf, int os, int ix, int iy, int ispdmod, int itilesize, int iheight, int iwidth, int *imap);
 
     void Draw();
     void Draw(int ix, int iy, int obj=3, int type=1);
@@ -63,10 +67,11 @@ private:
     unsigned int
             animcounter;
 
-    float	xfloat,	//current position as floating point based on pixel pos - allows for infinite speed
+    float
+            xfloat,	//current position as floating point based on pixel pos - allows for infinite speed
             yfloat;	// variations because xfloat can be reduced to xpix
 
-    SDL_Surface
-            *pacEl[NUMPACANIM],
-            *pacElRot[NUMPACANIM][3];
+    shared_ptr<SDL_Surface>
+            pacEl[NUMPACANIM],
+            pacElRot[NUMPACANIM][3];
 };

@@ -23,8 +23,8 @@ void Ghost::Draw(int ix, int iy, int obj, int type) {
     pos.y=iy;
     pos.w=pos.h=GHOSTSIZE;
 
-    SDL_SetAlpha(ghostEl[0],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-    SDL_BlitSurface(ghostEl[0],NULL,buf,&pos);
+    SDL_SetAlpha(ghostEl[0].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+    SDL_BlitSurface(ghostEl[0].get(),NULL,buf.get(),&pos);
 }
 int Ghost::getXpix() {
     return xpix;
@@ -857,15 +857,15 @@ void Ghost::Draw() {
     //normal state
 
     if (state == 0) {
-        SDL_SetAlpha(ghostEl[0],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(ghostEl[0],NULL,buf,&pos);
+        SDL_SetAlpha(ghostEl[0].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+        SDL_BlitSurface(ghostEl[0].get(),NULL,buf.get(),&pos);
     }
 
     //vulnerable state
 
     else if (state == 1) {
-        SDL_SetAlpha(ghostEl[2],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(ghostEl[2],NULL,buf,&pos);
+        SDL_SetAlpha(ghostEl[2].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+        SDL_BlitSurface(ghostEl[2].get(),NULL,buf.get(),&pos);
     }
 
     //warning state
@@ -873,19 +873,19 @@ void Ghost::Draw() {
     else if (state == 2) {
         if ( !paused ) animcounter++;
         if (animcounter%30 < 15) {
-            SDL_SetAlpha(ghostEl[3],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-            SDL_BlitSurface(ghostEl[3],NULL,buf,&pos);
+            SDL_SetAlpha(ghostEl[3].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+            SDL_BlitSurface(ghostEl[3].get(),NULL,buf.get(),&pos);
         }
         else {
-            SDL_SetAlpha(ghostEl[2],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-            SDL_BlitSurface(ghostEl[2],NULL,buf,&pos);
+            SDL_SetAlpha(ghostEl[2].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+            SDL_BlitSurface(ghostEl[2].get(),NULL,buf.get(),&pos);
         }
     }
     //if dead, only eyes are drawn
 
     else if (state == 3) {
-        SDL_SetAlpha(ghostEl[4],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(ghostEl[4],NULL,buf,&pos);
+        SDL_SetAlpha(ghostEl[4].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+        SDL_BlitSurface(ghostEl[4].get(),NULL,buf.get(),&pos);
     }
 
     if (dx == 1)
@@ -898,8 +898,8 @@ void Ghost::Draw() {
         pos.y=pos.y+2;
 
     //draw eyes
-    SDL_SetAlpha(ghostEl[1],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-    SDL_BlitSurface(ghostEl[1],NULL,buf,&pos);
+    SDL_SetAlpha(ghostEl[1].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+    SDL_BlitSurface(ghostEl[1].get(),NULL,buf.get(),&pos);
 
 }
 
@@ -917,12 +917,12 @@ bool Ghost::LoadTextures(std::string path) {
     try {
 
         for (int i = 0; i<5; i++) {
-            ghostEl[i]=IMG_Load(files[i].c_str());
+            ghostEl[i].reset(IMG_Load(files[i].c_str()), SDL_FreeSurface);
             if ( !ghostEl[i] )
                 throw Error("Failed to load ghost texture: " + files[i]);
 
             fmt=ghostEl[i]->format;
-            SDL_SetColorKey(ghostEl[i],SDL_SRCCOLORKEY|SDL_RLEACCEL,SDL_MapRGB(fmt,255,0,255));
+            SDL_SetColorKey(ghostEl[i].get(),SDL_SRCCOLORKEY|SDL_RLEACCEL,SDL_MapRGB(fmt,255,0,255));
         }
         logtxt.print(filename + " ghost textures loaded");
     }
@@ -941,7 +941,7 @@ bool Ghost::LoadTextures(std::string path) {
     return true;
 }
 
-Ghost::Ghost(SDL_Surface *buf, int os, int ix, int iy, int ispdmod, int itilesize,
+Ghost::Ghost(shared_ptr<SDL_Surface> buf, int os, int ix, int iy, int ispdmod, int itilesize,
 			 int iheight, int iwidth, int *imap, std::string fn)
 :   Object( buf, os),
     x(ix),
@@ -968,8 +968,6 @@ Ghost::Ghost(SDL_Surface *buf, int os, int ix, int iy, int ispdmod, int itilesiz
 
     filename = fn;
 
-    for (i=0;i<5;i++) ghostEl[i]=NULL;
-
     xpix=x*tilesize;
     ypix=y*tilesize;
 
@@ -992,8 +990,6 @@ Ghost::Ghost(SDL_Surface *buf, int os, int ix, int iy, int ispdmod, int itilesiz
 Ghost::~Ghost()
 {
     int i;
-
-    for (i=0;i<5;i++) if ( ghostEl[i] ) SDL_FreeSurface(ghostEl[i]);
 
     if  ( closed != NULL ) delete[] closed;
     if ( parentDir != NULL ) delete[] parentDir;

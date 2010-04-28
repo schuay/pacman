@@ -25,12 +25,12 @@ void BckgrObj::Draw(int ix, int iy, int obj, int type, int alp) {
     pos.h=pos.w=20;
 
     if (type == 1) {
-        SDL_SetAlpha(objEl[obj],SDL_SRCALPHA|SDL_RLEACCEL,alp);
-        SDL_BlitSurface(objEl[obj],NULL,buf,&pos);
+        SDL_SetAlpha(objEl[obj].get(),SDL_SRCALPHA|SDL_RLEACCEL,alp);
+        SDL_BlitSurface(objEl[obj].get(),NULL,buf.get(),&pos);
     }
     else {
-        SDL_SetAlpha(mapEl[obj],SDL_SRCALPHA|SDL_RLEACCEL,alp);
-        SDL_BlitSurface(mapEl[obj],NULL,buf,&pos);
+        SDL_SetAlpha(mapEl[obj].get(),SDL_SRCALPHA|SDL_RLEACCEL,alp);
+        SDL_BlitSurface(mapEl[obj].get(),NULL,buf.get(),&pos);
     }
 }
 
@@ -57,7 +57,7 @@ void BckgrObj::Draw() {
 
     objcounter = 0;
 
-    SDL_BlitSurface(mapEl[0], NULL, buf, NULL);
+    SDL_BlitSurface(mapEl[0].get(), NULL, buf.get(), NULL);
 
     //DRAW FIELD
     for (j=0;j<height;j++) {
@@ -71,86 +71,86 @@ void BckgrObj::Draw() {
             if (map[j*width+i]==1	&&	// horizontal line
                 ( map[j*width+i+1] != 0 || i == width-1 ) &&
                 ( map[j*width+i-1] != 0 || i == 0 ) ) {
-                SDL_SetAlpha(mapEl[1],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapEl[1], NULL, buf, &pos );
+                SDL_SetAlpha(mapEl[1].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapEl[1].get(), NULL, buf.get(), &pos );
             }
 
             else if (map[j*width+i]==1)	{	// vertical line
-                SDL_SetAlpha(mapElRot[1][0],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapElRot[1][0], NULL, buf, &pos);
+                SDL_SetAlpha(mapElRot[1][0].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapElRot[1][0].get(), NULL, buf.get(), &pos);
             }
 
             else if (map[j*width+i]==2 &&		//ghost door
                      map[j*width+i + 1] != 0 &&
                      map[j*width+i - 1] != 0) {
-                SDL_SetAlpha(mapEl[2],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapEl[2], NULL, buf, &pos);
+                SDL_SetAlpha(mapEl[2].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapEl[2].get(), NULL, buf.get(), &pos);
             }
             else if (map[j*width+i]==2)	{	// vertical ghost door
-                SDL_SetAlpha(mapElRot[2][0],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapElRot[2][0], NULL, buf, &pos);
+                SDL_SetAlpha(mapElRot[2][0].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapElRot[2][0].get(), NULL, buf.get(), &pos);
             }
 
             else if (map[j*width+i]==3) {		//upper left corner
-                SDL_SetAlpha(mapEl[3],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapEl[3], NULL, buf, &pos);
+                SDL_SetAlpha(mapEl[3].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapEl[3].get(), NULL, buf.get(), &pos);
             }
             else if (map[j*width+i]==4) {		// upper right corner
-                SDL_SetAlpha(mapEl[4],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapEl[4], NULL, buf, &pos);
+                SDL_SetAlpha(mapEl[4].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapEl[4].get(), NULL, buf.get(), &pos);
             }
             else if (map[j*width+i]==5) {		// lower  right corner
-                SDL_SetAlpha(mapEl[5],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapEl[5], NULL, buf, &pos);
+                SDL_SetAlpha(mapEl[5].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapEl[5].get(), NULL, buf.get(), &pos);
             }
             else if (map[j*width+i]==6) {		// lower left corner
-                SDL_SetAlpha(mapEl[6],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapEl[6], NULL, buf, &pos);
+                SDL_SetAlpha(mapEl[6].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapEl[6].get(), NULL, buf.get(), &pos);
             }
 
             else if (map[j*width+i]==7 && 		// left T
                      ( map[j*width+i-1]==0 || i == 0 ) ) {
-                SDL_SetAlpha(mapEl[7],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapEl[7], NULL, buf, &pos);
+                SDL_SetAlpha(mapEl[7].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapEl[7].get(), NULL, buf.get(), &pos);
             }
             else if (map[j*width+i]==7)	{	// upside down T
-                SDL_SetAlpha(mapElRot[7][0],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapElRot[7][0], NULL, buf, &pos);
+                SDL_SetAlpha(mapElRot[7][0].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapElRot[7][0].get(), NULL, buf.get(), &pos);
             }
             else if (map[j*width+i]==8 &&		// right T
                      ( map[j*width+i+1]==0 || i == width-1 ) ) {
-                SDL_SetAlpha(mapEl[8],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapEl[8], NULL, buf, &pos);
+                SDL_SetAlpha(mapEl[8].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapEl[8].get(), NULL, buf.get(), &pos);
             }
             else if (map[j*width+i]==8)	{	// upright T
-                SDL_SetAlpha(mapElRot[8][0],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapElRot[8][0], NULL, buf, &pos);
+                SDL_SetAlpha(mapElRot[8][0].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapElRot[8][0].get(), NULL, buf.get(), &pos);
             }
 
             else if (map[j*width+i]==9 &&
                      map[j*width+i-1] != 0 &&
                      map[j*width+i-1] != 2 &&
                      i > 0 )	 {//right stub
-                SDL_SetAlpha(mapEl[9],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapEl[9], NULL, buf, &pos);
+                SDL_SetAlpha(mapEl[9].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapEl[9].get(), NULL, buf.get(), &pos);
             }
             else if (map[j*width+i]==9 &&
                      map[j*width+i+1] != 0 &&
                      map[j*width+i+1] != 2 &&
                      i < width-1) {	// left stub
-                SDL_SetAlpha(mapElRot[9][1],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapElRot[9][1], NULL, buf, &pos);
+                SDL_SetAlpha(mapElRot[9][1].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapElRot[9][1].get(), NULL, buf.get(), &pos);
             }
             else if (map[j*width+i]==9 &&
                      map[(j+1)*width+i] != 0 &&
                      map[(j+1)*width+i] != 2 &&
                      j < height -1) {	// upper stub
-                SDL_SetAlpha(mapElRot[9][0],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapElRot[9][0], NULL, buf, &pos);
+                SDL_SetAlpha(mapElRot[9][0].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapElRot[9][0].get(), NULL, buf.get(), &pos);
             }
             else if (map[j*width+i]==9)	{// lower stub
-                SDL_SetAlpha(mapElRot[9][2],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(mapElRot[9][2], NULL, buf, &pos);
+                SDL_SetAlpha(mapElRot[9][2].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(mapElRot[9][2].get(), NULL, buf.get(), &pos);
             }
         }
     }
@@ -166,18 +166,18 @@ void BckgrObj::Draw() {
             pos.w=20;
 
             if (objmap[j*width+i]==1) {
-                SDL_SetAlpha(objEl[1],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(objEl[1], NULL, buf, &pos);
+                SDL_SetAlpha(objEl[1].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(objEl[1].get(), NULL, buf.get(), &pos);
                 objcounter++;
             }
             if (objmap[j*width+i]==2) {	// BIG DOTS!
-                SDL_SetAlpha(objEl[2],SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-                SDL_BlitSurface(objEl[2], NULL, buf, &pos);
+                SDL_SetAlpha(objEl[2].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
+                SDL_BlitSurface(objEl[2].get(), NULL, buf.get(), &pos);
                 objcounter++;
             }
             if (objmap[j*width+i]==3 && specialspawned && !specialeaten) {	// fruit
-                SDL_SetAlpha(objEl[3],SDL_SRCALPHA,fruitalpha);
-                SDL_BlitSurface(objEl[3], NULL, buf, &pos);
+                SDL_SetAlpha(objEl[3].get(),SDL_SRCALPHA,fruitalpha);
+                SDL_BlitSurface(objEl[3].get(), NULL, buf.get(), &pos);
                 objcounter++;
             }
         }
@@ -197,28 +197,28 @@ bool BckgrObj::LoadTextures(std::string path) {
 
     try {
         for (i=0;i<NUMOFMAPTEX;i++) {
-            mapEl[i] = IMG_Load((path + "m" + num[i] + ".png").c_str());
+            mapEl[i].reset(IMG_Load((path + "m" + num[i] + ".png").c_str()), SDL_FreeSurface);
             if ( mapEl[i] == NULL )
                 throw Error(num[i] + "Failed to load map texture");
 
             //get pixel format from surface
             fmt=mapEl[i]->format;
             //set the transparent color key to RGB 255 0 255
-            SDL_SetColorKey(mapEl[i],SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(fmt,255,0,255));
+            SDL_SetColorKey(mapEl[i].get(),SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(fmt,255,0,255));
 
             for (int j=0;j<3;j++) {
                 mapElRot[i][j]=Rotate(mapEl[i],(j+1)*90);
             }
         }
         for (i=1;i<5;i++) {
-            objEl[i] = IMG_Load((path + "o" + num[i] + ".png").c_str());
+            objEl[i].reset(IMG_Load((path + "o" + num[i] + ".png").c_str()), SDL_FreeSurface);
             if ( objEl[i] == NULL )
                 throw Error(num[i] + "Failed to load object texture");
 
             //get pixel format from surface
             fmt=objEl[i]->format;
             //set the transparent color key to RGB 255 0 255
-            SDL_SetColorKey(objEl[i],SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(fmt,255,0,255));
+            SDL_SetColorKey(objEl[i].get(),SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(fmt,255,0,255));
         }
 
         logtxt.print("Field textures loaded");
@@ -238,31 +238,11 @@ bool BckgrObj::LoadTextures(std::string path) {
     return true;
 }
 
-BckgrObj::BckgrObj( SDL_Surface *buffer, int os)
+BckgrObj::BckgrObj( shared_ptr<SDL_Surface> buffer, int os)
     :	Object( buffer, os),
     objcounter(0),
     fruitalpha(255),
     specialspawned(false),
     specialeaten(false)
 {
-    int i;
-
-    for (i=0;i<10;i++) {
-        mapEl[i]=NULL;
-        objEl[i]=NULL;
-        for (int j=0;j<3;j++)
-            mapElRot[i][j]=NULL;
-    }
-}
-
-BckgrObj::~BckgrObj()
-{
-    int i;
-
-    for (i=0;i<NUMOFMAPTEX;i++) {
-        if ( mapEl[i] ) SDL_FreeSurface(mapEl[i]);
-        if ( objEl[i] ) SDL_FreeSurface(objEl[i]);
-        for (int j=0;j<3;j++)
-            if ( mapElRot[i][j] ) SDL_FreeSurface(mapElRot[i][j]);
-    }
 }

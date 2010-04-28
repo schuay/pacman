@@ -9,8 +9,13 @@
 
 
 #pragma once
+
+#include <boost/shared_ptr.hpp>
+
 #include "Main.h"
 #include "Object.h"
+
+using boost::shared_ptr;
 
 #define NUMOFMAPTEX 10
 
@@ -18,8 +23,7 @@ class BckgrObj :
 	public Object
 {
 public:
-    BckgrObj(SDL_Surface *buffer, int os);
-    ~BckgrObj();
+    BckgrObj(shared_ptr<SDL_Surface> buffer, int os);
 
     void Draw();
     void Draw(int ix, int iy, int obj=3, int type=1);
@@ -38,10 +42,10 @@ public:
     void setFruitAlpha(int a);
 
 private:
-    SDL_Surface
-            *mapEl[NUMOFMAPTEX],
-            *objEl[NUMOFMAPTEX],
-            *mapElRot[NUMOFMAPTEX][3];
+    shared_ptr<SDL_Surface>
+            mapEl[NUMOFMAPTEX],
+            objEl[NUMOFMAPTEX],
+            mapElRot[NUMOFMAPTEX][3];
 
     int
             objcounter,

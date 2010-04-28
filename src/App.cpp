@@ -26,13 +26,10 @@ void App::InitWindow() {
             settings.width=settings.fieldwidth*settings.tilesize;
         }
 
-        if ( screen )
-            SDL_FreeSurface(screen);
-
-        screen = SDL_SetVideoMode( settings.width,
+        screen.reset(SDL_SetVideoMode( settings.width,
                                    settings.height+EXTRA_Y_SPACE,
                                    bpp,         //bits per pixel; todo-make this dynamic
-                                   SDL_NOFRAME | SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_ANYFORMAT );
+                                   SDL_NOFRAME | SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_ANYFORMAT ), SDL_FreeSurface);
 
         if (screen == NULL)
             throw Error("Error while setting video mode");
@@ -100,8 +97,6 @@ void App::InitSound() {
 
 App::App()
 :   quit(false),
-    screen(NULL),
-    buf(NULL),
     snd(NULL)
 
 {
@@ -127,14 +122,6 @@ App::~App(void)
     }
 }
 void App::PrepareShutdown() {
-    if (screen) {
-        SDL_FreeSurface(screen);
-        screen = NULL;
-    }
-    if (buf) {
-        SDL_FreeSurface(buf);
-        buf = NULL;
-    }
 
     if ( TTF_WasInit() )
         TTF_Quit();
