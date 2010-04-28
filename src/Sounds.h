@@ -10,7 +10,11 @@
 
 #pragma once
 
+#include <boost/shared_ptr.hpp>
+
 #include "Main.h"
+
+using boost::shared_ptr;
 
 #define NUMOFSOUNDS 13
 
@@ -27,8 +31,8 @@ public:
     void toggleSounds();
     bool on;
 private:
-    Mix_Chunk
-            *snd[NUMOFSOUNDS];
+    shared_ptr<Mix_Chunk>
+            snd[NUMOFSOUNDS];
 
     std::string
             sndPaths[NUMOFSOUNDS];

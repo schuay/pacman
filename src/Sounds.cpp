@@ -50,7 +50,7 @@ void Sounds::play(int i, bool looped, int volume) {
         loop = -1;
 
     Mix_Volume(i,volume);
-    Mix_PlayChannel(i,snd[i],loop);
+    Mix_PlayChannel(i,snd[i].get(),loop);
 }
 bool Sounds::init() {
 
@@ -72,7 +72,7 @@ bool Sounds::init() {
         //load wav files
         int i;
         for (i=0;i<NUMOFSOUNDS;i++) {
-            snd[i] = Mix_LoadWAV(sndPaths[i].c_str());
+            snd[i].reset(Mix_LoadWAV(sndPaths[i].c_str()), Mix_FreeChunk);
             if ( snd[i] == NULL )
                 throw Error(Mix_GetError());
         }
@@ -94,10 +94,6 @@ bool Sounds::init() {
 Sounds::Sounds() :
         on(true), isinit(false)
 {
-    int i;
-    for (i=0;i<NUMOFSOUNDS;i++)
-    snd[i]=NULL;
-
     //set sound paths
     sndPaths[0] = "sound/intro.wav";
     sndPaths[1] = "sound/munch_a.wav";
@@ -116,11 +112,5 @@ Sounds::Sounds() :
 
 Sounds::~Sounds()
 {
-    int i;
-    for (i=0;i<NUMOFSOUNDS;i++) {
-        if (snd[i]) Mix_FreeChunk(snd[i]);
-        snd[i]=NULL;
-    }
-
     Mix_CloseAudio();
 }

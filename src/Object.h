@@ -62,8 +62,15 @@ public:
         return rotatedSurface;
     }
 protected:
-    shared_ptr<SDL_Surface> buf;
-    const int offset;
-    bool paused;
-    int alpha;
+    shared_ptr<SDL_Surface>
+            buf;
+
+    const int
+            offset;
+
+    bool
+            paused;
+
+    int
+            alpha;
 };
