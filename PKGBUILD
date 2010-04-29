@@ -37,7 +37,6 @@ build() {
   install -m666 		\
 	../icon.png 		\
 	../arial.ttf 		\
-	../pacman.cfg 		\
 	../pacman.conf 		\
 	../settings.conf 	\
 	${dst}
