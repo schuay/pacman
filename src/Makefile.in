@@ -20,6 +20,7 @@ LIBS = @LIBS@
 #INSTALL = @INSTALL@
 INSTALL = install
 CP = cp
+CHMOD = chmod
 
 SOURCES=Sounds.cpp Settings.cpp Pacman.cpp Main.cpp Log.cpp hScore.cpp Ghost.cpp Game.cpp Error.cpp BckgrObj.cpp BHeap.cpp App.cpp
 OBJECTS=Sounds.o Settings.o Pacman.o Main.o Log.o hScore.o Ghost.o Game.o Error.o BckgrObj.o BHeap.o App.o
@@ -51,6 +52,7 @@ install:
 	$(CP) -r ../skins/ $(DESTDIR)/opt/pacman_v4
 	$(CP) -r ../sound/ $(DESTDIR)/opt/pacman_v4
 	
+	$(CHMOD) 666 $(DESTDIR)/opt/pacman_v4/levels/*/hscore
 	
 uninstall:
 	rm -f $(EXECUTABLE)

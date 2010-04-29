@@ -84,7 +84,7 @@ int main( int argc, char** argv ) {
     srand( (unsigned int)time(NULL) );
 
     //init log
-    logtxt.setFilename("log.txt");
+    logtxt.setFilename(".pacman_sdl");
 
     //init settings
     if ( !app.getQuit() ) settings.LoadSettings(SETTINGSFILE);

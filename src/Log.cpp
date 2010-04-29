@@ -41,7 +41,8 @@ bool Log::print(std::string txt) {
 
 bool Log::setFilename(std::string fn) {
 
-    filename = fn;
+
+    filename = std::string(getenv("HOME")) + "/" + fn;
 
     try {
         std::ofstream file(filename.c_str());
