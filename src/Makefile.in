@@ -33,6 +33,7 @@ clean:
 	rm -f $(OBJECTS)
 
 install:
+	mkdir -p $(DESTDIR)/usr/bin/
 	mkdir -p $(DESTDIR)/usr/share/applications/
 	mkdir -p $(DESTDIR)/opt/pacman_v4/levels
 	mkdir -p $(DESTDIR)/opt/pacman_v4/skins
@@ -40,7 +41,7 @@ install:
 
 	$(INSTALL) -m666 pacman_sdl.desktop $(DESTDIR)/usr/share/applications/
 	$(INSTALL) -m777 pacman_v4 $(DESTDIR)/opt/pacman_v4/
-	$(INSTALL) -m777 pacman_sdl $(DESTDIR)/usr/bin
+	$(INSTALL) -m777 pacman_sdl $(DESTDIR)/usr/bin/
 	$(INSTALL) -m666 ../icon.png $(DESTDIR)/opt/pacman_v4/
 	$(INSTALL) -m666 ../arial.ttf $(DESTDIR)/opt/pacman_v4/
 	$(INSTALL) -m666 ../pacman.conf $(DESTDIR)/opt/pacman_v4/
