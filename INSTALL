@@ -24,6 +24,14 @@ At run time:
 sdl_gfx, sdl_image, sdl_ttf, sdl_mixer
 
 
-TODO....
+To install, enter the src foldder and run the following commands:
+
+autoconf
+./configure
+make
+(as root) make install
+
+make install installs to /opt/pacman_v4 by default.
+
 
 Enjoy!
