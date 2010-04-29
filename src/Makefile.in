@@ -1,15 +1,54 @@
-CC=g++
+SHELL = /bin/sh
+VPATH = @srcdir@
+
+subdirs = @subdirs@
+top_srcdir = @top_srcdir@
+srcdir = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = $(exec_prefix)/bin
+infodir = $(prefix)/info
+libdir = $(prefix)/lib/gnudl
+mandir = $(prefix)/man/man1
+
+CC = @CC@
+CXX = @CXX@
+CPPFLAGS = @CPPFLAGS@
+CFLAGS = $(CPPFLAGS) @CFLAGS@
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+#INSTALL = @INSTALL@
+INSTALL = install
+CP = cp
+
 SOURCES=Sounds.cpp Settings.cpp Pacman.cpp Main.cpp Log.cpp hScore.cpp Ghost.cpp Game.cpp Error.cpp BckgrObj.cpp BHeap.cpp App.cpp
 OBJECTS=Sounds.o Settings.o Pacman.o Main.o Log.o hScore.o Ghost.o Game.o Error.o BckgrObj.o BHeap.o App.o
-LIBS=-lSDL_ttf -lSDL_gfx -lSDL_mixer -lSDL_image
 EXECUTABLE=pacman_v4
 
 all: 
-	$(CC) -c `sdl-config --cflags` $(SOURCES) 
-	$(CC) `sdl-config --libs` $(LIBS)  $(OBJECTS) -o $(EXECUTABLE)
+	$(CXX) -c `sdl-config --cflags` $(SOURCES) 
+	$(CXX) `sdl-config --libs` $(LIBS)  $(OBJECTS) -o $(EXECUTABLE)
 
 clean:
 	rm -f $(OBJECTS)
+
+install:
+	mkdir -p $(DESTDIR)/usr/share/applications/
+	mkdir -p $(DESTDIR)/opt/pacman_v4/levels
+	mkdir -p $(DESTDIR)/opt/pacman_v4/skins
+	mkdir -p $(DESTDIR)/opt/pacman_v4/sound
+
+	$(INSTALL) -m666 pacman_sdl.desktop $(DESTDIR)/usr/share/applications/
+	$(INSTALL) -m777 pacman_v4 $(DESTDIR)/opt/pacman_v4/
+	$(INSTALL) -m666 ../icon.png $(DESTDIR)/opt/pacman_v4/
+	$(INSTALL) -m666 ../arial.ttf $(DESTDIR)/opt/pacman_v4/
+	$(INSTALL) -m666 ../pacman.conf $(DESTDIR)/opt/pacman_v4/
+	$(INSTALL) -m666 ../settings.conf $(DESTDIR)/opt/pacman_v4/
+
+	$(CP) -r ../levels/ $(DESTDIR)/opt/pacman_v4
+	$(CP) -r ../skins/ $(DESTDIR)/opt/pacman_v4
+	$(CP) -r ../sound/ $(DESTDIR)/opt/pacman_v4
+	
 	
 uninstall:
 	rm -f $(EXECUTABLE)
