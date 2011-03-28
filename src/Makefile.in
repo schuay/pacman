@@ -24,7 +24,7 @@ CHMOD = chmod
 
 SOURCES=Sounds.cpp Settings.cpp Pacman.cpp Main.cpp Log.cpp hScore.cpp Ghost.cpp Game.cpp Error.cpp BckgrObj.cpp BHeap.cpp App.cpp
 OBJECTS=Sounds.o Settings.o Pacman.o Main.o Log.o hScore.o Ghost.o Game.o Error.o BckgrObj.o BHeap.o App.o
-EXECUTABLE=pacman_v4
+EXECUTABLE=pacman_sdl
 
 all: 
 	$(CXX) -c `sdl-config --cflags` $(SOURCES) 
@@ -36,23 +36,16 @@ clean:
 install:
 	mkdir -p $(DESTDIR)/usr/bin/
 	mkdir -p $(DESTDIR)/usr/share/applications/
-	mkdir -p $(DESTDIR)/opt/pacman_v4/levels
-	mkdir -p $(DESTDIR)/opt/pacman_v4/skins
-	mkdir -p $(DESTDIR)/opt/pacman_v4/sound
+	mkdir -p $(DESTDIR)/usr/share/pacman_sdl/levels
 
-	$(INSTALL) -m666 pacman_sdl.desktop $(DESTDIR)/usr/share/applications/
-	$(INSTALL) -m777 pacman_v4 $(DESTDIR)/opt/pacman_v4/
-	$(INSTALL) -m777 pacman_sdl $(DESTDIR)/usr/bin/
-	$(INSTALL) -m666 ../icon.png $(DESTDIR)/opt/pacman_v4/
-	$(INSTALL) -m666 ../arial.ttf $(DESTDIR)/opt/pacman_v4/
-	$(INSTALL) -m666 ../pacman.conf $(DESTDIR)/opt/pacman_v4/
-	$(INSTALL) -m666 ../settings.conf $(DESTDIR)/opt/pacman_v4/
+	$(INSTALL) -m644 pacman_sdl.desktop $(DESTDIR)/usr/share/applications/
+	$(INSTALL) -m755 pacman_sdl $(DESTDIR)/usr/bin/
+	$(INSTALL) -m644 ../icon.png $(DESTDIR)/usr/share/pacman_sdl/
+	$(INSTALL) -m644 ../arial.ttf $(DESTDIR)/usr/share/pacman_sdl/
+	$(INSTALL) -m644 ../settings.conf $(DESTDIR)/usr/share/pacman_sdl/
 
-	$(CP) -r ../levels/ $(DESTDIR)/opt/pacman_v4
-	$(CP) -r ../skins/ $(DESTDIR)/opt/pacman_v4
-	$(CP) -r ../sound/ $(DESTDIR)/opt/pacman_v4
+	$(CP) -r ../levels/ $(DESTDIR)/usr/share/pacman_sdl
+	$(CP) -r ../skins/ $(DESTDIR)/usr/share/pacman_sdl
+	$(CP) -r ../sound/ $(DESTDIR)/usr/share/pacman_sdl
 	
-	$(CHMOD) 666 $(DESTDIR)/opt/pacman_v4/levels/*/hscore
-	
-uninstall:
-	rm -f $(EXECUTABLE)
+	$(CHMOD) 666 $(DESTDIR)/usr/share/pacman_sdl/levels/*/hscore

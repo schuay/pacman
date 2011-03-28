@@ -88,7 +88,6 @@ int main( int argc, char** argv ) {
 
     //init settings
     if ( !app.getQuit() ) settings.LoadSettings(SETTINGSFILE);
-    if ( !app.getQuit() ) settings.LoadSettings(PACCFGFILE);
     if ( !app.getQuit() ) settings.LoadSettings( (settings.lvlpath[settings.lvlpathcurrent] + CFGFILE) );
 
     //init SDL
