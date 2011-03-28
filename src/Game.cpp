@@ -231,7 +231,7 @@ void Game::initEditor() {
 }
 void Game::changeSkin() {
     int i;
-    for (i=0;i<NUMOFOBJECTS;i++) objects[i]->LoadTextures( settings.skinspath[settings.skinspathcurrent] );
+    for (i=0;i<NUMOFOBJECTS;i++) objects[i]->LoadTextures( APP_PATH "/" + settings.skinspath[settings.skinspathcurrent] );
 }
 void Game::emptyMsgPump() {
 
@@ -1094,7 +1094,7 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
         //loading level graphics
 
         objects[0] = new BckgrObj( app.getScreen(), 10 );
-        objects[0]->LoadTextures(settings.skinspath[settings.skinspathcurrent]);
+        objects[0]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
         logtxt.print("Level background loaded");
 
@@ -1119,7 +1119,7 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
                             settings.fieldheight,
                             settings.fieldwidth,
                             map);
-        objects[1]->LoadTextures(settings.skinspath[settings.skinspathcurrent]);
+        objects[1]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
         objects[2] = new Ghost( app.getScreen(),
                             20,
@@ -1131,7 +1131,7 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
                             settings.fieldwidth,
                             map,
                             "1");
-        objects[2]->LoadTextures(settings.skinspath[settings.skinspathcurrent]);
+        objects[2]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
         objects[3] = new Ghost( app.getScreen(),
                             20,
@@ -1143,7 +1143,7 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
                             settings.fieldwidth,
                             map,
                             "2");
-        objects[3]->LoadTextures(settings.skinspath[settings.skinspathcurrent]);
+        objects[3]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
         objects[4] = new Ghost( app.getScreen(),
                             20,
@@ -1155,7 +1155,7 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
                             settings.fieldwidth,
                             map,
                             "3");
-        objects[4]->LoadTextures(settings.skinspath[settings.skinspathcurrent]);
+        objects[4]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
         objects[5] = new Ghost( app.getScreen(),
                             20,
@@ -1167,7 +1167,7 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
                             settings.fieldwidth,
                             map,
                             "4");
-        objects[5]->LoadTextures(settings.skinspath[settings.skinspathcurrent]);
+        objects[5]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
         for (i=0;i<4;i++) ((Ghost*)objects[i+2])->changeDifficulty(0, settings.baddieiq);	//SET DIFFICULTY SPECIFIED IN CONFIG FILE
 
@@ -1273,6 +1273,7 @@ bool Game::loadMap(std::string file, int* memmap) {
     char c('i');
     std::ifstream mp;
 
+    file = settings.getFile(file);
     mp.open( file.c_str() );
 
     if (!mp ) {
@@ -1381,7 +1382,7 @@ void Game::render() {
 bool Game::loadFont() {
 
     try {
-        font = TTF_OpenFont("arial.ttf",24);
+        font = TTF_OpenFont(APP_PATH "/" "arial.ttf",24);
         if (!font)
             throw Error("Failed to create font object ");
     }

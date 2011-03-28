@@ -24,7 +24,7 @@ int Settings::setPath(int mode,std::string str) {
             }
         }
         break;
-        case MODE_SKINS:
+    case MODE_SKINS:
         for (i=0;i<skinspathcount;i++) {
             if (skinspath[i]=="./skins/" + str + "/") {
                 skinspathcurrent=i;
@@ -32,14 +32,27 @@ int Settings::setPath(int mode,std::string str) {
             }
         }
         break;
-        default:
+    default:
         break;
     }
 
     return 1;
 }
 
+string Settings::getFile(string filename) {
+    struct stat fileInfo;
+    for(int i = 0; i < searchpaths.size(); i++) {
+        string path = searchpaths[i] + "/" + filename;
+        if (stat(path.c_str(), &fileInfo) == 0) {
+            return path;
+        }
+    }
+    throw new Error("File not found: " + filename);
+}
+
 bool Settings::LoadSettings(std::string filename) {
+
+    filename = getFile(filename);
 
     std::ifstream	file( filename.c_str() );
     std::string		buffer,
@@ -124,6 +137,10 @@ Settings::Settings() {
     baddiespeed = 0;
     baddieiq = 0;
     vuln_duration = 0;
+
+    searchpaths.push_back(".");
+    searchpaths.push_back(string(getenv("HOME")) + "/" HOME_CONF_PATH);
+    searchpaths.push_back(APP_PATH);
 }
 
 Settings::~Settings() {}

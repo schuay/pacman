@@ -72,7 +72,8 @@ bool Sounds::init() {
         //load wav files
         int i;
         for (i=0;i<NUMOFSOUNDS;i++) {
-            snd[i].reset(Mix_LoadWAV(sndPaths[i].c_str()), Mix_FreeChunk);
+            string path = APP_PATH "/" + sndPaths[i];
+            snd[i].reset(Mix_LoadWAV(path.c_str()), Mix_FreeChunk);
             if ( snd[i] == NULL )
                 throw Error(Mix_GetError());
         }

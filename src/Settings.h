@@ -10,18 +10,23 @@
 
 #pragma once
 #include <vector>
+#include <string>
+#include <cstdlib>
+#include <sys/stat.h>
 #include "Main.h"
+
+using std::string;
 
 class Settings {
 public:
     Settings();
     ~Settings();
 
-    bool LoadSettings(std::string filename);
+    bool LoadSettings(string filename);
 
     //searches for str in level/skinspaths; if successful, sets currently selected path.
     //returns 0 on success, 1 on failure
-    int setPath(int mode,std::string str);
+    int setPath(int mode, string str);
 
     //////////////////////////////
     // VARIABLES	- APP
@@ -54,7 +59,11 @@ public:
             skinspathcount,
             skinspathcurrent;
 
-    std::vector<std::string>
+    std::vector<string>
             lvlpath,
-            skinspath;
+            skinspath,
+            searchpaths;
+
+    /* look for file in search paths and return first instance */
+    string getFile(string filename);
 };
