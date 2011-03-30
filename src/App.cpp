@@ -51,16 +51,8 @@ void App::InitWindow() {
 void App::InitApp() {
 
     try {
-
-        if ( SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0 )
-            throw Error("Error while initializing SDL");
-
-        logtxt.print("SDL systems initialized");
-
-        if ( TTF_Init() < 0 )
-            throw Error("Error while initializing SDL_ttf");
-
-        logtxt.print("SDL_ttf initialized");
+        screen.reset(new sf::RenderWindow());
+        logtxt.print("SFML initialized");
     }
     catch ( Error& err ) {
         std::cerr << (err.getDesc() );
@@ -78,7 +70,7 @@ void App::InitSound() {
 
     try {
 
-        snd = new Sounds();
+        snd.reset(new Sounds());
         snd->init();
 
         logtxt.print("Sound initialized");
@@ -100,32 +92,4 @@ App::App()
     snd(NULL)
 
 {
-}
-
-App::~App(void)
-{
-    try {
-        if ( snd ) {
-            delete snd;
-            snd = NULL;
-        }
-    }
-    catch ( Error& err ) {
-        std::cerr << (err.getDesc() );
-        setQuit(true);
-        logtxt.print( err.getDesc() );
-    }
-    catch (...) {
-        std::cerr << "Unexpected exception";
-        setQuit(true);
-        logtxt.print( "Unexpected exception in App::~App()" );
-    }
-}
-void App::PrepareShutdown() {
-
-    if ( TTF_WasInit() )
-        TTF_Quit();
-
-    SDL_Quit();
-
 }

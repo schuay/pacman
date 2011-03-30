@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include <SFML/Audio.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include "Main.h"
@@ -22,7 +23,7 @@ class Sounds
 {
 public:
     Sounds();
-    ~Sounds();
+
     bool init();
     void play(int i, bool looped=0, int volume=128);
 //    void modify( int sound, long freq, long volume=0, long pan=0 );
@@ -31,7 +32,9 @@ public:
     void toggleSounds();
     bool on;
 private:
-    shared_ptr<Mix_Chunk>
+    shared_ptr<sf::SoundBuffer>
+            sndbuf[NUMOFSOUNDS];
+    shared_ptr<sf::Sound>
             snd[NUMOFSOUNDS];
 
     std::string

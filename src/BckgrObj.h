@@ -23,7 +23,7 @@ class BckgrObj :
 	public Object
 {
 public:
-    BckgrObj(shared_ptr<SDL_Surface> buffer, int os);
+    BckgrObj(shared_ptr<sf::RenderWindow> buffer, int os);
 
     void Draw();
     void Draw(int ix, int iy, int obj=3, int type=1);
@@ -42,10 +42,13 @@ public:
     void setFruitAlpha(int a);
 
 private:
-    shared_ptr<SDL_Surface>
+    shared_ptr<sf::Sprite>
             mapEl[NUMOFMAPTEX],
             objEl[NUMOFMAPTEX],
             mapElRot[NUMOFMAPTEX][3];
+    shared_ptr<sf::Image>
+            imgs[NUMOFMAPTEX],
+            objimgs[NUMOFMAPTEX];
 
     int
             objcounter,

@@ -9,8 +9,11 @@
 
 
 #pragma once
-#include "Main.h"
+
+#include <SFML/Graphics.hpp>
 #include <boost/shared_ptr.hpp>
+
+#include "Sounds.h"
 
 using boost::shared_ptr;
 
@@ -20,12 +23,10 @@ class App
 {
 public:
     App();
-    ~App();             //SDL systems are shut down in destructor
 
     void InitApp();     //SDL systems are initialized
     void InitWindow();  //creates window with parameters from loaded settings file
     void InitSound();
-    void PrepareShutdown();
 
     //////////////
     //Global
@@ -33,9 +34,8 @@ public:
 
     inline bool getQuit() const { return quit; }
     void setQuit( bool q ) { quit = q; }
-    shared_ptr<SDL_Surface> getScreen() const { return screen; }
-    shared_ptr<SDL_Surface> getBuf() const { return buf; }
-    Sounds* getSnd() { return snd; }
+    shared_ptr<sf::RenderWindow> getScreen() const { return screen; }
+    shared_ptr<Sounds> getSnd() { return snd; }
 
 private:
 
@@ -46,11 +46,10 @@ private:
     bool
             quit;       //if true then quit application
 
-    shared_ptr<SDL_Surface>
-            screen,    //screen surface
-            buf;       //buffer surface
+    shared_ptr<sf::RenderWindow>
+            screen;       //buffer surface
 
-    Sounds
-            *snd;
+    shared_ptr<Sounds>
+            snd;
 
 };

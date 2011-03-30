@@ -17,14 +17,9 @@ extern App app;
 extern Settings settings;
 
 void Ghost::Draw(int ix, int iy, int obj, int type) {
-    SDL_Rect pos;
-
-    pos.x=ix;
-    pos.y=iy;
-    pos.w=pos.h=GHOSTSIZE;
-
-    SDL_SetAlpha(ghostEl[0].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-    SDL_BlitSurface(ghostEl[0].get(),NULL,buf.get(),&pos);
+    ghostEl[0]->SetPosition(ix, iy);
+    ghostEl[0]->SetColor(sf::Color(255, 255, 255, alpha));
+    buf->Draw(*(ghostEl[0].get()));
 }
 int Ghost::getXpix() {
     return xpix;
@@ -847,82 +842,78 @@ void Ghost::Update( int time) {
 }
 void Ghost::Draw() {
 
-    SDL_Rect pos;
+    sf::Vector2f pos;
+    pos.x = xpix;
+    pos.y = ypix;
 
-    pos.x=xpix;
-    pos.y=ypix;
-    pos.h=GHOSTSIZE;
-    pos.w=GHOSTSIZE;
-
-    //normal state
-
-    if (state == 0) {
-        SDL_SetAlpha(ghostEl[0].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(ghostEl[0].get(),NULL,buf.get(),&pos);
-    }
-
-    //vulnerable state
-
-    else if (state == 1) {
-        SDL_SetAlpha(ghostEl[2].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(ghostEl[2].get(),NULL,buf.get(),&pos);
-    }
-
-    //warning state
-
-    else if (state == 2) {
+    shared_ptr<sf::Sprite> s;
+    switch (state) {
+    case 0:
+        s = ghostEl[0];
+        break;
+    case 1:
+        s = ghostEl[2];
+        break;
+    case 3:
+        s = ghostEl[4];
+        break;
+    case 2:
         if ( !paused ) animcounter++;
         if (animcounter%30 < 15) {
-            SDL_SetAlpha(ghostEl[3].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-            SDL_BlitSurface(ghostEl[3].get(),NULL,buf.get(),&pos);
+            s = ghostEl[3];
+        } else {
+            s = ghostEl[2];
         }
-        else {
-            SDL_SetAlpha(ghostEl[2].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-            SDL_BlitSurface(ghostEl[2].get(),NULL,buf.get(),&pos);
-        }
+        break;
+    default:
+        break;
     }
-    //if dead, only eyes are drawn
 
-    else if (state == 3) {
-        SDL_SetAlpha(ghostEl[4].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(ghostEl[4].get(),NULL,buf.get(),&pos);
-    }
+    s->SetPosition(pos);
+    s->SetColor(sf::Color(255, 255, 255, alpha));
+    buf->Draw(*(s.get()));
 
     if (dx == 1)
-        pos.x=pos.x+2;
+        pos.x+=2;
     else if (dx == -1)
-        pos.x=pos.x-2;
+        pos.x-=2;
     else if (dy == -1)
-        pos.y=pos.y-2;
+        pos.y-=2;
     else if (dy == 1)
-        pos.y=pos.y+2;
+        pos.y+=2;
 
     //draw eyes
-    SDL_SetAlpha(ghostEl[1].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-    SDL_BlitSurface(ghostEl[1].get(),NULL,buf.get(),&pos);
 
+    ghostEl[1]->SetPosition(xpix, ypix);
+    ghostEl[1]->SetColor(sf::Color(255, 255, 255, alpha));
+    buf->Draw(*(ghostEl[1].get()));
 }
 
 bool Ghost::LoadTextures(std::string path) {
 
-    std::string files[5];
-    SDL_PixelFormat *fmt;
+    std::string files[GHOSTTEXCOUNT];
 
-    files[0]=path + "baddie" + filename + ".png";
-    files[1]=path + "baddie_eyes.png";
-    files[2]=path + "baddie" + filename + "vuln.png";
-    files[3]=path + "baddie" + filename + "warn.png";
-    files[4]=path + "baddie_dead.png";
+    files[0]=path + "ghost" + filename + ".png";
+    files[1]=path + "ghost_eyes.png";
+    files[2]=path + "ghost" + filename + "vuln.png";
+    files[3]=path + "ghost" + filename + "warn.png";
+    files[4]=path + "ghost_dead.png";
 
     try {
 
-        for (int i = 0; i<5; i++) {
-            ghostEl[i].reset(IMG_Load(files[i].c_str()), SDL_FreeSurface);
-            if ( !ghostEl[i] )
-                throw Error("Failed to load ghost texture: " + files[i]);
+        for (int i = 0; i<GHOSTTEXCOUNT; i++) {
 
-            fmt=ghostEl[i]->format;
-            SDL_SetColorKey(ghostEl[i].get(),SDL_SRCCOLORKEY|SDL_RLEACCEL,SDL_MapRGB(fmt,255,0,255));
+            sf::Image *img = new sf::Image();
+            imgs[i].reset(img);
+
+
+            if (!img->LoadFromFile(files[i])) {
+                throw Error("Failed to load texture");
+            }
+            img->CreateMaskFromColor(sf::Color(255, 0, 255));
+
+            ghostEl[i].reset(new sf::Sprite(*img));
+
         }
         logtxt.print(filename + " ghost textures loaded");
     }
@@ -941,7 +932,7 @@ bool Ghost::LoadTextures(std::string path) {
     return true;
 }
 
-Ghost::Ghost(shared_ptr<SDL_Surface> buf, int os, int ix, int iy, int ispdmod, int itilesize,
+Ghost::Ghost(shared_ptr<sf::RenderWindow> buf, int os, int ix, int iy, int ispdmod, int itilesize,
 			 int iheight, int iwidth, int *imap, std::string fn)
 :   Object( buf, os),
     x(ix),

@@ -16,7 +16,8 @@ CXX = @CXX@
 CPPFLAGS = @CPPFLAGS@
 CFLAGS = $(CPPFLAGS) @CFLAGS@
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
+#LIBS = @LIBS@
+LIBS = -lsfml_graphics -lsfml_audio
 #INSTALL = @INSTALL@
 INSTALL = install
 CP = cp
@@ -33,7 +34,7 @@ $(TARGET): $(OBJECTS)
 	$(CXX) $(LDFLAGS) $(LIBS) $(OBJECTS) -o $@
 
 %.o: %.cpp
-	$(CXX) -c $(CPPFLAGS) `sdl-config --cflags` $< -o $@
+	$(CXX) -c $(CPPFLAGS) $< -o $@
 
 clean:
 	rm -f $(OBJECTS) $(EXECUTABLE)

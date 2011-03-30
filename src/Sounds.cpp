@@ -23,14 +23,13 @@ void Sounds::toggleSounds() {
 }
 void Sounds::stop() {
     int i;
-    for (i=0;i<NUMOFSOUNDS;i++)
+    for (i=0; i < NUMOFSOUNDS; i++)
         stop(i);
 }
 
 void Sounds::stop(int i) {
     if ( !isinit ) return;
-    if (Mix_Playing(i))
-        Mix_HaltChannel(i);
+    snd[i]->Stop();
 }
 //void Sounds::modify( int sound, long freq, long volume, long pan) {
 //	snd[sound]->Modify(freq, volume, pan);
@@ -42,15 +41,10 @@ void Sounds::play(int i, bool looped, int volume) {
     if ( !isinit ) return;
     if (!on) return;
 
-    if (Mix_Playing(i))
-        Mix_HaltChannel(i);
+    snd[i]->SetLoop(looped);
+    snd[i]->SetVolume(volume);
 
-    int loop = 0;
-    if ( looped )
-        loop = -1;
-
-    Mix_Volume(i,volume);
-    Mix_PlayChannel(i,snd[i].get(),loop);
+    snd[i]->Play();
 }
 bool Sounds::init() {
 
@@ -58,24 +52,14 @@ bool Sounds::init() {
         return true;
 
     try {
-        //initialize SDL mixer
-        int audio_rate = 44100;
-        Uint16 audio_format = AUDIO_S16SYS;
-        int audio_channels = 2;
-        int audio_buffers = 512;
-
-        if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0)
-            throw Error("Error while initializing SDL");
-
-        Mix_AllocateChannels(NUMOFSOUNDS);
-
-        //load wav files
         int i;
-        for (i=0;i<NUMOFSOUNDS;i++) {
+        for (i=0; i < NUMOFSOUNDS; i++) {
             string path = APP_PATH "/" + sndPaths[i];
-            snd[i].reset(Mix_LoadWAV(path.c_str()), Mix_FreeChunk);
-            if ( snd[i] == NULL )
-                throw Error(Mix_GetError());
+            sf::SoundBuffer *buf = new sf::SoundBuffer();
+            sndbuf[i].reset(buf);
+            if (!sndbuf[i]->LoadFromFile(path))
+                throw Error("Error loading " + sndPaths[i]);
+            snd[i].reset(new sf::Sound(*buf));
         }
 
         isinit = true;
@@ -111,7 +95,3 @@ Sounds::Sounds() :
     sndPaths[12] = "sound/booster.wav";
 }
 
-Sounds::~Sounds()
-{
-    Mix_CloseAudio();
-}

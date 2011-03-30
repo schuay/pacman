@@ -18,11 +18,13 @@
 
 using boost::shared_ptr;
 
+#define GHOSTTEXCOUNT 5
+
 class Ghost :
 	public Object
 {
 public:
-    Ghost(shared_ptr<SDL_Surface> buf, int os, int ix, int iy, int ispdmod, int itilesize,
+    Ghost(shared_ptr<sf::RenderWindow> buf, int os, int ix, int iy, int ispdmod, int itilesize,
             int iheight, int iwidth, int *imap, std::string fn);
     ~Ghost();
 
@@ -96,8 +98,10 @@ private:
             xfloat,	//current position as floating point based on pixel pos - allows for infinite speed
             yfloat;	// variations because the xfloat can be reduced to xpix
 
-    shared_ptr<SDL_Surface>
-            ghostEl[5];
+    shared_ptr<sf::Sprite>
+            ghostEl[GHOSTTEXCOUNT];
+    shared_ptr<sf::Image>
+            imgs[GHOSTTEXCOUNT];
 
     BHeap
             heap;

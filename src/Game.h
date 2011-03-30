@@ -86,16 +86,17 @@ private:
     std::string
             fps;
 
-    SDL_Rect
-            fpsbox,
+    sf::Vector2f
             scorebox,
             floatingscorebox;
 
     unsigned int
             ticks;
 
-    TTF_Font
-            *font;
+    sf::Font
+            font;
+    sf::String
+            str;
 
     Object
             *objects[NUMOFOBJECTS];
@@ -109,7 +110,7 @@ private:
             *objmap,
             key,
             score,
-            deadghostcount,	//used to multiplay score for eating ghosts
+            deadghostcount,	//used to multiply score for eating ghosts
             lives,
             objscore,
             floatingX,

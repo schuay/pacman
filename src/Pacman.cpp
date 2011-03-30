@@ -19,15 +19,8 @@ void Pacman::setSpeedMult( int s) {
     spdmult = s;
 }
 void Pacman::Draw(int ix, int iy, int obj, int type) {
-    SDL_Rect pos;
-
-    pos.x=ix;
-    pos.y=iy;
-    pos.h=PACSIZE;
-    pos.w=PACSIZE;
-
-    SDL_SetAlpha(pacEl[3].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-    SDL_BlitSurface(pacEl[3].get(),NULL,buf.get(),&pos);
+    pacEl[3]->SetPosition(ix, iy);
+    buf->Draw(*(pacEl[3].get()));
 }
 void Pacman::reset(int ix, int iy) {
     animcounter=0;
@@ -152,7 +145,6 @@ void Pacman::Update(int time) {
 void Pacman::Draw() {
 
     int i;
-    SDL_Rect pos;
 
     //calculate displayed animation frame from animcounter.. abs is not the right function
     //there's probably a better way to handle this:
@@ -174,31 +166,21 @@ void Pacman::Draw() {
     else if ( animcounter >= 30 && animcounter < 32 ) i=0;
     else i=0; //avoid compiler warning
 
-    pos.y=ypix;
-    pos.x=xpix;
-    pos.w=PACSIZE;
-    pos.h=PACSIZE;
+    shared_ptr<sf::Sprite> s;
+    if ((dx == 1 && dy == 0) ||
+            (dx == 0 && dy == 0)) {	//right or initial
+        s = pacEl[i];
+    } else if (dx == -1 && dy == 0) {	//left
+        s = pacElRot[i][1];
+    } else if (dx == 0 && dy == -1) {	//up
+        s = pacElRot[i][2];
+    } else if (dx == 0 && dy == 1) {	//down
+        s = pacElRot[i][0];
+    }
 
-    if (dx == 1 && dy == 0) {	//right
-        SDL_SetAlpha(pacEl[i].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(pacEl[i].get(),NULL,buf.get(),&pos);
-    }
-    else if (dx == -1 && dy == 0) {	//left
-        SDL_SetAlpha(pacElRot[i][1].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(pacElRot[i][1].get(),NULL,buf.get(),&pos);
-    }
-    else if (dx == 0 && dy == -1) {	//up
-        SDL_SetAlpha(pacElRot[i][2].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(pacElRot[i][2].get(),NULL,buf.get(),&pos);
-    }
-    else if (dx == 0 && dy == 1) {	//down
-        SDL_SetAlpha(pacElRot[i][0].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(pacElRot[i][0].get(),NULL,buf.get(),&pos);
-    }
-    else if (dx == 0 && dy == 0) {	//init position
-        SDL_SetAlpha(pacEl[i].get(),SDL_SRCALPHA|SDL_RLEACCEL,alpha);
-        SDL_BlitSurface(pacEl[i].get(),NULL,buf.get(),&pos);
-    }
+    s->SetPosition(xpix, ypix);
+    s->SetColor(sf::Color(255, 255, 255, alpha));
+    buf->Draw(*(s.get()));
 
     if ( !paused) {
         if (animcounter == 31) animcounter = 0;
@@ -211,27 +193,31 @@ bool Pacman::LoadTextures(std::string path) {
 
     int i,j;
     std::string num[10];
-    SDL_PixelFormat *fmt;
 
     for (i=0;i<10;i++)
         num[i]='0'+i;
 
     try {
         for (i=0;i<NUMPACANIM;i++) {
-            pacEl[i].reset(IMG_Load((path + "pac" + num[i] + ".png").c_str()), SDL_FreeSurface);
 
-            if ( !pacEl[i] )
-                throw Error("Failed to load pacman texture: " + num[i]);
+            sf::Image *img = new sf::Image();
+            imgs[i].reset(img);
 
-            fmt = pacEl[i]->format;
-            SDL_SetColorKey(pacEl[i].get(),SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(fmt,255,0,255));
+            if (!img->LoadFromFile(path + "pac" + num[i] + ".png")) {
+                throw Error(num[i] + "Failed to load texture");
+            }
+            img->CreateMaskFromColor(sf::Color(255, 0, 255));
+
+            pacEl[i].reset(new sf::Sprite(*img));
 
             //cache rotated sprites
             for (j=0;j<3;j++) {
-                if (j==1)
-                    pacElRot[i][j]=Rotate(pacEl[i],0,-1,1);
-                else
-                    pacElRot[i][j]=Rotate(pacEl[i],360-(j+1)*90);
+                pacElRot[i][j].reset(new sf::Sprite(*img));
+                if (j==1) {
+                    pacElRot[i][j]->FlipX(true);
+                } else {
+                    pacElRot[i][j]->Rotate(360-(j+1)*90);
+                }
             }
         }
 
@@ -290,7 +276,7 @@ void Pacman::setNextDir(int next) {
         }
     }
 }
-Pacman::Pacman(shared_ptr<SDL_Surface> buf, int os, int ix, int iy, int ispdmod,
+Pacman::Pacman(shared_ptr<sf::RenderWindow> buf, int os, int ix, int iy, int ispdmod,
 			   int itilesize, int iheight, int iwidth, int *imap)
 :   Object( buf, os),
     x(ix),

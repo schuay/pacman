@@ -23,7 +23,7 @@ class Pacman :
 	public Object
 {
 public:
-    Pacman(shared_ptr <SDL_Surface> buf, int os, int ix, int iy, int ispdmod, int itilesize, int iheight, int iwidth, int *imap);
+    Pacman(shared_ptr <sf::RenderWindow> buf, int os, int ix, int iy, int ispdmod, int itilesize, int iheight, int iwidth, int *imap);
 
     void Draw();
     void Draw(int ix, int iy, int obj=3, int type=1);
@@ -71,7 +71,9 @@ private:
             xfloat,	//current position as floating point based on pixel pos - allows for infinite speed
             yfloat;	// variations because xfloat can be reduced to xpix
 
-    shared_ptr<SDL_Surface>
+    shared_ptr<sf::Sprite>
             pacEl[NUMPACANIM],
             pacElRot[NUMPACANIM][3];
+    shared_ptr<sf::Image>
+            imgs[NUMPACANIM];
 };
