@@ -22,16 +22,21 @@ INSTALL = install
 CP = cp
 CHMOD = chmod
 
-SOURCES=Sounds.cpp Settings.cpp Pacman.cpp Main.cpp Log.cpp hScore.cpp Ghost.cpp Game.cpp Error.cpp BckgrObj.cpp BHeap.cpp App.cpp
-OBJECTS=Sounds.o Settings.o Pacman.o Main.o Log.o hScore.o Ghost.o Game.o Error.o BckgrObj.o BHeap.o App.o
-EXECUTABLE=pacman_sdl
+SOURCES=Sounds.cpp Settings.cpp Pacman.cpp Main.cpp Log.cpp hScore.cpp \
+	Ghost.cpp Game.cpp Error.cpp BckgrObj.cpp BHeap.cpp App.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+TARGET=pacman_sdl
 
-all: 
-	$(CXX) -c `sdl-config --cflags` $(SOURCES) 
-	$(CXX) `sdl-config --libs` $(LIBS)  $(OBJECTS) -o $(EXECUTABLE)
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CXX) $(LDFLAGS) $(LIBS) $(OBJECTS) -o $@
+
+%.o: %.cpp
+	$(CXX) -c $(CPPFLAGS) `sdl-config --cflags` $< -o $@
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f $(OBJECTS) $(EXECUTABLE)
 
 install:
 	mkdir -p $(DESTDIR)/usr/bin/

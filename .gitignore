@@ -1,9 +1,8 @@
-obj/*
-bin/*
-log.txt
 *.o
-pacman_v4
-pacman
+pacman_sdl
 *.pro
 *.pro.user
+config*
 Makefile
+src/autom4te.cache/
+pacman_sdl.*
