@@ -33,6 +33,15 @@ enum GameStateEnum {
     STATE_VIEW_HSCORE,
 };
 
+enum KeyEnum {
+    UP,
+    RIGHT,
+    DOWN,
+    LEFT,
+    ENTER,
+    SPACE
+};
+
 class Game
 {
 public:
@@ -51,7 +60,7 @@ public:
 
     std::string getFPS();
 
-    void processInput(int k);
+    void processInput(KeyEnum k);
     void processLogic();
     void logicGame();
     void logicEnterHscore();
@@ -110,10 +119,12 @@ private:
     // GAME OBJECTS
     //////////////////////
 
+    KeyEnum
+            key;
+
     int
             *map,
             *objmap,
-            key,
             score,
             deadghostcount,	//used to multiply score for eating ghosts
             lives,

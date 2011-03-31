@@ -948,7 +948,7 @@ void Game::resetLvl() {	// vars and positions when pacman dies during level
     gamestarted= false;
     inputwaiting = false;
 }
-void Game::processInput(int k) {
+void Game::processInput(KeyEnum k) {
 
     inputwaiting = true;
     key = k;

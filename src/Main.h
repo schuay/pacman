@@ -43,13 +43,6 @@
 #define MODE_LEVELS 2
 #define MODE_SKINS 1
 
-#define UP	0
-#define RIGHT   1
-#define DOWN    2
-#define LEFT    3
-#define ENTER   4
-#define SPACE   5
-
 #define MOVEMOD 2000.0f
 
 #define EXTRA_Y_SPACE 50
