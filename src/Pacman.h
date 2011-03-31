@@ -48,6 +48,9 @@ public:
     int getYpix();
 
 private:
+
+    int getAnimationStep() const;
+
     int
             x,	//current position in tiles (all positions refer to upper left corner)
             y,
@@ -70,8 +73,8 @@ private:
 
             *map;
 
-    unsigned int
-            animcounter;
+    float
+            elapsedTime;
 
     float
             xfloat,	//current position as floating point based on pixel pos - allows for infinite speed

@@ -55,6 +55,8 @@ public:
     int getYpix();
 
 private:
+    int getAnimationStep() const;
+
     int
             x,	//current position in tiles (all positions refer to upper left corner)
             y,
@@ -92,7 +94,7 @@ private:
 
             state,		// 0 == normal, 1 == vulnerable, 2 == warning, 3 == dead
 
-            animcounter,
+            elapsedTime,
             ghost_iq,		// increases the chance of choosing shortest path
 
             ghost_start_point_x,

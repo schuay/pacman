@@ -47,7 +47,7 @@ void Ghost::changeDifficulty(int spd, int iq) {
     ghost_iq += iq;
 }
 void Ghost::reset(int ix, int iy) {
-    animcounter=0;
+    elapsedTime = 0.f;
     x=ix;
     y=iy;
     xpix=ix*tilesize;
@@ -681,7 +681,6 @@ void Ghost::setState(int st) {
     else if (st == 2 && state == 1) {
         state = st;
         spdmod= 2*defspeed/3;
-        animcounter=0;
     }
     //dead mode
     else if (st == 3 && state != 0) {
@@ -838,7 +837,18 @@ void Ghost::update( int time) {
 
     x= xpix/tilesize;
     y=ypix/tilesize;
+
+    elapsedTime += time;
 }
+
+int Ghost::getAnimationStep() const {
+    /* get elapsed time down to a manageable level */
+    int elapsed = elapsedTime / 5.f;
+    int step = elapsed % 100;
+    /* subtract 7 and return abs because we are going back and forth between 0 and 7 */
+    return (step < 50) ? 0 : 1;
+}
+
 void Ghost::draw() {
 
     sf::Vector2f pos;
@@ -857,12 +867,7 @@ void Ghost::draw() {
         s = ghostEl[4];
         break;
     case 2:
-        if ( !paused ) animcounter++;
-        if (animcounter%30 < 15) {
-            s = ghostEl[3];
-        } else {
-            s = ghostEl[2];
-        }
+        s = ghostEl[2 + getAnimationStep()];
         break;
     default:
         break;
@@ -947,7 +952,7 @@ Ghost::Ghost(shared_ptr<sf::RenderWindow> buf, int os, int ix, int iy, int ispdm
     map(imap),
     dirToTar(-1),
     state(0),
-    animcounter(0),
+    elapsedTime(0.f),
     ghost_iq(0),
     heap(iwidth, iheight),
     gateopen(1)

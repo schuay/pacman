@@ -21,7 +21,7 @@ void Pacman::draw(int ix, int iy, int obj, int type) {
     pacEl[3]->blit(buf, sf::Vector2i(ix, iy));
 }
 void Pacman::reset(int ix, int iy) {
-    animcounter=0;
+    elapsedTime=0.f;
     x=ix;
     y=iy;
     xpix=ix*tilesize;
@@ -139,52 +139,35 @@ void Pacman::update(int time) {
     x= xpix/tilesize;
     y=ypix/tilesize;
 
+    elapsedTime += time;
+
+}
+int Pacman::getAnimationStep() const {
+    /* get elapsed time down to a manageable level */
+    int elapsed = elapsedTime / 25.f;
+    /* modulo 15 because we have 7 animation steps */
+    int step = elapsed % 15;
+    /* subtract 7 and return abs because we are going back and forth between 0 and 7 */
+    return 7 - abs(step - 7);
 }
 void Pacman::draw() {
 
-    int i;
-
-    //calculate displayed animation frame from animcounter.. abs is not the right function
-    //there's probably a better way to handle this:
-    if ( animcounter < 20 ) i=0;
-    else if ( animcounter >= 20 && animcounter < 40 ) i=1;
-    else if ( animcounter >= 40 && animcounter < 60 ) i=2;
-    else if ( animcounter >= 60 && animcounter < 80 ) i=3;
-    else if ( animcounter >= 80 && animcounter < 100 ) i=4;
-    else if ( animcounter >= 100 && animcounter < 120 ) i=5;
-    else if ( animcounter >= 120 && animcounter < 140 ) i=6;
-    else if ( animcounter >= 140 && animcounter < 160 ) i=7;
-    else if ( animcounter >= 160 && animcounter < 180 ) i=7;
-    else if ( animcounter >= 180 && animcounter < 200 ) i=6;
-    else if ( animcounter >= 200 && animcounter < 220 ) i=5;
-    else if ( animcounter >= 220 && animcounter < 240 ) i=4;
-    else if ( animcounter >= 240 && animcounter < 260 ) i=3;
-    else if ( animcounter >= 260 && animcounter < 280 ) i=2;
-    else if ( animcounter >= 280 && animcounter < 300 ) i=1;
-    else if ( animcounter >= 300 && animcounter < 320 ) i=0;
-    else i=0; //avoid compiler warning
+    int animStep = getAnimationStep();
 
     shared_ptr<Sprite> s;
-    if ((dx == 1 && dy == 0) ||
-            (dx == 0 && dy == 0)) {	//right or initial
-        s = pacEl[i];
+    if ((dx == 1 && dy == 0) || (dx == 0 && dy == 0)) {	//right or initial
+        s = pacEl[animStep];
     } else if (dx == -1 && dy == 0) {	//left
-        s = pacElRot[i][1];
+        s = pacElRot[animStep][1];
     } else if (dx == 0 && dy == -1) {	//up
-        s = pacElRot[i][2];
+        s = pacElRot[animStep][2];
     } else if (dx == 0 && dy == 1) {	//down
-        s = pacElRot[i][0];
+        s = pacElRot[animStep][0];
     }
 
     s->setAlpha(alpha);
     s->blit(buf, sf::Vector2i(xpix, ypix));
-
-    if ( !paused) {
-        if (animcounter == 310) animcounter = 0;
-        else animcounter++;
-    }
 }
-
 
 bool Pacman::loadTextures(std::string path) {
 
@@ -280,7 +263,7 @@ Pacman::Pacman(shared_ptr<sf::RenderWindow> buf, int os, int ix, int iy, int isp
     height(iheight),
     width(iwidth),
     map(imap),
-    animcounter(0)
+    elapsedTime(0.f)
 {
 
     xpix=x*tilesize;
