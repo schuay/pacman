@@ -80,18 +80,18 @@ Sounds::Sounds() :
         on(true), isinit(false)
 {
     //set sound paths
-    sndPaths[0] = "sound/intro.mp3";
-    sndPaths[1] = "sound/munch_a.mp3";
-    sndPaths[2] = "sound/munch_b.mp3";
-    sndPaths[3] = "sound/large_pellet.mp3";
-    sndPaths[4] = "sound/ghost_eat.mp3";
-    sndPaths[5] = "sound/fruit.mp3";
-    sndPaths[6] = "sound/extra_man.mp3";
-    sndPaths[7] = "sound/vuln.mp3";
-    sndPaths[8] = "sound/death.mp3";
-    sndPaths[9] = "sound/newgame.mp3";
-    sndPaths[10] = "sound/siren.mp3";
-    sndPaths[11] = "sound/intermission.mp3";
-    sndPaths[12] = "sound/booster.mp3";
+    sndPaths[0] = "sound/intro.ogg";
+    sndPaths[1] = "sound/munch_a.ogg";
+    sndPaths[2] = "sound/munch_b.ogg";
+    sndPaths[3] = "sound/large_pellet.ogg";
+    sndPaths[4] = "sound/ghost_eat.ogg";
+    sndPaths[5] = "sound/fruit.ogg";
+    sndPaths[6] = "sound/extra_man.ogg";
+    sndPaths[7] = "sound/vuln.ogg";
+    sndPaths[8] = "sound/death.ogg";
+    sndPaths[9] = "sound/newgame.ogg";
+    sndPaths[10] = "sound/siren.ogg";
+    sndPaths[11] = "sound/intermission.ogg";
+    sndPaths[12] = "sound/booster.ogg";
 }
 

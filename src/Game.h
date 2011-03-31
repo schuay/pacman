@@ -83,6 +83,8 @@ private:
             state,
             counter;
 
+    sf::Clock clock;
+
     std::string
             fps;
 

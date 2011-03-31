@@ -17,7 +17,7 @@ CPPFLAGS = @CPPFLAGS@
 CFLAGS = $(CPPFLAGS) @CFLAGS@
 LDFLAGS = @LDFLAGS@
 #LIBS = @LIBS@
-LIBS = -lsfml_graphics -lsfml_audio
+LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 #INSTALL = @INSTALL@
 INSTALL = install
 CP = cp
@@ -34,7 +34,7 @@ $(TARGET): $(OBJECTS)
 	$(CXX) $(LDFLAGS) $(LIBS) $(OBJECTS) -o $@
 
 %.o: %.cpp
-	$(CXX) -c $(CPPFLAGS) $< -o $@
+	$(CXX) -g -c $(CPPFLAGS) $< -o $@
 
 clean:
 	rm -f $(OBJECTS) $(EXECUTABLE)

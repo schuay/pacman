@@ -24,7 +24,7 @@ void BckgrObj::Draw(int ix, int iy, int obj, int type, int alp) {
 
     s->SetColor(sf::Color(255, 255, 255, alp));
 
-    buf.get()->Draw(s);
+    buf->Draw(*(s.get()));
 }
 
 void BckgrObj::Draw(int ix, int iy, int obj, int type) {
@@ -49,7 +49,7 @@ void BckgrObj::Draw() {
 
     objcounter = 0;
 
-    buf.get()->Draw(mapEl[0].get());
+    buf->Draw(*(mapEl[0].get()));
 
     //DRAW FIELD
     for (j=0;j<height;j++) {
@@ -116,11 +116,12 @@ void BckgrObj::Draw() {
                 }
                 break;
             default:
+                continue;
             }
 
             s->SetPosition(i*settings.tilesize, j*settings.tilesize);
             s->SetColor(sf::Color(255, 255, 255, alpha));
-            buf.get()->Draw(s.get());
+            buf->Draw(*(s.get()));
 
         }
     }
@@ -143,13 +144,13 @@ void BckgrObj::Draw() {
                 s = objEl[objmap[j*width+i]];
                 break;
             default:
-
+                continue;
             }
 
             s.get()->SetPosition(i*settings.tilesize+10, // +10 are needed for correct placement
                 j*settings.tilesize+10);
             s->SetColor(sf::Color(255, 255, 255, alpha));
-            buf.get()->Draw(s.get());
+            buf->Draw(*(s.get()));
 
             objcounter++;
         }

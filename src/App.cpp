@@ -26,10 +26,7 @@ void App::InitWindow() {
             settings.width=settings.fieldwidth*settings.tilesize;
         }
 
-        screen.reset(SDL_SetVideoMode( settings.width,
-                                   settings.height+EXTRA_Y_SPACE,
-                                   bpp,         //bits per pixel; todo-make this dynamic
-                                   SDL_NOFRAME | SDL_DOUBLEBUF | SDL_HWSURFACE | SDL_ANYFORMAT ), SDL_FreeSurface);
+        screen->Create(sf::VideoMode(settings.width, settings.height+EXTRA_Y_SPACE), "pacman_sdl");
 
         if (screen == NULL)
             throw Error("Error while setting video mode");
@@ -88,8 +85,6 @@ void App::InitSound() {
 }
 
 App::App()
-:   quit(false),
-    snd(NULL)
-
+:   quit(false)
 {
 }

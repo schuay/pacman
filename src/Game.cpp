@@ -210,8 +210,8 @@ void Game::initEditor() {
         settings.LoadSettings( editorpath + CFGFILE );
 
         //if level has different field size than currently selected, setup new window with proper size
-        if (settings.fieldwidth*settings.tilesize != app.getScreen()->w
-            || settings.fieldheight*settings.tilesize+EXTRA_Y_SPACE != app.getScreen()->h) {
+        if (settings.fieldwidth*settings.tilesize != app.getScreen()->GetWidth()
+            || settings.fieldheight*settings.tilesize+EXTRA_Y_SPACE != app.getScreen()->GetHeight()) {
             app.InitWindow();
             logtxt.print("window resized...");
         }
@@ -235,84 +235,85 @@ void Game::changeSkin() {
 }
 void Game::emptyMsgPump() {
 
-    SDL_Event ev;
+    sf::Event ev;
+    shared_ptr<sf::RenderWindow> buf = app.getScreen();
 
-    while ( SDL_PollEvent(&ev) == 1 ) {
-        switch(ev.type) {
-        case SDL_KEYDOWN:
-            switch (ev.key.keysym.sym ) {
-            case SDLK_ESCAPE:
-            case SDLK_q:
+    while ( buf->GetEvent(ev) ) {
+        switch(ev.Type) {
+        case sf::Event::KeyPressed:
+            switch (ev.Key.Code ) {
+            case sf::Key::Escape:
+            case sf::Key::Q:
                 app.setQuit(true);
                 break;
-            case SDLK_UP:
+            case sf::Key::Up:
                 processInput(UP);
                 ((Pacman*)objects[1])->setNextDir( UP );
                 break;
-            case SDLK_DOWN:
+            case sf::Key::Down:
                 processInput(DOWN);
                 ((Pacman*)objects[1])->setNextDir( DOWN );
                 break;
-            case SDLK_LEFT:
+            case sf::Key::Left:
                 processInput(LEFT);
                 ((Pacman*)objects[1])->setNextDir( LEFT );
                 break;
-            case SDLK_RIGHT:
+            case sf::Key::Right:
                 processInput(RIGHT);
                 ((Pacman*)objects[1])->setNextDir( RIGHT );
                 break;
-            case SDLK_SPACE:
+            case sf::Key::Space:
                 boost();
                 break;
-            case SDLK_p:
+            case sf::Key::P:
                 if ( getState() == STATE_GAME )
                     pause();
                 break;
-            case SDLK_n:
+            case sf::Key::N:
                 if ( getState() != STATE_ENTER_HSCORE )
                     gameInit();
                 break;
-            case SDLK_l:
+            case sf::Key::L:
                 settings.lvlpathcurrent++;
                 if ( settings.lvlpathcurrent >= settings.lvlpathcount)
                     settings.lvlpathcurrent=0;
                 gameInit();
                 break;
-            case SDLK_s:
+            case sf::Key::S:
                 settings.skinspathcurrent++;
                 if ( settings.skinspathcurrent >= settings.skinspathcount)
                     settings.skinspathcurrent=0;
                 changeSkin();
                 break;
-            case SDLK_e:
-                initEditor();
-                setState( STATE_EDITOR );
-                break;
-            case SDLK_w:
-                //                        std::cerr << "w: save map not yet implemented";
-                editorSave();
-                break;
-            case SDLK_f:
+//            case sf::Key::E:
+//                initEditor();
+//                setState( STATE_EDITOR );
+//                break;
+//            case sf::Key::W:
+//                //                        std::cerr << "w: save map not yet implemented";
+//                editorSave();
+//                break;
+            case sf::Key::F:
                 toggleFps();
                 break;
-            case SDLK_h:
+            case sf::Key::H:
                 setState( STATE_VIEW_HSCORE );
                 break;
-            case SDLK_RETURN:
+            case sf::Key::Return:
                 processInput(ENTER);
                 break;
             default:
                 break;
             }
             break;
-        case SDL_MOUSEBUTTONDOWN:
-            if ( getState() == STATE_EDITOR )
-                processInput( CLICK, ev.button.x , ev.button.y);
-            break;
-        case SDL_MOUSEMOTION:
-            if ( getState() == STATE_EDITOR && ev.motion.state&SDL_BUTTON(1) )
-                processInput( CLICK, ev.motion.x, ev.motion.y);
-            break;
+//        case sf::Event::MouseButtonPressed:
+//            if ( getState() == STATE_EDITOR )
+//                processInput( CLICK, ev.MouseButton.X , ev.MouseButton.Y);
+//            break;
+//        case sf::Event::MouseMoved:
+//            if ( getState() == STATE_EDITOR && ev.motion.state&SDL_BUTTON(1) )
+//                processInput( CLICK, ev.motion.x, ev.motion.y);
+//            break;
         default:
             break;
         }
@@ -337,13 +338,10 @@ void Game::clearHscore() {
 void Game::renderViewHscore() {
     shared_ptr<sf::RenderWindow>
             buf = app.getScreen();
-    SDL_Color col;
     std::ostringstream ostr, scstr;
     sf::Vector2f rect;
     int i, sc;
     std::string nm;
-
-    col.r = col.g = col.b = 255;
 
     rect.x = settings.fieldwidth*settings.tilesize / 2 - 200;
     rect.y = settings.fieldheight*settings.tilesize / 2 - 200;
@@ -379,9 +377,7 @@ void Game::renderViewHscore() {
             sc=hscore.getScore(i);
 
             rect.x = settings.fieldwidth * settings.tilesize / 4;
-            rect.w = 200;
             rect.y = 200 + i*50;
-            rect.h = 50;
 
             if ( nm != "" ) {
                 str.SetText(nm);
@@ -611,7 +607,7 @@ void Game::logicGame() {
                     app.getSnd()->stop();
                     app.getSnd()->play(8, 0);
 
-                    SDL_Delay(1000);
+                    sf::Sleep(1.f);
 
                     if ( lives == 0) {
                         if (hscore.onlist(score) ) setState( STATE_ENTER_HSCORE );
@@ -698,7 +694,7 @@ void Game::logicGame() {
             specialspawned = true;
             ((BckgrObj*)objects[0])->setFruitAlpha(255);
             ((BckgrObj*)objects[0])->setSpecialSpawned(true);
-            fruittick = SDL_GetTicks() + FRUITDURATION;
+            fruittick = (int)(clock.GetElapsedTime() * 1000.f) + FRUITDURATION;
         }
 
         if ( ((BckgrObj*)objects[0])->getObjCount() == 0 ) {
@@ -710,21 +706,18 @@ void Game::logicGame() {
     }
 }
 void Game::renderEnterHscore() {
-    shared_ptr<SDL_Surface>
-            buf = app.getScreen(),
-            txt;
+    shared_ptr<sf::RenderWindow>
+            buf = app.getScreen();
     std::ostringstream ostr;
-    SDL_Rect rect;
-    SDL_Color col;
+    sf::Vector2f rect;
+    sf::Color col(255,255,255);
     int i;
     std::string tmp;
 
     col.r = col.g = col.b = 255;
 
     rect.x = settings.fieldwidth*settings.tilesize / 2 - 200;
-    rect.w = 400;
     rect.y = settings.fieldheight*settings.tilesize / 2 - 50;
-    rect.h = 50;
 
     try {
         // DRAW FIELD + SPRITES
@@ -758,9 +751,7 @@ void Game::renderEnterHscore() {
         buf->Draw(str);
 
         rect.y += 70;
-        rect.h = 50;
         rect.x = settings.fieldwidth*settings.tilesize / 2 - 60;
-        rect.w = 40;
 
         for (i=0;i<3;i++) {
             tmp=name[i];
@@ -787,11 +778,8 @@ void Game::renderEnterHscore() {
 void Game::renderNormal() {
     int i;
     std::ostringstream ostr;
-    SDL_Color col;
     shared_ptr<sf::RenderWindow> buf = app.getScreen();
 
-
-    col.r = col.g = col.b = 255;
 
     try {
         // DRAW FIELD + SPRITES
@@ -830,11 +818,9 @@ void Game::renderNormal() {
         // PAUSE
 
         if ( ispaused ) {
-            SDL_Rect pauserect;
+            sf::Vector2f pauserect;
             pauserect.y = settings.fieldwidth*settings.tilesize / 2 - 100;
-            pauserect.w = 200;
             pauserect.x = settings.fieldheight*settings.tilesize / 2 - 10;
-            pauserect.h = 50;
 
             str.SetText("PAUSED");
             str.SetPosition(pauserect);
@@ -844,11 +830,9 @@ void Game::renderNormal() {
         // LEVEL CLEARED
 
         else if ( levelcleared ) {
-            SDL_Rect pauserect;
+            sf::Vector2f pauserect;
             pauserect.x = settings.fieldwidth*settings.tilesize / 2 - 200;
-            pauserect.w = 400;
             pauserect.y = settings.fieldheight*settings.tilesize / 2 - 10;
-            pauserect.h = 50;
 
             str.SetText("LEVEL CLEARED!");
             str.SetPosition(pauserect);
@@ -873,7 +857,7 @@ void Game::boost() {
 
         app.getSnd()->play( 12, 0 );
 
-        boosttick = SDL_GetTicks() + BOOSTTIME;
+        boosttick = (int)(clock.GetElapsedTime() * 1000.f) + BOOSTTIME;
         isboosted = true;
         boostavailable = false;
         ((Pacman*)objects[PAC])->setSpeedMult( 2 );
@@ -887,7 +871,7 @@ bool Game::pause() {
         app.getSnd()->stop();
         for (i=0;i<NUMOFOBJECTS;i++) objects[i]->setPaused( true);
 
-        pausetick = SDL_GetTicks();
+        pausetick = (int)(clock.GetElapsedTime() * 1000.f);
 
         return ispaused;
     }
@@ -897,7 +881,7 @@ bool Game::pause() {
         if (vulnflag) app.getSnd()->play(7, 1);
         for (i=0;i<NUMOFOBJECTS;i++) objects[i]->setPaused( false);
 
-        int delta( SDL_GetTicks() - pausetick );
+        int delta( (int)(clock.GetElapsedTime() * 1000.f) - pausetick );
 
         ghosttick += delta;
         fruittick += delta;
@@ -941,7 +925,7 @@ void Game::nextLvl() {
         specialeaten = false;
         ((BckgrObj*)objects[0])->setSpecialEaten(false);
         specialhasbeenspawned = false;
-        time = oldtime = SDL_GetTicks();
+        time = oldtime = (int)(clock.GetElapsedTime() * 1000.f);
         ghosttick = 0;
         isboosted = false;
         ((Pacman*)objects[PAC])->setSpeedMult( 1);
@@ -951,7 +935,7 @@ void Game::nextLvl() {
         if (ispaused) pause();
 
 
-        SDL_Delay(1000);
+        sf::Sleep(1.f);
 
 
         render();
@@ -1006,7 +990,7 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
         inputwaiting = false;
         gamestarted = false;
         isboosted = false;
-        time = oldtime = SDL_GetTicks();
+        time = oldtime = (int)(clock.GetElapsedTime() * 1000.f);
         boostavailable = true;
         levelcleared = false;
         setState( STATE_GAME);
@@ -1044,8 +1028,8 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
         logtxt.print("Unloading complete");
 
         //if level has different field size than currently selected, setup new window with proper size
-        if (settings.fieldwidth*settings.tilesize != app.getScreen()->w
-            || settings.fieldheight*settings.tilesize+EXTRA_Y_SPACE != app.getScreen()->h) {
+        if (settings.fieldwidth*settings.tilesize != app.getScreen()->GetWidth()
+            || settings.fieldheight*settings.tilesize+EXTRA_Y_SPACE != app.getScreen()->GetHeight()) {
             app.InitWindow();
             logtxt.print("window resized...");
         }
@@ -1184,7 +1168,7 @@ void Game::resetLvl() {	// vars and positions when pacman dies during level
 
     app.getSnd()->stop();
 
-    SDL_Delay(1000);
+    sf::Sleep(1.f);
 
     app.getSnd()->play(9);
 
@@ -1231,7 +1215,7 @@ void Game::processInput(int k, int ix, int iy) {
 
 void Game::processLogic() {
 
-    time = SDL_GetTicks();
+    time = (int)(clock.GetElapsedTime() * 1000.f);
 
     if ( state == STATE_GAME ) logicGame();
     else if (state == STATE_ENTER_HSCORE ) logicEnterHscore();
@@ -1289,7 +1273,7 @@ bool Game::loadMap(std::string file, int* memmap) {
 
 
 std::string Game::getFPS() {
-    unsigned int newtick = SDL_GetTicks();
+    unsigned int newtick = (int)(clock.GetElapsedTime() * 1000.f);
     std::ostringstream ostr;
     float diff;
 
@@ -1409,7 +1393,7 @@ Game::Game()
 {
     int i;
 
-    time = oldtime = ticks = SDL_GetTicks();
+    time = oldtime = ticks = (int)(clock.GetElapsedTime() * 1000.f);
 
     fps = "loading";
 
