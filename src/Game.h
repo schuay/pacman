@@ -26,6 +26,12 @@ using boost::shared_ptr;
 
 class Sounds;
 
+enum GameStateEnum {
+    STATE_GAME,
+    STATE_STOPPED,
+    STATE_ENTER_HSCORE,
+    STATE_VIEW_HSCORE,
+};
 
 class Game
 {
@@ -45,7 +51,7 @@ public:
 
     std::string getFPS();
 
-    void processInput(int k, int ix = -1, int iy = -1);
+    void processInput(int k);
     void processLogic();
     void logicGame();
     void logicEnterHscore();
@@ -57,8 +63,8 @@ public:
     bool pause();
     void boost();
 
-    int  getState() { return state; }
-    void setState( int st);
+    GameStateEnum  getState() const { return state; }
+    void setState(GameStateEnum st);
 
     void toggleFps() { showfps = !showfps; }
 
@@ -70,11 +76,14 @@ public:
     void emptyMsgPump();
     void changeSkin();
 
-    void PrepareShutdown();
+    void prepareShutdown();
 
 private:
+
+    GameStateEnum
+            state;
+
     int
-            state,
             counter;
 
     sf::Clock clock;

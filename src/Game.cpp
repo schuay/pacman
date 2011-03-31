@@ -182,7 +182,7 @@ void Game::renderViewHscore() {
     }
 }
 
-void Game::setState(int st) {
+void Game::setState(GameStateEnum st) {
     int i;
 
     if ( st == STATE_GAME ) {
@@ -948,15 +948,10 @@ void Game::resetLvl() {	// vars and positions when pacman dies during level
     gamestarted= false;
     inputwaiting = false;
 }
-void Game::processInput(int k, int ix, int iy) {
+void Game::processInput(int k) {
 
     inputwaiting = true;
-
     key = k;
-    if ( k == CLICK ) {
-        mouseX = ix;
-        mouseY = iy;
-    }
 
     if ( !gamestarted && !ispaused ) {
         gamestarted = true;
@@ -1106,7 +1101,7 @@ bool Game::loadFont() {
     return true;
 }
 
-void Game::PrepareShutdown() {
+void Game::prepareShutdown() {
     int i;
     for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) delete objects[i];
 }
