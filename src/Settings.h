@@ -29,7 +29,7 @@ public:
     Settings();
     ~Settings();
 
-    bool LoadSettings(string filename);
+    bool loadSettings(string filename);
 
     //searches for str in level/skinspaths; if successful, sets currently selected path.
     //returns 0 on success, 1 on failure

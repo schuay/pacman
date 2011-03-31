@@ -33,13 +33,13 @@ class Sprite
 {
 public:
 
-    void Load(std::string Filename);
-    void Blit(shared_ptr<sf::RenderWindow> target, sf::Vector2i p);
-    void SetAsIcon(shared_ptr<sf::RenderWindow> target) const;
+    void load(std::string Filename);
+    void blit(shared_ptr<sf::RenderWindow> target, sf::Vector2i p);
+    void setAsIcon(shared_ptr<sf::RenderWindow> target) const;
 
-    void SetRotation(int angle);
-    void SetAlpha(int alpha);
-    void SetFlipX();
+    void setRotation(int angle);
+    void setAlpha(int alpha);
+    void setFlipX();
 
 private:
 

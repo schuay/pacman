@@ -27,8 +27,9 @@ class Logger
 {
 public:
     Logger();
-    static void Msg(string msg) { std::cout << msg << std::endl; }
-    static void Err(string msg) { std::cerr << msg << std::endl; }
+
+    static void msg(string msg) { std::cout << msg << std::endl; }
+    static void err(string msg) { std::cerr << msg << std::endl; }
 };
 
 #endif // LOGGER_H

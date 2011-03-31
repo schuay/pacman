@@ -64,13 +64,13 @@ bool Sounds::init() {
         }
 
         isinit = true;
-        Logger::Msg("sounds loaded successfully");
+        Logger::msg("sounds loaded successfully");
     }
     catch ( Error& err ) {
-        Logger::Err(err.getDesc());
+        Logger::err(err.getDesc());
     }
     catch ( ... ) {
-        Logger::Err("Unexpected exception");
+        Logger::err("Unexpected exception");
     }
     return true;
 }

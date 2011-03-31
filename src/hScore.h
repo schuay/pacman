@@ -19,13 +19,6 @@
 
 class hScore
 {
-private:
-    std::string
-            name[MAXENTRIES];
-    unsigned long
-            score[MAXENTRIES];
-    char
-            filename[20];
 public:
     hScore();
     ~hScore();
@@ -43,4 +36,12 @@ public:
     bool onlist(unsigned int) const;
 
     void setfilename(std::string fn);
+
+private:
+    std::string
+            name[MAXENTRIES];
+    unsigned long
+            score[MAXENTRIES];
+    char
+            filename[20];
 };

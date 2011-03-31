@@ -34,6 +34,7 @@ public:
     void stop();
     void toggleSounds();
     bool on;
+
 private:
     shared_ptr<sf::SoundBuffer>
             sndbuf[NUMOFSOUNDS];

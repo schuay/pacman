@@ -48,7 +48,7 @@ string Settings::getFile(string filename) {
     throw new Error("File not found: " + filename);
 }
 
-bool Settings::LoadSettings(std::string filename) {
+bool Settings::loadSettings(std::string filename) {
 
     filename = getFile(filename);
 
@@ -59,7 +59,7 @@ bool Settings::LoadSettings(std::string filename) {
     int				pos;
 
     if (!file) {
-        Logger::Err("Could not open settings file");
+        Logger::err("Could not open settings file");
         return false;
     }
 
@@ -108,7 +108,7 @@ bool Settings::LoadSettings(std::string filename) {
 
     file.close();
 
-    Logger::Msg(filename + " loaded");
+    Logger::msg(filename + " loaded");
 
     return true;
 }

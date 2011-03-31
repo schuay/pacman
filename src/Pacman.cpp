@@ -17,8 +17,8 @@ extern App app;
 void Pacman::setSpeedMult( int s) {
     spdmult = s;
 }
-void Pacman::Draw(int ix, int iy, int obj, int type) {
-    pacEl[3]->Blit(buf, sf::Vector2i(ix, iy));
+void Pacman::draw(int ix, int iy, int obj, int type) {
+    pacEl[3]->blit(buf, sf::Vector2i(ix, iy));
 }
 void Pacman::reset(int ix, int iy) {
     animcounter=0;
@@ -58,7 +58,7 @@ void Pacman::nextIntersection(int &ix, int &iy) {
     iy=ytmp;
 }
 
-void Pacman::Update(int time) {
+void Pacman::update(int time) {
     bool dirclear=false;
     int oldx, oldy;
 
@@ -140,7 +140,7 @@ void Pacman::Update(int time) {
     y=ypix/tilesize;
 
 }
-void Pacman::Draw() {
+void Pacman::draw() {
 
     int i;
 
@@ -176,8 +176,8 @@ void Pacman::Draw() {
         s = pacElRot[i][0];
     }
 
-    s->SetAlpha(alpha);
-    s->Blit(buf, sf::Vector2i(xpix, ypix));
+    s->setAlpha(alpha);
+    s->blit(buf, sf::Vector2i(xpix, ypix));
 
     if ( !paused) {
         if (animcounter == 310) animcounter = 0;
@@ -186,7 +186,7 @@ void Pacman::Draw() {
 }
 
 
-bool Pacman::LoadTextures(std::string path) {
+bool Pacman::loadTextures(std::string path) {
 
     int i,j;
     std::string num[10];
@@ -198,31 +198,31 @@ bool Pacman::LoadTextures(std::string path) {
         for (i=0;i<NUMPACANIM;i++) {
 
             pacEl[i].reset(new Sprite());
-            pacEl[i]->Load(path + "pac" + num[i] + ".png");
+            pacEl[i]->load(path + "pac" + num[i] + ".png");
 
             //cache rotated sprites
             for (j=0;j<3;j++) {
                 pacElRot[i][j].reset(new Sprite());
-                pacElRot[i][j]->Load(path + "pac" + num[i] + ".png");
+                pacElRot[i][j]->load(path + "pac" + num[i] + ".png");
                 if (j==1) {
-                    pacElRot[i][j]->SetFlipX();
+                    pacElRot[i][j]->setFlipX();
                 } else {
-                    pacElRot[i][j]->SetRotation(360-(j+1)*90);
+                    pacElRot[i][j]->setRotation(360-(j+1)*90);
                 }
             }
         }
 
 
-        Logger::Msg("Pacman textures loaded");
+        Logger::msg("Pacman textures loaded");
     }
     catch ( Error &err) {
         app.setQuit(true);
-        Logger::Err(err.getDesc());
+        Logger::err(err.getDesc());
         return false;
     }
     catch ( ... ) {
         app.setQuit(true);
-        Logger::Err("Unexpected error");
+        Logger::err("Unexpected error");
         return false;
     }
     return true;

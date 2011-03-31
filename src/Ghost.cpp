@@ -15,7 +15,7 @@
 extern App app;
 extern Settings settings;
 
-void Ghost::Draw(int ix, int iy, int obj, int type) {
+void Ghost::draw(int ix, int iy, int obj, int type) {
     ghostEl[0]->SetPosition(ix, iy);
     ghostEl[0]->SetColor(sf::Color(255, 255, 255, alpha));
     buf->Draw(*(ghostEl[0].get()));
@@ -700,7 +700,7 @@ void Ghost::setState(int st) {
         spdmod =defspeed;
     }
 }
-void Ghost::Update( int time) {
+void Ghost::update( int time) {
     bool
             cont = 0;
     int
@@ -839,7 +839,7 @@ void Ghost::Update( int time) {
     x= xpix/tilesize;
     y=ypix/tilesize;
 }
-void Ghost::Draw() {
+void Ghost::draw() {
 
     sf::Vector2f pos;
     pos.x = xpix;
@@ -888,7 +888,7 @@ void Ghost::Draw() {
     buf->Draw(*(ghostEl[1].get()));
 }
 
-bool Ghost::LoadTextures(std::string path) {
+bool Ghost::loadTextures(std::string path) {
 
     std::string files[GHOSTTEXCOUNT];
 
@@ -914,16 +914,16 @@ bool Ghost::LoadTextures(std::string path) {
             ghostEl[i].reset(new sf::Sprite(*img));
 
         }
-        Logger::Msg(filename + " ghost textures loaded");
+        Logger::msg(filename + " ghost textures loaded");
     }
     catch ( Error &err) {
         app.setQuit(true);
-        Logger::Err(err.getDesc());
+        Logger::err(err.getDesc());
         return false;
     }
     catch ( ... ) {
         app.setQuit(true);
-        Logger::Err("Unexpected error");
+        Logger::err("Unexpected error");
         return false;
     }
     return true;

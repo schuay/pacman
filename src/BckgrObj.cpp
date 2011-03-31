@@ -16,22 +16,22 @@ extern Settings settings;
 
 
 
-void BckgrObj::Draw(int ix, int iy, int obj, int type, int alp) {
+void BckgrObj::draw(int ix, int iy, int obj, int type, int alp) {
 
     shared_ptr<Sprite> s = (type == 1) ? objEl[obj] : mapEl[obj];
-    s->SetAlpha(alp);
-    s->Blit(buf, sf::Vector2i(ix, iy));
+    s->setAlpha(alp);
+    s->blit(buf, sf::Vector2i(ix, iy));
 }
 
-void BckgrObj::Draw(int ix, int iy, int obj, int type) {
-    Draw(ix,iy,obj,type,255);
+void BckgrObj::draw(int ix, int iy, int obj, int type) {
+    draw(ix,iy,obj,type,255);
 }
 
 void BckgrObj::setFruitAlpha(int a) {
     fruitalpha = a;
 }
 
-void BckgrObj::Draw() {
+void BckgrObj::draw() {
     int *map(NULL),
         *objmap(NULL),
         height,
@@ -45,7 +45,7 @@ void BckgrObj::Draw() {
 
     objcounter = 0;
 
-    mapEl[0]->Blit(buf, sf::Vector2i(0, 0));
+    mapEl[0]->blit(buf, sf::Vector2i(0, 0));
 
     //DRAW FIELD
     for (j=0;j<height;j++) {
@@ -115,8 +115,8 @@ void BckgrObj::Draw() {
                 continue;
             }
 
-            s->SetAlpha(alpha);
-            s->Blit(buf, sf::Vector2i(i*settings.tilesize, j*settings.tilesize));
+            s->setAlpha(alpha);
+            s->blit(buf, sf::Vector2i(i*settings.tilesize, j*settings.tilesize));
 
         }
     }
@@ -142,8 +142,8 @@ void BckgrObj::Draw() {
                 continue;
             }
 
-            s->SetAlpha(alpha);
-            s->Blit(buf, sf::Vector2i(i*settings.tilesize+10, // +10 are needed for correct placement
+            s->setAlpha(alpha);
+            s->blit(buf, sf::Vector2i(i*settings.tilesize+10, // +10 are needed for correct placement
                 j*settings.tilesize+10));
 
             objcounter++;
@@ -153,7 +153,7 @@ void BckgrObj::Draw() {
 
 }
 
-bool BckgrObj::LoadTextures(std::string path) {
+bool BckgrObj::loadTextures(std::string path) {
 
     int i;
     std::string num[NUMOFMAPTEX];
@@ -165,32 +165,32 @@ bool BckgrObj::LoadTextures(std::string path) {
         for (i=0;i<NUMOFMAPTEX;i++) {
 
             mapEl[i].reset(new Sprite());
-            mapEl[i]->Load(path + "m" + num[i] + ".png");
+            mapEl[i]->load(path + "m" + num[i] + ".png");
 
             for (int j=0;j<3;j++) {
                 mapElRot[i][j].reset(new Sprite());
-                mapElRot[i][j]->Load(path + "m" + num[i] + ".png");
-                mapElRot[i][j]->SetRotation((j+1)*90);
+                mapElRot[i][j]->load(path + "m" + num[i] + ".png");
+                mapElRot[i][j]->setRotation((j+1)*90);
             }
         }
         for (i=1;i<5;i++) {
 
             objEl[i].reset(new Sprite());
-            objEl[i]->Load(path + "o" + num[i] + ".png");
+            objEl[i]->load(path + "o" + num[i] + ".png");
         }
 
-        Logger::Msg("Field textures loaded");
+        Logger::msg("Field textures loaded");
     }
     catch ( Error &err) {
         std::cerr << err.getDesc().c_str();
         app.setQuit(true);
-        Logger::Err( err.getDesc() );
+        Logger::err( err.getDesc() );
         return false;
     }
     catch ( ... ) {
         std::cerr << "Unexpected exception in BckgrObj::LoadTextures";
         app.setQuit(true);
-        Logger::Err( "Unexpected error during Game()" );
+        Logger::err( "Unexpected error during Game()" );
         return false;
     }
     return true;

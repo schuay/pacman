@@ -18,18 +18,18 @@ void App::initWindow() {
 
     window->Create(sf::VideoMode(settings.width, settings.height+EXTRA_Y_SPACE), "pacman_sdl");
 
-    Logger::Msg("Video mode set successfully");
+    Logger::msg("Video mode set successfully");
 }
 
 void App::initApp() {
     window.reset(new sf::RenderWindow());
     window->UseVerticalSync(true);
-    Logger::Msg("SFML initialized");
+    Logger::msg("SFML initialized");
 }
 
 void App::initSound() {
     snd.reset(new Sounds());
     snd->init();
 
-    Logger::Msg("Sound initialized");
+    Logger::msg("Sound initialized");
 }

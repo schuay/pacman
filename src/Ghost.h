@@ -31,11 +31,11 @@ public:
             int iheight, int iwidth, int *imap, std::string fn);
     ~Ghost();
 
-    void Draw();
-    void Draw(int ix, int iy, int obj=0, int type=0) ;
+    void draw();
+    void draw(int ix, int iy, int obj=0, int type=0) ;
 
-    void Update( int time );
-    bool LoadTextures(std::string path);
+    void update( int time );
+    bool loadTextures(std::string path);
 
     void setState(int st);
     int getState();
@@ -53,6 +53,7 @@ public:
 
     int getXpix();
     int getYpix();
+
 private:
     int
             x,	//current position in tiles (all positions refer to upper left corner)

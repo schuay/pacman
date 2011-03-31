@@ -21,7 +21,7 @@
 
 #include "Sprite.h"
 
-void Sprite::SetAsIcon(shared_ptr<sf::RenderWindow> target) const {
+void Sprite::setAsIcon(shared_ptr<sf::RenderWindow> target) const {
 
     target->SetIcon(
             Image.GetWidth(),
@@ -30,7 +30,7 @@ void Sprite::SetAsIcon(shared_ptr<sf::RenderWindow> target) const {
 
 }
 
-void Sprite::Load(std::string Filename) {
+void Sprite::load(std::string Filename) {
 
     if (!Image.LoadFromFile(Filename))
         throw Error("Loading sprite failed.");
@@ -41,11 +41,11 @@ void Sprite::Load(std::string Filename) {
     Surface.reset(new sf::Sprite(Image));
 }
 
-void Sprite::SetFlipX() {
+void Sprite::setFlipX() {
     Surface->FlipX(true);
 }
 
-void Sprite::SetRotation(int angle) {
+void Sprite::setRotation(int angle) {
     if (angle % 90 != 0) {
         throw Error("Rotation angle must be multiple of 90");
     }
@@ -53,11 +53,11 @@ void Sprite::SetRotation(int angle) {
     Surface->SetRotation(Rotation);
 }
 
-void Sprite::SetAlpha(int alpha) {
+void Sprite::setAlpha(int alpha) {
     Surface->SetColor(sf::Color(255, 255, 255, alpha));
 }
 
-void Sprite::Blit(shared_ptr<sf::RenderWindow> target, sf::Vector2i p) {
+void Sprite::blit(shared_ptr<sf::RenderWindow> target, sf::Vector2i p) {
 
     /* rotation is done around pt 0,0, so we need to draw with offsets */
 

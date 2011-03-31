@@ -21,7 +21,7 @@ extern Settings settings;
 
 void Game::changeSkin() {
     int i;
-    for (i=0;i<NUMOFOBJECTS;i++) objects[i]->LoadTextures( APP_PATH "/" + settings.skinspath[settings.skinspathcurrent] );
+    for (i=0;i<NUMOFOBJECTS;i++) objects[i]->loadTextures( APP_PATH "/" + settings.skinspath[settings.skinspathcurrent] );
 }
 void Game::emptyMsgPump() {
 
@@ -123,14 +123,14 @@ void Game::renderViewHscore() {
     try {
         // DRAW FIELD + SPRITES
 
-        for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) objects[i]->Draw();
+        for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) objects[i]->draw();
 
         // DRAW SCORE + INFO
 
         for (i=1; i<lives; i++) {
-            objects[PAC]->Draw( 350+i*50, settings.fieldheight*settings.tilesize);
+            objects[PAC]->draw( 350+i*50, settings.fieldheight*settings.tilesize);
         }
-        if ( specialeaten ) objects[0]->Draw( settings.fieldwidth*settings.tilesize - 40 -10, settings.fieldheight*settings.tilesize +10 );
+        if ( specialeaten ) objects[0]->draw( settings.fieldwidth*settings.tilesize - 40 -10, settings.fieldheight*settings.tilesize +10 );
 
         ostr << "level: " << level << " score: " << score;
 
@@ -174,11 +174,11 @@ void Game::renderViewHscore() {
     }
     catch ( Error& err ) {
         app.setQuit(true);
-        Logger::Err( err.getDesc() );
+        Logger::err( err.getDesc() );
     }
     catch ( ... ) {
         app.setQuit(true);
-        Logger::Err( "Unexpected error" );
+        Logger::err( "Unexpected error" );
     }
 }
 
@@ -311,7 +311,7 @@ void Game::logicGame() {
             //move objects
 
             for (i=0;i<NUMOFOBJECTS;i++)
-                objects[i]->Update( delta );
+                objects[i]->update( delta );
         }
         ///////////////////////////////////////////
         //	TIME LOGIC
@@ -486,14 +486,14 @@ void Game::renderEnterHscore() {
     try {
         // DRAW FIELD + SPRITES
 
-        for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) objects[i]->Draw();
+        for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) objects[i]->draw();
 
         // DRAW SCORE + INFO
 
         for (i=1; i<lives; i++) {
-            objects[PAC]->Draw( 350+i*50, settings.fieldheight*settings.tilesize+5);
+            objects[PAC]->draw( 350+i*50, settings.fieldheight*settings.tilesize+5);
         }
-        if ( specialeaten ) objects[0]->Draw( settings.fieldwidth*settings.tilesize - 40 -10, settings.fieldheight*settings.tilesize +15 );
+        if ( specialeaten ) objects[0]->draw( settings.fieldwidth*settings.tilesize - 40 -10, settings.fieldheight*settings.tilesize +15 );
 
         ostr << "level: " << level << " score: " << score;
 
@@ -530,11 +530,11 @@ void Game::renderEnterHscore() {
     }
     catch ( Error& err ) {
         app.setQuit(true);
-        Logger::Err( err.getDesc() );
+        Logger::err( err.getDesc() );
     }
     catch ( ... ) {
         app.setQuit(true);
-        Logger::Err( "Unexpected error" );
+        Logger::err( "Unexpected error" );
     }
 }
 void Game::renderNormal() {
@@ -546,15 +546,15 @@ void Game::renderNormal() {
     try {
         // DRAW FIELD + SPRITES
 
-        for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) objects[i]->Draw();
+        for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) objects[i]->draw();
 
         // DRAW SCORE + INFO
 
         for (i=1; i<lives; i++)
-            objects[PAC]->Draw( 350+i*50, settings.fieldheight*settings.tilesize+5);
+            objects[PAC]->draw( 350+i*50, settings.fieldheight*settings.tilesize+5);
 
-        if ( specialeaten ) objects[0]->Draw( settings.fieldwidth*settings.tilesize - 40 -10, settings.fieldheight*settings.tilesize +15 );
-        if ( boostavailable ) objects[0]->Draw( settings.fieldwidth*settings.tilesize - 60 -10, settings.fieldheight*settings.tilesize +15, 4 );
+        if ( specialeaten ) objects[0]->draw( settings.fieldwidth*settings.tilesize - 40 -10, settings.fieldheight*settings.tilesize +15 );
+        if ( boostavailable ) objects[0]->draw( settings.fieldwidth*settings.tilesize - 60 -10, settings.fieldheight*settings.tilesize +15, 4 );
 
         ostr << "level: " << level << " score: " << score;
 
@@ -605,11 +605,11 @@ void Game::renderNormal() {
 
     catch ( Error& err ) {
         app.setQuit(true);
-        Logger::Err( err.getDesc() );
+        Logger::err( err.getDesc() );
     }
     catch ( ... ) {
         app.setQuit(true);
-        Logger::Err( "Unexpected error during RenderNormal()" );
+        Logger::err( "Unexpected error during RenderNormal()" );
     }
 }
 
@@ -708,11 +708,11 @@ void Game::nextLvl() {
     }
     catch ( Error &err) {
         app.setQuit(true);
-        Logger::Err( err.getDesc() );
+        Logger::err( err.getDesc() );
     }
     catch ( ... ) {
         app.setQuit(true);
-        Logger::Err( "Unexpected error" );
+        Logger::err( "Unexpected error" );
     }
 }
 
@@ -730,7 +730,7 @@ void Game::gameInit(std::string level, std::string skin) {
 
         tmpstr = settings.lvlpath[settings.lvlpathcurrent] + CFGFILE;
 
-        if ( !settings.LoadSettings(tmpstr) )
+        if ( !settings.loadSettings(tmpstr) )
             throw Error("Error loading level settings");
 
         //resetting variables
@@ -784,13 +784,13 @@ void Game::gameInit(std::string level, std::string skin) {
             }
         }
 
-        Logger::Msg("Unloading complete");
+        Logger::msg("Unloading complete");
 
         //if level has different field size than currently selected, setup new window with proper size
         if (settings.fieldwidth*settings.tilesize != app.getWindow()->GetWidth()
             || settings.fieldheight*settings.tilesize+EXTRA_Y_SPACE != app.getWindow()->GetHeight()) {
             app.initWindow();
-            Logger::Msg("window resized...");
+            Logger::msg("window resized...");
         }
 
         // INIT MAPS
@@ -804,22 +804,22 @@ void Game::gameInit(std::string level, std::string skin) {
         if ( !loadMap(tmpstr + OBJFILE, objmap) )
             throw Error("Failed to load objmap.txt");
 
-        Logger::Msg("Maps loaded");
+        Logger::msg("Maps loaded");
 
         //creating font
 
         loadFont();
 
-        Logger::Msg("Font created");
+        Logger::msg("Font created");
 
         //loading level graphics
 
         objects[0] = new BckgrObj( app.getWindow(), 10 );
-        objects[0]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
+        objects[0]->loadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
-        Logger::Msg("Level background loaded");
+        Logger::msg("Level background loaded");
 
-        Logger::Msg("Sounds loaded");
+        Logger::msg("Sounds loaded");
 
         app.getSnd()->play(9, 0);
 
@@ -840,7 +840,7 @@ void Game::gameInit(std::string level, std::string skin) {
                             settings.fieldheight,
                             settings.fieldwidth,
                             map);
-        objects[1]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
+        objects[1]->loadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
         objects[2] = new Ghost( app.getWindow(),
                             20,
@@ -852,7 +852,7 @@ void Game::gameInit(std::string level, std::string skin) {
                             settings.fieldwidth,
                             map,
                             "1");
-        objects[2]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
+        objects[2]->loadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
         objects[3] = new Ghost( app.getWindow(),
                             20,
@@ -864,7 +864,7 @@ void Game::gameInit(std::string level, std::string skin) {
                             settings.fieldwidth,
                             map,
                             "2");
-        objects[3]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
+        objects[3]->loadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
         objects[4] = new Ghost( app.getWindow(),
                             20,
@@ -876,7 +876,7 @@ void Game::gameInit(std::string level, std::string skin) {
                             settings.fieldwidth,
                             map,
                             "3");
-        objects[4]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
+        objects[4]->loadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
         objects[5] = new Ghost( app.getWindow(),
                             20,
@@ -888,11 +888,11 @@ void Game::gameInit(std::string level, std::string skin) {
                             settings.fieldwidth,
                             map,
                             "4");
-        objects[5]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
+        objects[5]->loadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
         for (i=0;i<4;i++) ((Ghost*)objects[i+2])->changeDifficulty(0, settings.baddieiq);	//SET DIFFICULTY SPECIFIED IN CONFIG FILE
 
-        Logger::Msg("Objects loaded");
+        Logger::msg("Objects loaded");
 
         //calculate special fruit spawn time
 
@@ -907,11 +907,11 @@ void Game::gameInit(std::string level, std::string skin) {
     }
     catch ( Error &err) {
         app.setQuit(true);
-        Logger::Err( err.getDesc() );
+        Logger::err( err.getDesc() );
     }
     catch ( ... ) {
         app.setQuit(true);
-        Logger::Err( "Unexpected error" );
+        Logger::err( "Unexpected error" );
     }
 }
 
@@ -985,7 +985,7 @@ bool Game::loadMap(std::string file, int* memmap) {
     mp.open( file.c_str() );
 
     if (!mp ) {
-        Logger::Err(file + " - Loading error");
+        Logger::err(file + " - Loading error");
         app.setQuit(true);
         return false;
     }
@@ -1008,12 +1008,12 @@ bool Game::loadMap(std::string file, int* memmap) {
     if ( mp.is_open() ) mp.close();
 
     if (count != size) {
-        Logger::Err(file + " - Loading error");
+        Logger::err(file + " - Loading error");
         app.setQuit(true);
         return false;
     }
 
-    Logger::Msg(file + " loaded");
+    Logger::msg(file + " loaded");
     return true;
 }
 
@@ -1070,11 +1070,11 @@ void Game::render() {
     }
     catch ( Error& err ) {
         app.setQuit(true);
-        Logger::Err( err.getDesc() );
+        Logger::err( err.getDesc() );
     }
     catch ( ... ) {
         app.setQuit(true);
-        Logger::Err( "Unexpected error during Render()" );
+        Logger::err( "Unexpected error during Render()" );
     }
 }
 
@@ -1088,16 +1088,16 @@ bool Game::loadFont() {
     }
     catch ( Error& err ) {
         app.setQuit(true);
-        Logger::Err( err.getDesc() );
+        Logger::err( err.getDesc() );
         return false;
     }
     catch ( ... ) {
         app.setQuit(true);
-        Logger::Err( "Unexpected error while loading font" );
+        Logger::err( "Unexpected error while loading font" );
         return false;
     }
 
-    Logger::Msg("Font loaded");
+    Logger::msg("Font loaded");
     return true;
 }
 

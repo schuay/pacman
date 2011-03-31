@@ -31,16 +31,16 @@ public:
     Pacman(shared_ptr <sf::RenderWindow> buf, int os, int ix, int iy,
            int ispdmod, int itilesize, int iheight, int iwidth, int *imap);
 
-    void Draw();
-    void Draw(int ix, int iy, int obj=3, int type=1);
-    bool LoadTextures(std::string path);
+    void draw();
+    void draw(int ix, int iy, int obj=3, int type=1);
+    bool loadTextures(std::string path);
 
     void setNextDir(int next);
     bool collision(int xtmp, int ytmp);
 
     void setSpeedMult( int s);
 
-    void Update( int time );
+    void update( int time );
     void nextIntersection(int &ix, int &iy);
     void reset(int ix, int iy);
 

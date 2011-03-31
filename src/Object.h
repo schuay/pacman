@@ -34,11 +34,11 @@ public:
     void setAlpha(int a) { alpha = a; }
 
     virtual void reset( int ix, int iy) = 0;
-    virtual void Update(int time) = 0;
+    virtual void update(int time) = 0;
 
-    virtual void Draw() = 0;
-    virtual void Draw(int ix, int iy, int obj=3, int type=1)=0;
-    virtual bool LoadTextures(std::string path)=0;
+    virtual void draw() = 0;
+    virtual void draw(int ix, int iy, int obj=3, int type=1)=0;
+    virtual bool loadTextures(std::string path)=0;
 
 protected:
     shared_ptr<sf::RenderWindow>

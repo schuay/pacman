@@ -74,19 +74,16 @@ int main( int argc, char** argv ) {
 
     srand( (unsigned int)time(NULL) );
 
-    //init settings
-    if ( !app.getQuit() ) settings.LoadSettings(SETTINGSFILE);
-    if ( !app.getQuit() ) settings.LoadSettings( (settings.lvlpath[settings.lvlpathcurrent] + CFGFILE) );
+    if ( !app.getQuit() ) settings.loadSettings(SETTINGSFILE);
+    if ( !app.getQuit() ) settings.loadSettings( (settings.lvlpath[settings.lvlpathcurrent] + CFGFILE) );
 
     if ( !app.getQuit() ) app.initApp();
     if ( !app.getQuit() ) app.initWindow();
     if ( !app.getQuit() ) app.initSound();
 
-    //init game class
     if ( !app.getQuit() ) game.gameInit(level,skin);
 
 
-    //main loop
     while ( ! app.getQuit() ) {
 
         game.emptyMsgPump();
@@ -98,7 +95,7 @@ int main( int argc, char** argv ) {
             game.render();
     }
 
-    Logger::Msg("shutdown");
+    Logger::msg("shutdown");
 
     return 0;
 }
