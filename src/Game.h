@@ -52,7 +52,7 @@ public:
 
     void resetLvl();
     void nextLvl();
-    void gameInit(std::string level="", std::string skin="", bool editor=false);
+    void gameInit(std::string level="", std::string skin="");
 
     bool pause();
     void boost();
@@ -69,12 +69,6 @@ public:
     void toggleSound();
     void emptyMsgPump();
     void changeSkin();
-
-    void initEditor();
-    void renderEditor();
-    void logicEditor();
-    void editorSave();
-    void setEditorPath(std::string path) {editorpath=path;}
 
     void PrepareShutdown();
 
@@ -155,17 +149,5 @@ private:
 
     Sounds
             *sounds;
-
-    //////////////////////////////////
-    // EDITOR OBJECTS
-    //////////////////////////////////
-
-    int
-            activetool,
-            mouseX,
-            mouseY;
-
-    std::string
-            editorpath;
 
 };

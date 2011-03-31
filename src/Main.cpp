@@ -23,18 +23,16 @@ Settings settings;
 //////////////////////////////////////////////////////
 
 int main( int argc, char** argv ) {
-    std::string str="",level="",skin="",editfile="";
-    bool editor=false;
+    std::string str="",level="",skin="";
 
     for (int i = 1;i<argc;i++) {
         str=argv[i];
         if (str=="--help") {
             std::cout << "pacman usage:\n\ncommandline arguments\n--help:\t\tshow this message\n"
                     << "--level <lvl>:\tstart with selected level\n--skin <skin>:\tstart with selected skin\n"
-                    << "--editor <lvl>:\tstart in editor mode. \n\t\tif a levelname is given the editor loads and saves to that level\n\n"
                     << "ingame\nesc/q:\tquit\narrows:\tmovement\nspace:\tboost\n"
                     << "p:\ttoggle pause\nn:\tnew game\nl:\tswitch level\ns:\tswitch skin\n"
-                    << "e:\tenter editor\nw:\t(in editor) save map\nf:\ttoggle fps display\nh:\tview highscore\n";
+                    << "f:\ttoggle fps display\nh:\tview highscore\n";
             return 0;
         }
         else if (str=="--level") {
@@ -66,16 +64,6 @@ int main( int argc, char** argv ) {
             std::cerr << "no skin name given. exiting...\n";
             return 1;
         }
-        else if (str=="--editor") {
-            editor=true;
-            if (i+1<argc) {
-                str=argv[i+1];
-                if (str[0]!='-') {
-                    i++;
-                    editfile=str;
-                }
-            }
-        }
         else
             std::cerr << "unrecognized commandline option\n";
     }
@@ -90,13 +78,8 @@ int main( int argc, char** argv ) {
     if ( !app.getQuit() ) app.InitWindow();
     if ( !app.getQuit() ) app.InitSound();
 
-    //set editorpath
-    if ( editfile!="" ) {
-        game.setEditorPath("./levels/" + editfile + "/");
-    }
-
     //init game class
-    if ( !app.getQuit() ) game.gameInit(level,skin,editor);
+    if ( !app.getQuit() ) game.gameInit(level,skin);
 
 
     //main loop
