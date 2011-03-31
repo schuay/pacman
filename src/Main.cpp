@@ -14,7 +14,6 @@
 //	GLOBAL VARS
 //////////////////////////////////////////////////////
 
-Log		logtxt;
 App		app;
 Game	game;
 Settings settings;
@@ -83,20 +82,12 @@ int main( int argc, char** argv ) {
 
     srand( (unsigned int)time(NULL) );
 
-    //init log
-    logtxt.setFilename(".pacman_sdl");
-
     //init settings
     if ( !app.getQuit() ) settings.LoadSettings(SETTINGSFILE);
     if ( !app.getQuit() ) settings.LoadSettings( (settings.lvlpath[settings.lvlpathcurrent] + CFGFILE) );
 
-    //init SDL
     if ( !app.getQuit() ) app.InitApp();
-
-    //init window
     if ( !app.getQuit() ) app.InitWindow();
-
-    //init sound
     if ( !app.getQuit() ) app.InitSound();
 
     //set editorpath
@@ -120,8 +111,7 @@ int main( int argc, char** argv ) {
             game.render();
     }
 
-    //shutdown
-    logtxt.print( "Shutdown" );
+    Logger::Msg("shutdown");
 
     return 0;
 }

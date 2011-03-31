@@ -12,7 +12,6 @@
 
 #define GHOSTSIZE 40
 
-extern Log logtxt;
 extern App app;
 extern Settings settings;
 
@@ -915,18 +914,16 @@ bool Ghost::LoadTextures(std::string path) {
             ghostEl[i].reset(new sf::Sprite(*img));
 
         }
-        logtxt.print(filename + " ghost textures loaded");
+        Logger::Msg(filename + " ghost textures loaded");
     }
     catch ( Error &err) {
-        std::cerr << err.getDesc();
         app.setQuit(true);
-        logtxt.print( err.getDesc() );
+        Logger::Err(err.getDesc());
         return false;
     }
     catch ( ... ) {
-        std::cerr << "Unexpected exception in Ghost::LoadTextures()";
         app.setQuit(true);
-        logtxt.print( "Unexpected error" );
+        Logger::Err("Unexpected error");
         return false;
     }
     return true;

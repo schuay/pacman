@@ -10,16 +10,12 @@
 
 #include "App.h"
 
-extern Log logtxt;
 extern Settings settings;
 
 void App::InitWindow() {
     try {
-        int bpp(32);
-
         if ( !settings.fieldwidth || !settings.fieldheight || !settings.tilesize ) {
-            logtxt.print("fieldheight/fieldwidth/tilesize is not set, reverting to default window dimensions");
-            std::cerr << "fieldheight/fieldwidth/tilesize is not set, reverting to default window dimensions";
+            Logger::Msg("fieldheight/fieldwidth/tilesize is not set, reverting to default window dimensions");
         }
         else {
             settings.height=settings.fieldheight*settings.tilesize;
@@ -31,17 +27,15 @@ void App::InitWindow() {
         if (screen == NULL)
             throw Error("Error while setting video mode");
 
-        logtxt.print("Video mode set successfully");
+        Logger::Msg("Video mode set successfully");
     }
     catch ( Error& err ) {
-        std::cerr << (err.getDesc() );
         setQuit(true);
-        logtxt.print( err.getDesc() );
+        Logger::Err( err.getDesc() );
     }
     catch (...) {
-        std::cerr << "Unexpected exception";
         setQuit(true);
-        logtxt.print( "Unexpected exception in App::App()" );
+        Logger::Err( "Unexpected exception in App::App()" );
     }
 }
 
@@ -50,17 +44,15 @@ void App::InitApp() {
     try {
         screen.reset(new sf::RenderWindow());
         screen->UseVerticalSync(true);
-        logtxt.print("SFML initialized");
+        Logger::Msg("SFML initialized");
     }
     catch ( Error& err ) {
-        std::cerr << (err.getDesc() );
         setQuit(true);
-        logtxt.print( err.getDesc() );
+        Logger::Err( err.getDesc() );
     }
     catch (...) {
-        std::cerr << "Unexpected exception";
         setQuit(true);
-        logtxt.print( "Unexpected exception in App::App()" );
+        Logger::Err( "Unexpected exception in App::App()" );
     }
 }
 
@@ -71,17 +63,15 @@ void App::InitSound() {
         snd.reset(new Sounds());
         snd->init();
 
-        logtxt.print("Sound initialized");
+        Logger::Msg("Sound initialized");
     }
     catch ( Error& err ) {
-        std::cerr << (err.getDesc() );
         setQuit(true);
-        logtxt.print( err.getDesc() );
+        Logger::Err( err.getDesc() );
     }
     catch (...) {
-        std::cerr << "Unexpected exception";
         setQuit(true);
-        logtxt.print( "Unexpected exception in App::InitSound()" );
+        Logger::Err( "Unexpected exception in App::InitSound()" );
     }
 }
 

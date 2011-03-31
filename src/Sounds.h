@@ -13,6 +13,7 @@
 #include <SFML/Audio.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include "Logger.h"
 #include "Main.h"
 
 using boost::shared_ptr;

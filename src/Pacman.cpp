@@ -12,7 +12,6 @@
 
 #define PACSIZE 40
 
-extern Log logtxt;
 extern App app;
 
 void Pacman::setSpeedMult( int s) {
@@ -214,18 +213,16 @@ bool Pacman::LoadTextures(std::string path) {
         }
 
 
-        logtxt.print("Pacman textures loaded");
+        Logger::Msg("Pacman textures loaded");
     }
     catch ( Error &err) {
-        std::cerr << err.getDesc();
         app.setQuit(true);
-        logtxt.print( err.getDesc() );
+        Logger::Err(err.getDesc());
         return false;
     }
     catch ( ... ) {
-        std::cerr << "Unexpected exception in Pacman::LoadTextures()";
         app.setQuit(true);
-        logtxt.print( "Unexpected error" );
+        Logger::Err("Unexpected error");
         return false;
     }
     return true;

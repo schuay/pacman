@@ -10,7 +10,6 @@
 
 #include "BckgrObj.h"
 
-extern Log logtxt;
 extern App app;
 extern Game game;
 extern Settings settings;
@@ -180,18 +179,18 @@ bool BckgrObj::LoadTextures(std::string path) {
             objEl[i]->Load(path + "o" + num[i] + ".png");
         }
 
-        logtxt.print("Field textures loaded");
+        Logger::Msg("Field textures loaded");
     }
     catch ( Error &err) {
         std::cerr << err.getDesc().c_str();
         app.setQuit(true);
-        logtxt.print( err.getDesc() );
+        Logger::Err( err.getDesc() );
         return false;
     }
     catch ( ... ) {
         std::cerr << "Unexpected exception in BckgrObj::LoadTextures";
         app.setQuit(true);
-        logtxt.print( "Unexpected error during Game()" );
+        Logger::Err( "Unexpected error during Game()" );
         return false;
     }
     return true;

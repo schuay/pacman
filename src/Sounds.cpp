@@ -11,7 +11,6 @@
 #include "Sounds.h"
 
 extern App app;
-extern Log logtxt;
 
 void Sounds::toggleSounds() {
     if ( on ) {
@@ -65,15 +64,13 @@ bool Sounds::init() {
         }
 
         isinit = true;
-        logtxt.print("Sounds loaded successfully");
+        Logger::Msg("sounds loaded successfully");
     }
     catch ( Error& err ) {
-            std::cerr << (err.getDesc() );
-            logtxt.print( err.getDesc() );
+        Logger::Err(err.getDesc());
     }
     catch ( ... ) {
-        std::cerr << "Unexpected exception";
-        logtxt.print( "Unexpected exception in App::App()" );
+        Logger::Err("Unexpected exception");
     }
     return true;
 }

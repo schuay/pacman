@@ -16,7 +16,6 @@
 #define GHOST3 4
 #define GHOST4 5
 
-extern Log logtxt;
 extern App app;
 extern Settings settings;
 
@@ -27,7 +26,7 @@ void Game::editorSave() {
          settings.baddiestarty == -1 ||
          settings.pacstartx == -1 ||
          settings.pacstarty == -1 ) {
-        std::cerr << "Specify pacman and ghost start locations before saving\n";
+        Logger::Err("Specify pacman and ghost start locations before saving");
         return;
     }
 
@@ -106,7 +105,7 @@ void Game::editorSave() {
 
 
     if (error) {
-        std::cerr << "Save failed";
+        Logger::Err("Save failed");
     }
 }
 
@@ -213,7 +212,7 @@ void Game::initEditor() {
         if (settings.fieldwidth*settings.tilesize != app.getScreen()->GetWidth()
             || settings.fieldheight*settings.tilesize+EXTRA_Y_SPACE != app.getScreen()->GetHeight()) {
             app.InitWindow();
-            logtxt.print("window resized...");
+            Logger::Msg("window resized...");
         }
 
         //load maps
@@ -399,14 +398,12 @@ void Game::renderViewHscore() {
 
     }
     catch ( Error& err ) {
-        std::cerr << err.getDesc();
         app.setQuit(true);
-        logtxt.print( err.getDesc() );
+        Logger::Err( err.getDesc() );
     }
     catch ( ... ) {
-        std::cerr << "Unexpected exception in RenderViewHscore";
         app.setQuit(true);
-        logtxt.print( "Unexpected error" );
+        Logger::Err( "Unexpected error" );
     }
 }
 
@@ -765,14 +762,12 @@ void Game::renderEnterHscore() {
         }
     }
     catch ( Error& err ) {
-        std::cerr << err.getDesc();
         app.setQuit(true);
-        logtxt.print( err.getDesc() );
+        Logger::Err( err.getDesc() );
     }
     catch ( ... ) {
-        std::cerr << "Unexpected exception in Game::RenderEnterHscore";
         app.setQuit(true);
-        logtxt.print( "Unexpected error" );
+        Logger::Err( "Unexpected error" );
     }
 }
 void Game::renderNormal() {
@@ -842,14 +837,12 @@ void Game::renderNormal() {
     }
 
     catch ( Error& err ) {
-        std::cerr << err.getDesc();
         app.setQuit(true);
-        logtxt.print( err.getDesc() );
+        Logger::Err( err.getDesc() );
     }
     catch ( ... ) {
-        std::cerr << "Unexpected exception in Game::RenderNormal";
         app.setQuit(true);
-        logtxt.print( "Unexpected error during RenderNormal()" );
+        Logger::Err( "Unexpected error during RenderNormal()" );
     }
 }
 
@@ -947,14 +940,12 @@ void Game::nextLvl() {
         gamestarted = false;
     }
     catch ( Error &err) {
-        std::cerr << err.getDesc();
         app.setQuit(true);
-        logtxt.print( err.getDesc() );
+        Logger::Err( err.getDesc() );
     }
     catch ( ... ) {
-        std::cerr << "Unexpected exception in Game::nextLvl()";
         app.setQuit(true);
-        logtxt.print( "Unexpected error" );
+        Logger::Err( "Unexpected error" );
     }
 }
 
@@ -1026,13 +1017,13 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
             }
         }
 
-        logtxt.print("Unloading complete");
+        Logger::Msg("Unloading complete");
 
         //if level has different field size than currently selected, setup new window with proper size
         if (settings.fieldwidth*settings.tilesize != app.getScreen()->GetWidth()
             || settings.fieldheight*settings.tilesize+EXTRA_Y_SPACE != app.getScreen()->GetHeight()) {
             app.InitWindow();
-            logtxt.print("window resized...");
+            Logger::Msg("window resized...");
         }
 
         // INIT MAPS
@@ -1046,22 +1037,22 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
         if ( !loadMap(tmpstr + OBJFILE, objmap) )
             throw Error("Failed to load objmap.txt");
 
-        logtxt.print("Maps loaded");
+        Logger::Msg("Maps loaded");
 
         //creating font
 
         loadFont();
 
-        logtxt.print("Font created");
+        Logger::Msg("Font created");
 
         //loading level graphics
 
         objects[0] = new BckgrObj( app.getScreen(), 10 );
         objects[0]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
-        logtxt.print("Level background loaded");
+        Logger::Msg("Level background loaded");
 
-        logtxt.print("Sounds loaded");
+        Logger::Msg("Sounds loaded");
 
         app.getSnd()->play(9, 0);
 
@@ -1134,7 +1125,7 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
 
         for (i=0;i<4;i++) ((Ghost*)objects[i+2])->changeDifficulty(0, settings.baddieiq);	//SET DIFFICULTY SPECIFIED IN CONFIG FILE
 
-        logtxt.print("Objects loaded");
+        Logger::Msg("Objects loaded");
 
         //calculate special fruit spawn time
 
@@ -1153,14 +1144,12 @@ void Game::gameInit(std::string level, std::string skin, bool editor) {
         }
     }
     catch ( Error &err) {
-        std::cerr << err.getDesc();
         app.setQuit(true);
-        logtxt.print( err.getDesc() );
+        Logger::Err( err.getDesc() );
     }
     catch ( ... ) {
-        std::cerr << "Unexpected exception in Game::gameInit()";
         app.setQuit(true);
-        logtxt.print( "Unexpected error" );
+        Logger::Err( "Unexpected error" );
     }
 }
 
@@ -1240,7 +1229,7 @@ bool Game::loadMap(std::string file, int* memmap) {
     mp.open( file.c_str() );
 
     if (!mp ) {
-        logtxt.print(file + " - Loading error");
+        Logger::Err(file + " - Loading error");
         app.setQuit(true);
         return false;
     }
@@ -1263,12 +1252,12 @@ bool Game::loadMap(std::string file, int* memmap) {
     if ( mp.is_open() ) mp.close();
 
     if (count != size) {
-        logtxt.print(file + " - Loading error");
+        Logger::Err(file + " - Loading error");
         app.setQuit(true);
         return false;
     }
 
-    logtxt.print(file + " loaded");
+    Logger::Msg(file + " loaded");
     return true;
 }
 
@@ -1325,14 +1314,12 @@ void Game::render() {
         }
     }
     catch ( Error& err ) {
-        std::cerr << err.getDesc();
         app.setQuit(true);
-        logtxt.print( err.getDesc() );
+        Logger::Err( err.getDesc() );
     }
     catch ( ... ) {
-        std::cerr << "Unexpected exception in Game::Render";
         app.setQuit(true);
-        logtxt.print( "Unexpected error during Render()" );
+        Logger::Err( "Unexpected error during Render()" );
     }
 }
 
@@ -1345,19 +1332,17 @@ bool Game::loadFont() {
         str.SetFont(font);
     }
     catch ( Error& err ) {
-        std::cerr << err.getDesc();
         app.setQuit(true);
-        logtxt.print( err.getDesc() );
+        Logger::Err( err.getDesc() );
         return false;
     }
     catch ( ... ) {
-        std::cerr << "Unexpected exception in Game::loadFont";
         app.setQuit(true);
-        logtxt.print( "Unexpected error while loading font" );
+        Logger::Err( "Unexpected error while loading font" );
         return false;
     }
 
-    logtxt.print("Font loaded");
+    Logger::Msg("Font loaded");
     return true;
 }
 

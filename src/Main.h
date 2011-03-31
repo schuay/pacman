@@ -31,7 +31,6 @@
 #include "Settings.h"
 #include "Error.h"
 #include "App.h"
-#include "Log.h"
 #include "Game.h"
 
 

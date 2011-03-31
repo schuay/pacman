@@ -10,8 +10,6 @@
 
 #include "Settings.h"
 
-extern Log logtxt;
-
 int Settings::setPath(int mode,std::string str) {
     int i;
 
@@ -61,7 +59,7 @@ bool Settings::LoadSettings(std::string filename) {
     int				pos;
 
     if (!file) {
-        logtxt.print( "Could not open settings file" );
+        Logger::Err("Could not open settings file");
         return false;
     }
 
@@ -110,7 +108,7 @@ bool Settings::LoadSettings(std::string filename) {
 
     file.close();
 
-    logtxt.print(filename + " loaded");
+    Logger::Msg(filename + " loaded");
 
     return true;
 }

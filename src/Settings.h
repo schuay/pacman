@@ -13,6 +13,8 @@
 #include <string>
 #include <cstdlib>
 #include <sys/stat.h>
+
+#include "Logger.h"
 #include "Main.h"
 
 using std::string;
