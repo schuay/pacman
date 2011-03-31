@@ -30,6 +30,7 @@ void Sounds::stop() {
 void Sounds::stop(int i) {
     if ( !isinit ) return;
     snd[i]->Stop();
+    snd[i]->SetPitch(1.f);
 }
 void Sounds::modify( int sound, long freq, long volume) {
         snd[sound]->SetVolume(volume);
@@ -44,7 +45,6 @@ void Sounds::play(int i, bool looped, int volume) {
 
     snd[i]->SetLoop(looped);
     snd[i]->SetVolume(volume);
-    snd[i]->SetPitch(1.f);
 
     snd[i]->Play();
 }

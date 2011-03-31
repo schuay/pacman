@@ -24,7 +24,7 @@ CP = cp
 CHMOD = chmod
 
 SOURCES=Sounds.cpp Settings.cpp Pacman.cpp Main.cpp Log.cpp hScore.cpp \
-	Ghost.cpp Game.cpp Error.cpp BckgrObj.cpp BHeap.cpp App.cpp
+	Ghost.cpp Game.cpp Error.cpp BckgrObj.cpp BHeap.cpp App.cpp Sprite.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 TARGET=pacman_sdl
 

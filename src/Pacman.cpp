@@ -19,8 +19,7 @@ void Pacman::setSpeedMult( int s) {
     spdmult = s;
 }
 void Pacman::Draw(int ix, int iy, int obj, int type) {
-    pacEl[3]->SetPosition(ix, iy);
-    buf->Draw(*(pacEl[3].get()));
+    pacEl[3]->Blit(buf, sf::Vector2i(ix, iy));
 }
 void Pacman::reset(int ix, int iy) {
     animcounter=0;
@@ -148,25 +147,25 @@ void Pacman::Draw() {
 
     //calculate displayed animation frame from animcounter.. abs is not the right function
     //there's probably a better way to handle this:
-    if ( animcounter < 2 ) i=0;
-    else if ( animcounter >= 2 && animcounter < 4 ) i=1;
-    else if ( animcounter >= 4 && animcounter < 6 ) i=2;
-    else if ( animcounter >= 6 && animcounter < 8 ) i=3;
-    else if ( animcounter >= 8 && animcounter < 10 ) i=4;
-    else if ( animcounter >= 10 && animcounter < 12 ) i=5;
-    else if ( animcounter >= 12 && animcounter < 14 ) i=6;
-    else if ( animcounter >= 14 && animcounter < 16 ) i=7;
-    else if ( animcounter >= 16 && animcounter < 18 ) i=7;
-    else if ( animcounter >= 18 && animcounter < 20 ) i=6;
-    else if ( animcounter >= 20 && animcounter < 22 ) i=5;
-    else if ( animcounter >= 22 && animcounter < 24 ) i=4;
-    else if ( animcounter >= 24 && animcounter < 26 ) i=3;
-    else if ( animcounter >= 26 && animcounter < 28 ) i=2;
-    else if ( animcounter >= 28 && animcounter < 30 ) i=1;
-    else if ( animcounter >= 30 && animcounter < 32 ) i=0;
+    if ( animcounter < 20 ) i=0;
+    else if ( animcounter >= 20 && animcounter < 40 ) i=1;
+    else if ( animcounter >= 40 && animcounter < 60 ) i=2;
+    else if ( animcounter >= 60 && animcounter < 80 ) i=3;
+    else if ( animcounter >= 80 && animcounter < 100 ) i=4;
+    else if ( animcounter >= 100 && animcounter < 120 ) i=5;
+    else if ( animcounter >= 120 && animcounter < 140 ) i=6;
+    else if ( animcounter >= 140 && animcounter < 160 ) i=7;
+    else if ( animcounter >= 160 && animcounter < 180 ) i=7;
+    else if ( animcounter >= 180 && animcounter < 200 ) i=6;
+    else if ( animcounter >= 200 && animcounter < 220 ) i=5;
+    else if ( animcounter >= 220 && animcounter < 240 ) i=4;
+    else if ( animcounter >= 240 && animcounter < 260 ) i=3;
+    else if ( animcounter >= 260 && animcounter < 280 ) i=2;
+    else if ( animcounter >= 280 && animcounter < 300 ) i=1;
+    else if ( animcounter >= 300 && animcounter < 320 ) i=0;
     else i=0; //avoid compiler warning
 
-    shared_ptr<sf::Sprite> s;
+    shared_ptr<Sprite> s;
     if ((dx == 1 && dy == 0) ||
             (dx == 0 && dy == 0)) {	//right or initial
         s = pacEl[i];
@@ -178,12 +177,11 @@ void Pacman::Draw() {
         s = pacElRot[i][0];
     }
 
-    s->SetPosition(xpix, ypix);
-    s->SetColor(sf::Color(255, 255, 255, alpha));
-    buf->Draw(*(s.get()));
+    s->SetAlpha(alpha);
+    s->Blit(buf, sf::Vector2i(xpix, ypix));
 
     if ( !paused) {
-        if (animcounter == 31) animcounter = 0;
+        if (animcounter == 310) animcounter = 0;
         else animcounter++;
     }
 }
@@ -200,23 +198,17 @@ bool Pacman::LoadTextures(std::string path) {
     try {
         for (i=0;i<NUMPACANIM;i++) {
 
-            sf::Image *img = new sf::Image();
-            imgs[i].reset(img);
-
-            if (!img->LoadFromFile(path + "pac" + num[i] + ".png")) {
-                throw Error(num[i] + "Failed to load texture");
-            }
-            img->CreateMaskFromColor(sf::Color(255, 0, 255));
-
-            pacEl[i].reset(new sf::Sprite(*img));
+            pacEl[i].reset(new Sprite());
+            pacEl[i]->Load(path + "pac" + num[i] + ".png");
 
             //cache rotated sprites
             for (j=0;j<3;j++) {
-                pacElRot[i][j].reset(new sf::Sprite(*img));
+                pacElRot[i][j].reset(new Sprite());
+                pacElRot[i][j]->Load(path + "pac" + num[i] + ".png");
                 if (j==1) {
-                    pacElRot[i][j]->FlipX(true);
+                    pacElRot[i][j]->SetFlipX();
                 } else {
-//                    pacElRot[i][j]->Rotate(360-(j+1)*90);
+                    pacElRot[i][j]->SetRotation(360-(j+1)*90);
                 }
             }
         }

@@ -49,6 +49,7 @@ void App::InitApp() {
 
     try {
         screen.reset(new sf::RenderWindow());
+        screen->UseVerticalSync(true);
         logtxt.print("SFML initialized");
     }
     catch ( Error& err ) {

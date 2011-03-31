@@ -813,6 +813,7 @@ void Game::renderNormal() {
             str.SetPosition(floatingscorebox);
             str.SetColor(sf::Color(255, 255, 255, 55+floatingscorecounter*2));
             buf->Draw(str);
+            str.SetColor(sf::Color(255, 255, 255, 255));
         }
 
         // PAUSE

@@ -14,10 +14,13 @@
 
 #include "Main.h"
 #include "Object.h"
+#include "Sprite.h"
 
 using boost::shared_ptr;
 
 #define NUMOFMAPTEX 10
+
+class Sprite;
 
 class BckgrObj :
 	public Object
@@ -42,13 +45,10 @@ public:
     void setFruitAlpha(int a);
 
 private:
-    shared_ptr<sf::Sprite>
+    shared_ptr<Sprite>
             mapEl[NUMOFMAPTEX],
             objEl[NUMOFMAPTEX],
             mapElRot[NUMOFMAPTEX][3];
-    shared_ptr<sf::Image>
-            imgs[NUMOFMAPTEX],
-            objimgs[NUMOFMAPTEX];
 
     int
             objcounter,

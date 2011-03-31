@@ -19,12 +19,9 @@ extern Settings settings;
 
 void BckgrObj::Draw(int ix, int iy, int obj, int type, int alp) {
 
-    shared_ptr<sf::Sprite> s = (type == 1) ? objEl[obj] : mapEl[obj];
-    s->SetPosition(ix, iy);
-
-    s->SetColor(sf::Color(255, 255, 255, alp));
-
-    buf->Draw(*(s.get()));
+    shared_ptr<Sprite> s = (type == 1) ? objEl[obj] : mapEl[obj];
+    s->SetAlpha(alp);
+    s->Blit(buf, sf::Vector2i(ix, iy));
 }
 
 void BckgrObj::Draw(int ix, int iy, int obj, int type) {
@@ -49,13 +46,13 @@ void BckgrObj::Draw() {
 
     objcounter = 0;
 
-    buf->Draw(*(mapEl[0].get()));
+    mapEl[0]->Blit(buf, sf::Vector2i(0, 0));
 
     //DRAW FIELD
     for (j=0;j<height;j++) {
         for (i=0; i<width; i++) {
 
-            shared_ptr<sf::Sprite> s;
+            shared_ptr<Sprite> s;
             switch (map[j * width + i]) {
             case 1:
                 if (( map[j*width+i+1] != 0 || i == width-1 ) &&
@@ -119,9 +116,8 @@ void BckgrObj::Draw() {
                 continue;
             }
 
-            s->SetPosition(i*settings.tilesize, j*settings.tilesize);
-            s->SetColor(sf::Color(255, 255, 255, alpha));
-            buf->Draw(*(s.get()));
+            s->SetAlpha(alpha);
+            s->Blit(buf, sf::Vector2i(i*settings.tilesize, j*settings.tilesize));
 
         }
     }
@@ -131,7 +127,7 @@ void BckgrObj::Draw() {
     for (j=0;j<height;j++) {
         for (i=0; i<width; i++) {
 
-            shared_ptr<sf::Sprite> s;
+            shared_ptr<Sprite> s;
             switch (objmap[j*width+i]) {
             case 1:
             case 2:
@@ -147,10 +143,9 @@ void BckgrObj::Draw() {
                 continue;
             }
 
-            s.get()->SetPosition(i*settings.tilesize+10, // +10 are needed for correct placement
-                j*settings.tilesize+10);
-            s->SetColor(sf::Color(255, 255, 255, alpha));
-            buf->Draw(*(s.get()));
+            s->SetAlpha(alpha);
+            s->Blit(buf, sf::Vector2i(i*settings.tilesize+10, // +10 are needed for correct placement
+                j*settings.tilesize+10));
 
             objcounter++;
         }
@@ -169,31 +164,20 @@ bool BckgrObj::LoadTextures(std::string path) {
 
     try {
         for (i=0;i<NUMOFMAPTEX;i++) {
-            sf::Image *img = new sf::Image();
-            imgs[i].reset(img);
-            if (!img->LoadFromFile(path + "m" + num[i] + ".png")) {
-                throw Error(num[i] + "Failed to load map texture");
-            }
-            img->CreateMaskFromColor(sf::Color(255, 0, 255));
 
-            mapEl[i].reset(new sf::Sprite(*img));
+            mapEl[i].reset(new Sprite());
+            mapEl[i]->Load(path + "m" + num[i] + ".png");
 
             for (int j=0;j<3;j++) {
-                mapElRot[i][j].reset(new sf::Sprite(*img));
-//                mapElRot[i][j]->SetCenter(10.f, 10.f);
-//                mapElRot[i][j]->SetRotation((j+1)*90);
+                mapElRot[i][j].reset(new Sprite());
+                mapElRot[i][j]->Load(path + "m" + num[i] + ".png");
+                mapElRot[i][j]->SetRotation((j+1)*90);
             }
         }
         for (i=1;i<5;i++) {
-            sf::Image *img = new sf::Image();
-            objimgs[i].reset(img);
 
-            if (!img->LoadFromFile(path + "o" + num[i] + ".png")) {
-                throw Error(num[i] + "Failed to load object texture");
-            }
-            img->CreateMaskFromColor(sf::Color(255, 0, 255));
-
-            objEl[i].reset(new sf::Sprite(*img));
+            objEl[i].reset(new Sprite());
+            objEl[i]->Load(path + "o" + num[i] + ".png");
         }
 
         logtxt.print("Field textures loaded");
