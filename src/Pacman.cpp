@@ -216,7 +216,7 @@ bool Pacman::LoadTextures(std::string path) {
                 if (j==1) {
                     pacElRot[i][j]->FlipX(true);
                 } else {
-                    pacElRot[i][j]->Rotate(360-(j+1)*90);
+//                    pacElRot[i][j]->Rotate(360-(j+1)*90);
                 }
             }
         }

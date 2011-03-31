@@ -31,9 +31,10 @@ void Sounds::stop(int i) {
     if ( !isinit ) return;
     snd[i]->Stop();
 }
-//void Sounds::modify( int sound, long freq, long volume, long pan) {
-//	snd[sound]->Modify(freq, volume, pan);
-//}
+void Sounds::modify( int sound, long freq, long volume) {
+        snd[sound]->SetVolume(volume);
+        snd[sound]->SetPitch(freq / 44100.f);
+}
 void Sounds::play(int i, bool looped, int volume) {
     /* frequency used to be a parameter here until switching to sdl
      * we might want to reenable that functionality sometime */
@@ -43,6 +44,7 @@ void Sounds::play(int i, bool looped, int volume) {
 
     snd[i]->SetLoop(looped);
     snd[i]->SetVolume(volume);
+    snd[i]->SetPitch(1.f);
 
     snd[i]->Play();
 }

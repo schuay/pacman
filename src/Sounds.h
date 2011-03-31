@@ -25,8 +25,8 @@ public:
     Sounds();
 
     bool init();
-    void play(int i, bool looped=0, int volume=128);
-//    void modify( int sound, long freq, long volume=0, long pan=0 );
+    void play(int i, bool looped=0, int volume=100);
+    void modify( int sound, long freq, long volume=100);
     void stop(int i);
     void stop();
     void toggleSounds();

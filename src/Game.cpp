@@ -569,7 +569,7 @@ void Game::logicGame() {
 
         else if ( vulnflag && time > ghosttick -2000) for (i=0;i<4;i++) {
             ((Ghost*)objects[i+2])->setState(2);
-            //			app.getSnd()->modify( 7, 44100 + (2000 - (ghosttick-time))*10 );
+            app.getSnd()->modify( 7, 44100 + (2000 - (ghosttick-time))*10 );
         }
 
         // fruit stuff
@@ -702,7 +702,7 @@ void Game::logicGame() {
             render();
             nextLvl();
         }
-        //		else ( app.getSnd()->modify( 10, 44100 - ((BckgrObj*)objects[0])->getObjCount() * 75) );
+        else ( app.getSnd()->modify( 10, 44100 - ((BckgrObj*)objects[0])->getObjCount() * 75) );
     }
 }
 void Game::renderEnterHscore() {

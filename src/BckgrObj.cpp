@@ -180,7 +180,8 @@ bool BckgrObj::LoadTextures(std::string path) {
 
             for (int j=0;j<3;j++) {
                 mapElRot[i][j].reset(new sf::Sprite(*img));
-                mapElRot[i][j]->Rotate((j+1)*90);
+//                mapElRot[i][j]->SetCenter(10.f, 10.f);
+//                mapElRot[i][j]->SetRotation((j+1)*90);
             }
         }
         for (i=1;i<5;i++) {
