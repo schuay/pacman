@@ -13,17 +13,15 @@
 extern App app;
 
 void Sounds::toggleSounds() {
-    if ( on ) {
-        on = false;
+    on = !on;
+    if (!on) {
         stop();
     }
-    else
-        on = true;
 }
 void Sounds::stop() {
-    int i;
-    for (i=0; i < NUMOFSOUNDS; i++)
+    for (int i = 0; i < NUMOFSOUNDS; i++) {
         stop(i);
+    }
 }
 
 void Sounds::stop(int i) {
@@ -31,66 +29,42 @@ void Sounds::stop(int i) {
     snd[i]->Stop();
     snd[i]->SetPitch(1.f);
 }
-void Sounds::modify( int sound, long freq, long volume) {
-        snd[sound]->SetVolume(volume);
-        snd[sound]->SetPitch(freq / 44100.f);
+void Sounds::modify(int i, float pitch, int volume) {
+    snd[i]->SetVolume(volume);
+    snd[i]->SetPitch(pitch);
 }
-void Sounds::play(int i, bool looped, int volume) {
-    /* frequency used to be a parameter here until switching to sdl
-     * we might want to reenable that functionality sometime */
-
+void Sounds::play(int i, bool looped) {
     if ( !isinit ) return;
     if (!on) return;
 
     snd[i]->SetLoop(looped);
-    snd[i]->SetVolume(volume);
-
     snd[i]->Play();
 }
 bool Sounds::init() {
 
-    if ( isinit)
+    if ( isinit) {
         return true;
+    }
 
-    try {
-        int i;
-        for (i=0; i < NUMOFSOUNDS; i++) {
-            string path = APP_PATH "/" + sndPaths[i];
-            sf::SoundBuffer *buf = new sf::SoundBuffer();
-            sndbuf[i].reset(buf);
-            if (!sndbuf[i]->LoadFromFile(path))
-                throw Error("Error loading " + sndPaths[i]);
-            snd[i].reset(new sf::Sound(*buf));
+    const string paths[] = {"intro", "munch_a", "munch_b", "large_pellet",
+                            "ghost_eat", "fruit", "extra_man", "vuln",
+                            "death", "newgame", "siren", "intermission", "booster"};
+
+    for (int i = 0; i < sizeof(paths) / sizeof(paths[0]); i++) {
+        string path = APP_PATH "/sound/" + paths[i] + ".ogg";
+
+        sf::SoundBuffer *buf = new sf::SoundBuffer();
+        sndbuf[i].reset(buf);
+        if (!sndbuf[i]->LoadFromFile(path)) {
+            throw Error("Error loading " + paths[i]);
         }
 
-        isinit = true;
-        Logger::msg("sounds loaded successfully");
+        snd[i].reset(new sf::Sound(*buf));
     }
-    catch ( Error& err ) {
-        Logger::err(err.getDesc());
-    }
-    catch ( ... ) {
-        Logger::err("Unexpected exception");
-    }
-    return true;
-}
 
-Sounds::Sounds() :
-        on(true), isinit(false)
-{
-    //set sound paths
-    sndPaths[0] = "sound/intro.ogg";
-    sndPaths[1] = "sound/munch_a.ogg";
-    sndPaths[2] = "sound/munch_b.ogg";
-    sndPaths[3] = "sound/large_pellet.ogg";
-    sndPaths[4] = "sound/ghost_eat.ogg";
-    sndPaths[5] = "sound/fruit.ogg";
-    sndPaths[6] = "sound/extra_man.ogg";
-    sndPaths[7] = "sound/vuln.ogg";
-    sndPaths[8] = "sound/death.ogg";
-    sndPaths[9] = "sound/newgame.ogg";
-    sndPaths[10] = "sound/siren.ogg";
-    sndPaths[11] = "sound/intermission.ogg";
-    sndPaths[12] = "sound/booster.ogg";
+    isinit = true;
+    Logger::msg("sounds loaded successfully");
+
+    return true;
 }
 

@@ -101,8 +101,8 @@ void Game::toggleSound() {
     else {
         app.getSnd()->toggleSounds();
 
-        if (gamestarted && !ispaused ) app.getSnd()->play(10, 1);
-        if (gamestarted && vulnflag && !ispaused ) app.getSnd()->play(7, 1);
+        if (gamestarted && !ispaused ) app.getSnd()->play(10, true);
+        if (gamestarted && vulnflag && !ispaused ) app.getSnd()->play(7, true);
     }
 }
 void Game::clearHscore() {
@@ -187,7 +187,7 @@ void Game::setState(GameStateEnum st) {
 
     if ( st == STATE_GAME ) {
         app.getSnd()->stop();
-        app.getSnd()->play(10,1);
+        app.getSnd()->play(10, true);
 
         for (i=0;i<NUMOFOBJECTS;i++) if (objects[i]) objects[i]->setAlpha(255);
         for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) objects[i]->setPaused( false);
@@ -205,14 +205,14 @@ void Game::setState(GameStateEnum st) {
 
 
         app.getSnd()->stop();
-        app.getSnd()->play( 11, 0);
+        app.getSnd()->play( 11, false);
 
         for (i=0;i<NUMOFOBJECTS;i++) if (objects[i]) objects[i]->setAlpha(150);
         for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) objects[i]->setPaused( true);
     }
     else if ( st == STATE_STOPPED && state != STATE_STOPPED) {
         app.getSnd()->stop();
-        app.getSnd()->play(0, 1);
+        app.getSnd()->play(0, true);
         for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) objects[i]->setPaused( true);
         for (i=0;i<NUMOFOBJECTS;i++) if (objects[i]) objects[i]->setAlpha(255);
     }
@@ -333,7 +333,7 @@ void Game::logicGame() {
 
         else if ( vulnflag && time > ghosttick -2000) for (i=0;i<4;i++) {
             ((Ghost*)objects[i+2])->setState(2);
-            app.getSnd()->modify( 7, 44100 + (2000 - (ghosttick-time))*10 );
+            app.getSnd()->modify( 7, 1.f + (2000 - (ghosttick-time)) / 4400.f );
         }
 
         // fruit stuff
@@ -369,7 +369,7 @@ void Game::logicGame() {
                     lives--;
 
                     app.getSnd()->stop();
-                    app.getSnd()->play(8, 0);
+                    app.getSnd()->play(8, false);
 
                     sf::Sleep(1.f);
 
@@ -387,7 +387,7 @@ void Game::logicGame() {
                 else if  ( ((Ghost*)objects[i+2])->getState() != 3 ) {
                     ((Ghost*)objects[i+2])->setState(3);
 
-                    app.getSnd()->play(4,0);
+                    app.getSnd()->play(4, false);
                     deadghostcount++;
 
                     floatingscore = 200;
@@ -406,15 +406,15 @@ void Game::logicGame() {
             objmap[pacY * settings.fieldwidth + pacX ] = 0;
             score += SMALL_DOTS_SCORE;
 
-            app.getSnd()->play( 1 + soundcounter%2, 0, -500);
+            app.getSnd()->play( 1 + soundcounter%2, false);
             soundcounter++;
         }
         else if ( objmap[pacY * settings.fieldwidth + pacX ] == 2 ) {
             objmap[pacY * settings.fieldwidth + pacX ] = 0;
             score += LARGE_DOTS_SCORE;
 
-            app.getSnd()->play(3, 0);
-            app.getSnd()->play(7, 1);
+            app.getSnd()->play(3, false);
+            app.getSnd()->play(7, true);
 
             //set ghosts to vulnerable mode
 
@@ -430,7 +430,7 @@ void Game::logicGame() {
             objmap[pacY * settings.fieldwidth + pacX ] = 0;
             score += objscore;
 
-            app.getSnd()->play(5, 0);
+            app.getSnd()->play(5, false);
 
             floatingscorebox.x = pacXpix;
             floatingscorebox.y = pacYpix-70;
@@ -451,7 +451,7 @@ void Game::logicGame() {
              (score >=1000000 && oldscore < 1000000) ) {
             lives++;
 
-            app.getSnd()->play(6, 0);
+            app.getSnd()->play(6, false);
         }
 
         if ( !specialhasbeenspawned && ((BckgrObj*)objects[0])->getObjCount() == specialspawntime) {
@@ -466,7 +466,7 @@ void Game::logicGame() {
             render();
             nextLvl();
         }
-        else ( app.getSnd()->modify( 10, 44100 - ((BckgrObj*)objects[0])->getObjCount() * 75) );
+        else ( app.getSnd()->modify( 10, 1.f - ((BckgrObj*)objects[0])->getObjCount() / 500.f) );
     }
 }
 void Game::renderEnterHscore() {
@@ -616,7 +616,7 @@ void Game::renderNormal() {
 void Game::boost() {
     if ( boostavailable ) {
 
-        app.getSnd()->play( 12, 0 );
+        app.getSnd()->play(12, false);
 
         boosttick = (int)(clock.GetElapsedTime() * 1000.f) + BOOSTTIME;
         isboosted = true;
@@ -638,8 +638,8 @@ bool Game::pause() {
     }
     else {
         ispaused = false;
-        app.getSnd()->play(10, 1);
-        if (vulnflag) app.getSnd()->play(7, 1);
+        app.getSnd()->play(10, true);
+        if (vulnflag) app.getSnd()->play(7, true);
         for (i=0;i<NUMOFOBJECTS;i++) objects[i]->setPaused( false);
 
         int delta( (int)(clock.GetElapsedTime() * 1000.f) - pausetick );
@@ -659,7 +659,7 @@ void Game::nextLvl() {
         level++;
 
         app.getSnd()->stop();
-        app.getSnd()->play(9);
+        app.getSnd()->play(9, false);
 
         objscore*=2;
         settings.vuln_duration -= settings.vuln_duration/10;
@@ -821,7 +821,7 @@ void Game::gameInit(std::string level, std::string skin) {
 
         Logger::msg("Sounds loaded");
 
-        app.getSnd()->play(9, 0);
+        app.getSnd()->play(9, false);
 
         setState( STATE_STOPPED);
 
@@ -922,7 +922,7 @@ void Game::resetLvl() {	// vars and positions when pacman dies during level
 
     sf::Sleep(1.f);
 
-    app.getSnd()->play(9);
+    app.getSnd()->play(9, false);
 
 
     // setting vars

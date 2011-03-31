@@ -12,6 +12,7 @@
 
 #include <SFML/Audio.hpp>
 #include <boost/shared_ptr.hpp>
+#include <vector>
 
 #include "App.h"
 #include "Error.h"
@@ -19,31 +20,28 @@
 #include "Defines.h"
 
 using boost::shared_ptr;
+using std::vector;
+using std::string;
 
 #define NUMOFSOUNDS 13
 
 class Sounds
 {
 public:
-    Sounds();
+    Sounds() : on(true), isinit(false) { }
 
     bool init();
-    void play(int i, bool looped=0, int volume=100);
-    void modify( int sound, long freq, long volume=100);
+    void play(int i, bool looped);
+    void modify(int i, float pitch, int volume = 100);
     void stop(int i);
     void stop();
     void toggleSounds();
     bool on;
 
 private:
-    shared_ptr<sf::SoundBuffer>
-            sndbuf[NUMOFSOUNDS];
-    shared_ptr<sf::Sound>
-            snd[NUMOFSOUNDS];
 
-    std::string
-            sndPaths[NUMOFSOUNDS];
+    shared_ptr<sf::SoundBuffer> sndbuf[NUMOFSOUNDS];
+    shared_ptr<sf::Sound> snd[NUMOFSOUNDS];
 
-    bool
-            isinit;
+    bool isinit;
 };
