@@ -12,7 +12,10 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "Main.h"
+#include "App.h"
+#include "Game.h"
+#include "Settings.h"
+#include "Logger.h"
 #include "Object.h"
 #include "Sprite.h"
 

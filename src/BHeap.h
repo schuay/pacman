@@ -7,11 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-//
-// BINARY HEAP class by Jakob Gruber
-//
-
 #pragma once
 
 class BHeap

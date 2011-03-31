@@ -13,11 +13,16 @@
 #include <string>
 #include <cstdlib>
 #include <sys/stat.h>
+#include "fstream"
 
+#include "Error.h"
 #include "Logger.h"
-#include "Main.h"
+#include "Defines.h"
 
 using std::string;
+
+#define MODE_LEVELS 2
+#define MODE_SKINS 1
 
 class Settings {
 public:

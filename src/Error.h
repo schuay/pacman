@@ -9,7 +9,8 @@
 
 
 #pragma once
-#include "Main.h"
+
+#include <string>
 
 class Error
 {

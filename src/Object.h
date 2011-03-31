@@ -13,9 +13,9 @@
 #include <SFML/Graphics.hpp>
 #include <boost/shared_ptr.hpp>
 
-#include "Main.h"
-
 using boost::shared_ptr;
+
+#define MOVEMOD 2000.0f
 
 class Object
 {

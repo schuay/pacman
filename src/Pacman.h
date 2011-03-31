@@ -14,8 +14,9 @@
 #include <boost/shared_ptr.hpp>
 
 #include "Sprite.h"
-#include "Main.h"
 #include "Object.h"
+#include "Logger.h"
+#include "App.h"
 
 using boost::shared_ptr;
 

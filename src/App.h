@@ -13,7 +13,10 @@
 #include <SFML/Graphics.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include "Logger.h"
+#include "Settings.h"
 #include "Sounds.h"
+#include "Defines.h"
 
 using boost::shared_ptr;
 

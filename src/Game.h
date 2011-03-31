@@ -11,18 +11,27 @@
 #pragma once
 
 #include <boost/shared_ptr.hpp>
+#include <sstream>
 
 #include "Sounds.h"
-#include "Main.h"
 #include "BckgrObj.h"
 #include "Object.h"
 #include "Pacman.h"
 #include "Ghost.h"
 #include "hScore.h"
+#include "Defines.h"
 
 using boost::shared_ptr;
 
 #define NUMOFOBJECTS 6
+#define SETTINGSFILE "settings.conf"
+#define CFGFILE "level.conf"
+#define SMALL_DOTS_SCORE 10
+#define LARGE_DOTS_SCORE 50
+#define OBJFILE "objmap"
+#define MAPFILE "map"
+#define FRUITDURATION 10000
+#define BOOSTTIME 3000
 
 class Sounds;
 

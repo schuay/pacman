@@ -12,7 +12,10 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "Main.h"
+#include "App.h"
+#include "Settings.h"
+#include "Logger.h"
+#include "Error.h"
 #include "Object.h"
 #include "BHeap.h"
 

@@ -7,8 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <string>
+#include <iostream>
 
-#include "Main.h"
+#include "App.h"
+#include "Game.h"
+#include "Settings.h"
 
 //////////////////////////////////////////////////////
 //	GLOBAL VARS
