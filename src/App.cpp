@@ -33,3 +33,21 @@ void App::initSound() {
 
     Logger::msg("Sound initialized");
 }
+
+App::App() : quit(false) {
+    searchpaths.push_back(".");
+    searchpaths.push_back(string(getenv("HOME")) + "/.config/pacman_sdl");
+    searchpaths.push_back("/usr/share/pacman_sdl");
+}
+
+string App::findFile(string filename) {
+    struct stat fileInfo;
+    for(int i = 0; i < searchpaths.size(); i++) {
+        string path = searchpaths[i] + "/" + filename;
+        if (stat(path.c_str(), &fileInfo) == 0) {
+            Logger::msg("found file at " + path);
+            return path;
+        }
+    }
+    throw new Error("File not found: " + filename);
+}

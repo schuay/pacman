@@ -20,8 +20,9 @@ extern App app;
 extern Settings settings;
 
 void Game::changeSkin() {
-    int i;
-    for (i=0;i<NUMOFOBJECTS;i++) objects[i]->loadTextures( APP_PATH "/" + settings.skinspath[settings.skinspathcurrent] );
+    for (int i = 0; i < NUMOFOBJECTS; i++) {
+        objects[i]->loadTextures(app.findFile(settings.skinspath[settings.skinspathcurrent]));
+    }
 }
 void Game::emptyMsgPump() {
 
@@ -358,7 +359,7 @@ void Game::logicGame() {
         ///////////////////////////////////////////
 
         for (i=0; i< 4; i++) {
-            //if (pacX == baddieX[i] && pacY == baddieY[i] ) {
+            //if (pacX == ghostX[i] && pacY == ghostY[i] ) {
             if (	pacXpix > ghostXpix[i] - 10  &&
                         pacXpix < ghostXpix[i] + 10  &&
                         pacYpix > ghostYpix[i] - 10  &&
@@ -668,10 +669,10 @@ void Game::nextLvl() {
         ((Ghost*)objects[ rand()%4 +2])->changeDifficulty( rand()%10, rand()%3 );
 
         objects[PAC]->reset(settings.pacstartx, settings.pacstarty);
-        objects[GHOST1]->reset(settings.baddiestartx, settings.baddiestarty);
-        objects[GHOST2]->reset(settings.baddiestartx+2, settings.baddiestarty);
-        objects[GHOST3]->reset(settings.baddiestartx-2, settings.baddiestarty);
-        objects[GHOST4]->reset(settings.baddiestartx, settings.baddiestarty-2);
+        objects[GHOST1]->reset(settings.ghoststartx, settings.ghoststarty);
+        objects[GHOST2]->reset(settings.ghoststartx+2, settings.ghoststarty);
+        objects[GHOST3]->reset(settings.ghoststartx-2, settings.ghoststarty);
+        objects[GHOST4]->reset(settings.ghoststartx, settings.ghoststarty-2);
 
         tmpstr = settings.lvlpath[settings.lvlpathcurrent] + OBJFILE;
         if ( ! loadMap(tmpstr, objmap) )
@@ -815,7 +816,7 @@ void Game::gameInit(std::string level, std::string skin) {
         //loading level graphics
 
         objects[0] = new BckgrObj( app.getWindow(), 10 );
-        objects[0]->loadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
+        objects[0]->loadTextures(app.findFile(settings.skinspath[settings.skinspathcurrent]));
 
         Logger::msg("Level background loaded");
 
@@ -840,57 +841,57 @@ void Game::gameInit(std::string level, std::string skin) {
                             settings.fieldheight,
                             settings.fieldwidth,
                             map);
-        objects[1]->loadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
+        objects[1]->loadTextures(app.findFile(settings.skinspath[settings.skinspathcurrent]));
 
         objects[2] = new Ghost( app.getWindow(),
                             20,
-                            settings.baddiestartx,
-                            settings.baddiestarty,
-                            settings.baddiespeed + rand()%20 + 10,
+                            settings.ghoststartx,
+                            settings.ghoststarty,
+                            settings.ghostspeed + rand()%20 + 10,
                             settings.tilesize,
                             settings.fieldheight,
                             settings.fieldwidth,
                             map,
                             "1");
-        objects[2]->loadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
+        objects[2]->loadTextures(app.findFile(settings.skinspath[settings.skinspathcurrent]));
 
         objects[3] = new Ghost( app.getWindow(),
                             20,
-                            settings.baddiestartx+2,
-                            settings.baddiestarty,
-                            settings.baddiespeed + rand()%20-10,
+                            settings.ghoststartx+2,
+                            settings.ghoststarty,
+                            settings.ghostspeed + rand()%20-10,
                             settings.tilesize,
                             settings.fieldheight,
                             settings.fieldwidth,
                             map,
                             "2");
-        objects[3]->loadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
+        objects[3]->loadTextures(app.findFile(settings.skinspath[settings.skinspathcurrent]));
 
         objects[4] = new Ghost( app.getWindow(),
                             20,
-                            settings.baddiestartx-2,
-                            settings.baddiestarty,
-                            settings.baddiespeed + rand()%20-10,
+                            settings.ghoststartx-2,
+                            settings.ghoststarty,
+                            settings.ghostspeed + rand()%20-10,
                             settings.tilesize,
                             settings.fieldheight,
                             settings.fieldwidth,
                             map,
                             "3");
-        objects[4]->loadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
+        objects[4]->loadTextures(app.findFile(settings.skinspath[settings.skinspathcurrent]));
 
         objects[5] = new Ghost( app.getWindow(),
                             20,
-                            settings.baddiestartx,
-                            settings.baddiestarty-2,
-                            settings.baddiespeed + rand()%20 - 10,
+                            settings.ghoststartx,
+                            settings.ghoststarty-2,
+                            settings.ghostspeed + rand()%20 - 10,
                             settings.tilesize,
                             settings.fieldheight,
                             settings.fieldwidth,
                             map,
                             "4");
-        objects[5]->loadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
+        objects[5]->loadTextures(app.findFile(settings.skinspath[settings.skinspathcurrent]));
 
-        for (i=0;i<4;i++) ((Ghost*)objects[i+2])->changeDifficulty(0, settings.baddieiq);	//SET DIFFICULTY SPECIFIED IN CONFIG FILE
+        for (i=0;i<4;i++) ((Ghost*)objects[i+2])->changeDifficulty(0, settings.ghostiq);	//SET DIFFICULTY SPECIFIED IN CONFIG FILE
 
         Logger::msg("Objects loaded");
 
@@ -937,10 +938,10 @@ void Game::resetLvl() {	// vars and positions when pacman dies during level
     if (ispaused) pause();
 
     objects[PAC]->reset(settings.pacstartx, settings.pacstarty);
-    objects[GHOST1]->reset(settings.baddiestartx, settings.baddiestarty);
-    objects[GHOST2]->reset(settings.baddiestartx+2, settings.baddiestarty);
-    objects[GHOST3]->reset(settings.baddiestartx-2, settings.baddiestarty);
-    objects[GHOST4]->reset(settings.baddiestartx, settings.baddiestarty-2);
+    objects[GHOST1]->reset(settings.ghoststartx, settings.ghoststarty);
+    objects[GHOST2]->reset(settings.ghoststartx+2, settings.ghoststarty);
+    objects[GHOST3]->reset(settings.ghoststartx-2, settings.ghoststarty);
+    objects[GHOST4]->reset(settings.ghoststartx, settings.ghoststarty-2);
 
     render();
 
@@ -981,7 +982,7 @@ bool Game::loadMap(std::string file, int* memmap) {
     char c('i');
     std::ifstream mp;
 
-    file = settings.getFile(file);
+    file = app.findFile(file);
     mp.open( file.c_str() );
 
     if (!mp ) {
@@ -1081,7 +1082,7 @@ void Game::render() {
 bool Game::loadFont() {
 
     try {
-        if (!font.LoadFromFile(APP_PATH "/" "arial.ttf",24)) {
+        if (!font.LoadFromFile(app.findFile("arial.ttf"),24)) {
             throw Error("Failed to create font object ");
         }
         str.SetFont(font);
@@ -1102,8 +1103,11 @@ bool Game::loadFont() {
 }
 
 void Game::prepareShutdown() {
-    int i;
-    for (i=0;i<NUMOFOBJECTS;i++) if ( objects[i] ) delete objects[i];
+    for (int i = 0; i < NUMOFOBJECTS; i++) {
+        if (objects[i]) {
+            delete objects[i];
+        }
+    }
 }
 Game::Game()
 :   isinit(false),

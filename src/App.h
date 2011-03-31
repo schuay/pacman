@@ -12,6 +12,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <boost/shared_ptr.hpp>
+#include <vector>
+#include <cstdlib>
+#include <sys/stat.h>
 
 #include "Logger.h"
 #include "Settings.h"
@@ -19,13 +22,15 @@
 #include "Defines.h"
 
 using boost::shared_ptr;
+using std::string;
+using std::vector;
 
 class Sounds;
 
 class App
 {
 public:
-    App() : quit(false) { }
+    App();
 
     void initApp();
     void initWindow();
@@ -36,10 +41,14 @@ public:
     shared_ptr<sf::RenderWindow> getWindow() const { return window; }
     shared_ptr<Sounds> getSnd() { return snd; }
 
+    /* look for file in search paths and return first instance */
+    string findFile(string filename);
+
 private:
 
     bool quit;
     shared_ptr<sf::RenderWindow> window;
     shared_ptr<Sounds> snd;
 
+    vector<string> searchpaths;
 };

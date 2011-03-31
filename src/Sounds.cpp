@@ -51,7 +51,7 @@ bool Sounds::init() {
                             "death", "newgame", "siren", "intermission", "booster"};
 
     for (int i = 0; i < sizeof(paths) / sizeof(paths[0]); i++) {
-        string path = APP_PATH "/sound/" + paths[i] + ".ogg";
+        string path = app.findFile("/sound/" + paths[i] + ".ogg");
 
         sf::SoundBuffer *buf = new sf::SoundBuffer();
         sndbuf[i].reset(buf);

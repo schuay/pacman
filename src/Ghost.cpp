@@ -44,7 +44,7 @@ bool Ghost::collision(int xtmp, int ytmp) {
 }
 void Ghost::changeDifficulty(int spd, int iq) {
     defspeed += spd;
-    baddie_iq += iq;
+    ghost_iq += iq;
 }
 void Ghost::reset(int ix, int iy) {
     animcounter=0;
@@ -321,11 +321,11 @@ int Ghost::calcF(int ix, int iy) const {
 
     b= ix > xtarget ? (ix-xtarget) : (xtarget-ix);  //current to target =H
 
-    //special cases: target left edge, baddie right edge
+    //special cases: target left edge, ghost right edge
 
     if ( ( width-1)-ix+xtarget < b ) 	b=(width-2)-ix+xtarget;	//width -1 to get correct F
 
-    //				target right edge, baddie left edge
+    //				target right edge, ghost left edge
 
     if (ix + (width+1) -xtarget < b )	b=ix + (width-2) -xtarget;
 
@@ -335,7 +335,7 @@ int Ghost::calcF(int ix, int iy) const {
 
     b= iy > ytarget ? (iy-ytarget) : (ytarget-iy);
 
-    //special case: target upper edge, baddie lower edge
+    //special case: target upper edge, ghost lower edge
 
     if ( ( height-1)-iy+ytarget < b ) 	b=(height-2)-iy+ytarget;
 
@@ -438,7 +438,7 @@ void Ghost::pathCalcVuln() {
 
             newdir = rand()%4;
 
-            //the following 2 lines make the baddies prefer directions other than shortest way to pacman
+            //the following 2 lines make the ghosts prefer directions other than shortest way to pacman
 
             if (newdir == dirToTar ) newdir = rand()%4;
             if (newdir == dirToTar ) newdir = rand()%4;
@@ -486,8 +486,8 @@ void Ghost::pathCalcDead() {
 
 
 
-    xtarget= baddie_start_point_x ;
-    ytarget= baddie_start_point_y ;
+    xtarget= ghost_start_point_x ;
+    ytarget= ghost_start_point_y ;
 
     //find path
     if ( find() ) flag=tracePath();
@@ -583,7 +583,7 @@ void Ghost::pathCalcNormal() {
     // TRACE PATH
 
     if (! flag &&		// pathfinding + trace successful
-        rand()%(( width+height) / 2 ) + baddie_iq > Gstore[ ytarget * width + xtarget ]  && // random roll successful
+        rand()%(( width+height) / 2 ) + ghost_iq > Gstore[ ytarget * width + xtarget ]  && // random roll successful
         dirToTar != cur_opp_dir) {	//and pathfinding direction is not the opposite of current direction
 
         if ( dirToTar == 0) {
@@ -710,8 +710,8 @@ void Ghost::update( int time) {
     //if target reached, set normal state
 
     if ( state == 3 &&
-        x == baddie_start_point_x &&
-        y == baddie_start_point_y) setState(0);
+        x == ghost_start_point_x &&
+        y == ghost_start_point_y) setState(0);
 
 
     //screen wrappers
@@ -948,7 +948,7 @@ Ghost::Ghost(shared_ptr<sf::RenderWindow> buf, int os, int ix, int iy, int ispdm
     dirToTar(-1),
     state(0),
     animcounter(0),
-    baddie_iq(0),
+    ghost_iq(0),
     heap(iwidth, iheight),
     gateopen(1)
 {
@@ -964,8 +964,8 @@ Ghost::Ghost(shared_ptr<sf::RenderWindow> buf, int os, int ix, int iy, int ispdm
 
     defspeed=spdmod;
 
-    baddie_start_point_x=ix;
-    baddie_start_point_y=iy;
+    ghost_start_point_x=ix;
+    ghost_start_point_y=iy;
 
     closed = new bool[height*width];
     parentDir = new int[height*width];

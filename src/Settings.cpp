@@ -10,6 +10,8 @@
 
 #include "Settings.h"
 
+extern App app;
+
 int Settings::setPath(int mode,std::string str) {
     int i;
 
@@ -37,20 +39,9 @@ int Settings::setPath(int mode,std::string str) {
     return 1;
 }
 
-string Settings::getFile(string filename) {
-    struct stat fileInfo;
-    for(int i = 0; i < searchpaths.size(); i++) {
-        string path = searchpaths[i] + "/" + filename;
-        if (stat(path.c_str(), &fileInfo) == 0) {
-            return path;
-        }
-    }
-    throw new Error("File not found: " + filename);
-}
-
 bool Settings::loadSettings(std::string filename) {
 
-    filename = getFile(filename);
+    filename = app.findFile(filename);
 
     std::ifstream	file( filename.c_str() );
     std::string		buffer,
@@ -78,18 +69,16 @@ bool Settings::loadSettings(std::string filename) {
 
         getline(file, buffer, '=');
         if (! file.eof() ) {
-            if (buffer == "WIDTH") file >> width;
-            else if (buffer == "HEIGHT") file >> height;
-            else if (buffer == "FIELDWIDTH") file >> fieldwidth;
+            if (buffer == "FIELDWIDTH") file >> fieldwidth;
             else if (buffer == "FIELDHEIGHT") file >> fieldheight;
             else if (buffer == "TILESIZE") file >> tilesize;
             else if (buffer == "PACSTARTX") file >> pacstartx;
             else if (buffer == "PACSTARTY") file >> pacstarty;
             else if (buffer == "PACSPEED") file >> pacspeed;
-            else if (buffer == "BADDIESTARTX") file >> baddiestartx;
-            else if (buffer == "BADDIESTARTY") file >> baddiestarty;
-            else if (buffer == "BADDIESPEED") file >> baddiespeed;
-            else if (buffer == "BADDIEIQ") file >> baddieiq;
+            else if (buffer == "GHOSTSTARTX") file >> ghoststartx;
+            else if (buffer == "GHOSTSTARTY") file >> ghoststarty;
+            else if (buffer == "GHOSTSPEED") file >> ghostspeed;
+            else if (buffer == "GHOSTIQ") file >> ghostiq;
             else if (buffer == "VULN_DURATION") file >> vuln_duration;
             else if (buffer == "GATEX") file >> gatex;
             else if (buffer == "GATEY") file >> gatey;
@@ -130,15 +119,9 @@ Settings::Settings() {
     pacstartx = 0;
     pacstarty = 0;
     pacspeed = 0;
-    baddiestartx = 0;
-    baddiestarty = 0;
-    baddiespeed = 0;
-    baddieiq = 0;
+    ghoststartx = 0;
+    ghoststarty = 0;
+    ghostspeed = 0;
+    ghostiq = 0;
     vuln_duration = 0;
-
-    searchpaths.push_back(".");
-    searchpaths.push_back(string(getenv("HOME")) + "/" HOME_CONF_PATH);
-    searchpaths.push_back(APP_PATH);
 }
-
-Settings::~Settings() {}

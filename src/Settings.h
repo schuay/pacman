@@ -7,14 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #pragma once
+
 #include <vector>
 #include <string>
-#include <cstdlib>
-#include <sys/stat.h>
-#include "fstream"
+#include <fstream>
 
+#include "App.h"
 #include "Error.h"
 #include "Logger.h"
 #include "Defines.h"
@@ -27,7 +26,6 @@ using std::string;
 class Settings {
 public:
     Settings();
-    ~Settings();
 
     bool loadSettings(string filename);
 
@@ -55,10 +53,10 @@ public:
             pacstartx,
             pacstarty,
             pacspeed,
-            baddiestartx,
-            baddiestarty,
-            baddiespeed,
-            baddieiq,
+            ghoststartx,
+            ghoststarty,
+            ghostspeed,
+            ghostiq,
             vuln_duration,
 
             lvlpathcount,
@@ -68,9 +66,5 @@ public:
 
     std::vector<string>
             lvlpath,
-            skinspath,
-            searchpaths;
-
-    /* look for file in search paths and return first instance */
-    string getFile(string filename);
+            skinspath;
 };

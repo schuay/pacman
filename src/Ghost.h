@@ -93,10 +93,10 @@ private:
             state,		// 0 == normal, 1 == vulnerable, 2 == warning, 3 == dead
 
             animcounter,
-            baddie_iq,		// increases the chance of choosing shortest path
+            ghost_iq,		// increases the chance of choosing shortest path
 
-            baddie_start_point_x,
-            baddie_start_point_y;
+            ghost_start_point_x,
+            ghost_start_point_y;
 
     float
             xfloat,	//current position as floating point based on pixel pos - allows for infinite speed
@@ -112,7 +112,7 @@ private:
 
     bool
             dirClear[3][3],	//dirClear[x][y], direction clear = 1, blocked = 0
-            gateopen,		// determines if baddies can pass gate
+            gateopen,		// determines if ghosts can pass gate
             *closed;
 
     std::string

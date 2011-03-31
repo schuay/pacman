@@ -18,9 +18,6 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#define APP_PATH "/usr/share/pacman_sdl"
-#define HOME_CONF_PATH ".config/pacman_sdl"
-
 #define EXTRA_Y_SPACE 50
 
 #endif // DEFINES_H
