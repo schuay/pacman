@@ -12,7 +12,7 @@
 
 #include <SFML/Audio.hpp>
 #include <boost/shared_ptr.hpp>
-#include <vector>
+#include <map>
 
 #include "App.h"
 #include "Error.h"
@@ -20,28 +20,45 @@
 #include "Defines.h"
 
 using boost::shared_ptr;
-using std::vector;
+using std::map;
+using std::pair;
 using std::string;
 
-#define NUMOFSOUNDS 13
+enum SoundsEnum {
+    INTRO = 0,
+    MUNCH_A = 1,
+    MUNCH_B = 2,
+    LARGE_PELLET = 3,
+    GHOST_EAT = 4,
+    FRUIT = 5,
+    EXTRA_MAN = 6,
+    VULN = 7,
+    DEATH = 8,
+    NEWGAME = 9,
+    SIREN = 10,
+    INTERMISSION = 11,
+    BOOSTER = 12
+};
 
 class Sounds
 {
 public:
-    Sounds() : on(true), isinit(false) { }
+    Sounds();
 
     bool init();
-    void play(int i, bool looped);
-    void modify(int i, float pitch, int volume = 100);
-    void stop(int i);
+    void play(SoundsEnum i, bool looped);
+    void modify(SoundsEnum i, float pitch, int volume = 100);
+    void stop(SoundsEnum i);
     void stop();
     void toggleSounds();
-    bool on;
+    bool getOn() const { return on; }
 
 private:
 
-    shared_ptr<sf::SoundBuffer> sndbuf[NUMOFSOUNDS];
-    shared_ptr<sf::Sound> snd[NUMOFSOUNDS];
+    map<SoundsEnum, shared_ptr<sf::SoundBuffer> > sndbuf;
+    map<SoundsEnum, shared_ptr<sf::Sound> > snd;
+    map<SoundsEnum, string> sndnames;
 
+    bool on;
     bool isinit;
 };

@@ -2,7 +2,7 @@
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
+ *   the Free Software Foundation; either version 2 of the License] = or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
@@ -19,21 +19,22 @@ void Sounds::toggleSounds() {
     }
 }
 void Sounds::stop() {
-    for (int i = 0; i < NUMOFSOUNDS; i++) {
-        stop(i);
+    map<SoundsEnum, shared_ptr<sf::Sound> >::iterator it;
+    for (it = snd.begin(); it != snd.end(); it++) {
+        stop((*it).first);
     }
 }
 
-void Sounds::stop(int i) {
+void Sounds::stop(SoundsEnum i) {
     if ( !isinit ) return;
     snd[i]->Stop();
     snd[i]->SetPitch(1.f);
 }
-void Sounds::modify(int i, float pitch, int volume) {
+void Sounds::modify(SoundsEnum i, float pitch, int volume) {
     snd[i]->SetVolume(volume);
     snd[i]->SetPitch(pitch);
 }
-void Sounds::play(int i, bool looped) {
+void Sounds::play(SoundsEnum i, bool looped) {
     if ( !isinit ) return;
     if (!on) return;
 
@@ -46,20 +47,19 @@ bool Sounds::init() {
         return true;
     }
 
-    const string paths[] = {"intro", "munch_a", "munch_b", "large_pellet",
-                            "ghost_eat", "fruit", "extra_man", "vuln",
-                            "death", "newgame", "siren", "intermission", "booster"};
+    map<SoundsEnum, string>::iterator it;
+    for (it = sndnames.begin(); it != sndnames.end(); it++) {
+        string path = app.findFile("/sound/" + (*it).second + ".ogg");
 
-    for (int i = 0; i < sizeof(paths) / sizeof(paths[0]); i++) {
-        string path = app.findFile("/sound/" + paths[i] + ".ogg");
+        shared_ptr<sf::SoundBuffer> buf(new sf::SoundBuffer());
+        sndbuf[(*it).first] = buf;
 
-        sf::SoundBuffer *buf = new sf::SoundBuffer();
-        sndbuf[i].reset(buf);
-        if (!sndbuf[i]->LoadFromFile(path)) {
-            throw Error("Error loading " + paths[i]);
+        if (!buf->LoadFromFile(path)) {
+            throw Error("error loading " + (*it).second);
         }
 
-        snd[i].reset(new sf::Sound(*buf));
+        shared_ptr<sf::Sound> s(new sf::Sound(*buf));
+        snd[(*it).first] = s;
     }
 
     isinit = true;
@@ -68,3 +68,18 @@ bool Sounds::init() {
     return true;
 }
 
+Sounds::Sounds() : on(true), isinit(false) {
+    sndnames[INTRO] = "intro";
+    sndnames[MUNCH_A] = "munch_a";
+    sndnames[MUNCH_B] = "munch_b";
+    sndnames[LARGE_PELLET] = "large_pellet";
+    sndnames[GHOST_EAT] = "ghost_eat";
+    sndnames[FRUIT] = "fruit";
+    sndnames[EXTRA_MAN] = "extra_man";
+    sndnames[VULN] = "vuln";
+    sndnames[DEATH] = "death";
+    sndnames[NEWGAME] = "newgame";
+    sndnames[SIREN] = "siren";
+    sndnames[INTERMISSION] = "intermission";
+    sndnames[BOOSTER] = "booster";
+}
