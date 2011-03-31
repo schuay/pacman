@@ -919,7 +919,7 @@ bool Ghost::loadTextures(std::string path) {
             ghostEl[i].reset(new sf::Sprite(*img));
 
         }
-        Logger::msg(filename + " ghost textures loaded");
+        Logger::msg("ghost nr " + filename + " textures loaded");
     }
     catch ( Error &err) {
         app.setQuit(true);

@@ -131,18 +131,19 @@ void BckgrObj::draw() {
             case 1:
             case 2:
                 s = objEl[objmap[j*width+i]];
+                s->setAlpha(alpha);
                 break;
             case 3:
                 if (!specialspawned || specialeaten) {
                     continue;
                 }
                 s = objEl[objmap[j*width+i]];
+                s->setAlpha(fruitalpha);
                 break;
             default:
                 continue;
             }
 
-            s->setAlpha(alpha);
             s->blit(buf, sf::Vector2i(i*settings.tilesize+10, // +10 are needed for correct placement
                 j*settings.tilesize+10));
 
@@ -179,7 +180,7 @@ bool BckgrObj::loadTextures(std::string path) {
             objEl[i]->load(path + "o" + num[i] + ".png");
         }
 
-        Logger::msg("Field textures loaded");
+        Logger::msg("field textures loaded");
     }
     catch ( Error &err) {
         std::cerr << err.getDesc().c_str();
@@ -188,7 +189,6 @@ bool BckgrObj::loadTextures(std::string path) {
         return false;
     }
     catch ( ... ) {
-        std::cerr << "Unexpected exception in BckgrObj::LoadTextures";
         app.setQuit(true);
         Logger::err( "Unexpected error during Game()" );
         return false;

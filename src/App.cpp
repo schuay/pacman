@@ -18,7 +18,7 @@ void App::initWindow() {
 
     window->Create(sf::VideoMode(settings.width, settings.height+EXTRA_Y_SPACE), "pacman_sdl");
 
-    Logger::msg("Video mode set successfully");
+    Logger::msg("video mode set successfully");
 }
 
 void App::initApp() {
@@ -31,7 +31,7 @@ void App::initSound() {
     snd.reset(new Sounds());
     snd->init();
 
-    Logger::msg("Sound initialized");
+    Logger::msg("sound initialized");
 }
 
 App::App() : quit(false) {
@@ -49,5 +49,5 @@ string App::findFile(string filename) {
             return path;
         }
     }
-    throw new Error("File not found: " + filename);
+    throw new Error("file not found: " + filename);
 }

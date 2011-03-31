@@ -142,6 +142,7 @@ void Pacman::update(int time) {
     elapsedTime += time;
 
 }
+
 int Pacman::getAnimationStep() const {
     /* get elapsed time down to a manageable level */
     int elapsed = elapsedTime / 25.f;
@@ -150,6 +151,7 @@ int Pacman::getAnimationStep() const {
     /* subtract 7 and return abs because we are going back and forth between 0 and 7 */
     return 7 - abs(step - 7);
 }
+
 void Pacman::draw() {
 
     int animStep = getAnimationStep();
@@ -198,12 +200,12 @@ bool Pacman::loadTextures(std::string path) {
 
         Logger::msg("Pacman textures loaded");
     }
-    catch ( Error &err) {
+    catch (Error &err) {
         app.setQuit(true);
         Logger::err(err.getDesc());
         return false;
     }
-    catch ( ... ) {
+    catch (...) {
         app.setQuit(true);
         Logger::err("Unexpected error");
         return false;
@@ -229,23 +231,18 @@ bool Pacman::collision(int xtmp, int ytmp) {
     return 1;
 }
 void Pacman::setNextDir(int next) {
-    if (next >= 0 && next <=3 ) {
-        if (next == 0) {
-            nextdx=0;
-            nextdy=-1;
-        }
-        if (next == 1) {
-            nextdx=1;
-            nextdy=0;
-        }
-        if (next == 2) {
-            nextdx=0;
-            nextdy=1;
-        }
-        if (next == 3) {
-            nextdx=-1;
-            nextdy=0;
-        }
+    if (next == 0) {
+        nextdx=0;
+        nextdy=-1;
+    } else if (next == 1) {
+        nextdx=1;
+        nextdy=0;
+    } else if (next == 2) {
+        nextdx=0;
+        nextdy=1;
+    } else if (next == 3) {
+        nextdx=-1;
+        nextdy=0;
     }
 }
 Pacman::Pacman(shared_ptr<sf::RenderWindow> buf, int os, int ix, int iy, int ispdmod,

@@ -785,7 +785,7 @@ void Game::gameInit(std::string level, std::string skin) {
             }
         }
 
-        Logger::msg("Unloading complete");
+        Logger::msg("unloading complete");
 
         //if level has different field size than currently selected, setup new window with proper size
         if (settings.fieldwidth*settings.tilesize != app.getWindow()->GetWidth()
@@ -805,22 +805,20 @@ void Game::gameInit(std::string level, std::string skin) {
         if ( !loadMap(tmpstr + OBJFILE, objmap) )
             throw Error("Failed to load objmap.txt");
 
-        Logger::msg("Maps loaded");
+        Logger::msg("maps loaded");
 
         //creating font
 
         loadFont();
 
-        Logger::msg("Font created");
+        Logger::msg("font created");
 
         //loading level graphics
 
         objects[0] = new BckgrObj( app.getWindow(), 10 );
         objects[0]->loadTextures(app.findFile(settings.skinspath[settings.skinspathcurrent]));
 
-        Logger::msg("Level background loaded");
-
-        Logger::msg("Sounds loaded");
+        Logger::msg("level background loaded");
 
         app.getSnd()->play(NEWGAME, false);
 
@@ -893,7 +891,7 @@ void Game::gameInit(std::string level, std::string skin) {
 
         for (i=0;i<4;i++) ((Ghost*)objects[i+2])->changeDifficulty(0, settings.ghostiq);	//SET DIFFICULTY SPECIFIED IN CONFIG FILE
 
-        Logger::msg("Objects loaded");
+        Logger::msg("objects loaded");
 
         //calculate special fruit spawn time
 
