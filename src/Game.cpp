@@ -26,7 +26,7 @@ void Game::changeSkin() {
 void Game::emptyMsgPump() {
 
     sf::Event ev;
-    shared_ptr<sf::RenderWindow> buf = app.getScreen();
+    shared_ptr<sf::RenderWindow> buf = app.getWindow();
 
     while ( buf->GetEvent(ev) ) {
         switch(ev.Type) {
@@ -111,7 +111,7 @@ void Game::clearHscore() {
 
 void Game::renderViewHscore() {
     shared_ptr<sf::RenderWindow>
-            buf = app.getScreen();
+            buf = app.getWindow();
     std::ostringstream ostr, scstr;
     sf::Vector2f rect;
     int i, sc;
@@ -471,7 +471,7 @@ void Game::logicGame() {
 }
 void Game::renderEnterHscore() {
     shared_ptr<sf::RenderWindow>
-            buf = app.getScreen();
+            buf = app.getWindow();
     std::ostringstream ostr;
     sf::Vector2f rect;
     sf::Color col(255,255,255);
@@ -540,7 +540,7 @@ void Game::renderEnterHscore() {
 void Game::renderNormal() {
     int i;
     std::ostringstream ostr;
-    shared_ptr<sf::RenderWindow> buf = app.getScreen();
+    shared_ptr<sf::RenderWindow> buf = app.getWindow();
 
 
     try {
@@ -787,9 +787,9 @@ void Game::gameInit(std::string level, std::string skin) {
         Logger::Msg("Unloading complete");
 
         //if level has different field size than currently selected, setup new window with proper size
-        if (settings.fieldwidth*settings.tilesize != app.getScreen()->GetWidth()
-            || settings.fieldheight*settings.tilesize+EXTRA_Y_SPACE != app.getScreen()->GetHeight()) {
-            app.InitWindow();
+        if (settings.fieldwidth*settings.tilesize != app.getWindow()->GetWidth()
+            || settings.fieldheight*settings.tilesize+EXTRA_Y_SPACE != app.getWindow()->GetHeight()) {
+            app.initWindow();
             Logger::Msg("window resized...");
         }
 
@@ -814,7 +814,7 @@ void Game::gameInit(std::string level, std::string skin) {
 
         //loading level graphics
 
-        objects[0] = new BckgrObj( app.getScreen(), 10 );
+        objects[0] = new BckgrObj( app.getWindow(), 10 );
         objects[0]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
         Logger::Msg("Level background loaded");
@@ -831,7 +831,7 @@ void Game::gameInit(std::string level, std::string skin) {
 
         //create pacman + ghosts
 
-        objects[1] = new Pacman( app.getScreen(),
+        objects[1] = new Pacman( app.getWindow(),
                             20,
                             settings.pacstartx,
                             settings.pacstarty,
@@ -842,7 +842,7 @@ void Game::gameInit(std::string level, std::string skin) {
                             map);
         objects[1]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
-        objects[2] = new Ghost( app.getScreen(),
+        objects[2] = new Ghost( app.getWindow(),
                             20,
                             settings.baddiestartx,
                             settings.baddiestarty,
@@ -854,7 +854,7 @@ void Game::gameInit(std::string level, std::string skin) {
                             "1");
         objects[2]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
-        objects[3] = new Ghost( app.getScreen(),
+        objects[3] = new Ghost( app.getWindow(),
                             20,
                             settings.baddiestartx+2,
                             settings.baddiestarty,
@@ -866,7 +866,7 @@ void Game::gameInit(std::string level, std::string skin) {
                             "2");
         objects[3]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
-        objects[4] = new Ghost( app.getScreen(),
+        objects[4] = new Ghost( app.getWindow(),
                             20,
                             settings.baddiestartx-2,
                             settings.baddiestarty,
@@ -878,7 +878,7 @@ void Game::gameInit(std::string level, std::string skin) {
                             "3");
         objects[4]->LoadTextures(APP_PATH "/" + settings.skinspath[settings.skinspathcurrent]);
 
-        objects[5] = new Ghost( app.getScreen(),
+        objects[5] = new Ghost( app.getWindow(),
                             20,
                             settings.baddiestartx,
                             settings.baddiestarty-2,
@@ -1036,7 +1036,7 @@ std::string Game::getFPS() {
 
 void Game::render() {
     shared_ptr<sf::RenderWindow>
-            buf = app.getScreen();
+            buf = app.getWindow();
 
     if (counter == 100) {
         fps = getFPS();

@@ -25,34 +25,21 @@ class Sounds;
 class App
 {
 public:
-    App();
+    App() : quit(false) { }
 
-    void InitApp();     //SDL systems are initialized
-    void InitWindow();  //creates window with parameters from loaded settings file
-    void InitSound();
-
-    //////////////
-    //Global
-    //////////////
+    void initApp();
+    void initWindow();
+    void initSound();
 
     inline bool getQuit() const { return quit; }
     void setQuit( bool q ) { quit = q; }
-    shared_ptr<sf::RenderWindow> getScreen() const { return screen; }
+    shared_ptr<sf::RenderWindow> getWindow() const { return window; }
     shared_ptr<Sounds> getSnd() { return snd; }
 
 private:
 
-    //////////////
-    //Global
-    //////////////
-
-    bool
-            quit;       //if true then quit application
-
-    shared_ptr<sf::RenderWindow>
-            screen;       //buffer surface
-
-    shared_ptr<Sounds>
-            snd;
+    bool quit;
+    shared_ptr<sf::RenderWindow> window;
+    shared_ptr<Sounds> snd;
 
 };

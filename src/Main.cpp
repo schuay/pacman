@@ -78,9 +78,9 @@ int main( int argc, char** argv ) {
     if ( !app.getQuit() ) settings.LoadSettings(SETTINGSFILE);
     if ( !app.getQuit() ) settings.LoadSettings( (settings.lvlpath[settings.lvlpathcurrent] + CFGFILE) );
 
-    if ( !app.getQuit() ) app.InitApp();
-    if ( !app.getQuit() ) app.InitWindow();
-    if ( !app.getQuit() ) app.InitSound();
+    if ( !app.getQuit() ) app.initApp();
+    if ( !app.getQuit() ) app.initWindow();
+    if ( !app.getQuit() ) app.initSound();
 
     //init game class
     if ( !app.getQuit() ) game.gameInit(level,skin);
